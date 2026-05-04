@@ -1,0 +1,6 @@
+@LobasOrdersApi_HostAddress = http://localhost:5007
+
+GET {{LobasOrdersApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

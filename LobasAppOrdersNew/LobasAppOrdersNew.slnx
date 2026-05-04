@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="LobasAppOrdersNew/LobasAppOrdersNew.csproj" />
+  <Project Path="LobasOrdersApi/LobasOrdersApi.csproj" Id="960c2bc2-a1a1-4593-ae5c-406efcff190a" />
 </Solution>
