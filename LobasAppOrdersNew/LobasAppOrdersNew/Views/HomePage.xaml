@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="LobasAppOrdersNew.Views.HomePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Home"
+    BackgroundColor="#FFF7FB">
+
+    <VerticalStackLayout
+        Padding="30"
+        Spacing="20"
+        VerticalOptions="Center">
+
+        <Label
+            Text="Lobas Orders"
+            FontSize="34"
+            FontAttributes="Bold"
+            HorizontalOptions="Center"
+            TextColor="#7B2CBF" />
+
+        <Label
+            Text="{Binding WelcomeMessage}"
+            FontSize="20"
+            HorizontalTextAlignment="Center"
+            TextColor="#555555" />
+
+        <Frame
+            Padding="20"
+            CornerRadius="24"
+            HasShadow="True"
+            BackgroundColor="White"
+            BorderColor="#F0D9FF">
+
+            <VerticalStackLayout Spacing="14">
+
+                <Label
+                    Text="Authentication settings"
+                    FontSize="18"
+                    FontAttributes="Bold"
+                    HorizontalTextAlignment="Center"
+                    TextColor="#333333" />
+
+                <Label
+                    Text="{Binding BiometricEnabled, StringFormat='Biometric enabled: {0}'}"
+                    FontSize="15"
+                    HorizontalTextAlignment="Center"
+                    TextColor="#777777" />
+
+                <Button
+                    Text="Enable biometric login"
+                    Command="{Binding EnableBiometricCommand}"
+                    BackgroundColor="#7B2CBF"
+                    TextColor="White"
+                    CornerRadius="18"
+                    HeightRequest="48" />
+
+                <Button
+                    Text="Disable biometric login"
+                    Command="{Binding DisableBiometricCommand}"
+                    BackgroundColor="#EDE0FF"
+                    TextColor="#7B2CBF"
+                    CornerRadius="18"
+                    HeightRequest="48" />
+
+                <Button
+                    Text="Logout"
+                    Command="{Binding LogoutCommand}"
+                    BackgroundColor="Transparent"
+                    TextColor="#B00020" />
+
+            </VerticalStackLayout>
+        </Frame>
+
+    </VerticalStackLayout>
+</ContentPage>

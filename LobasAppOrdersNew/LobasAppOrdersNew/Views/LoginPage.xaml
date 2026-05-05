@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="LobasAppOrdersNew.Views.LoginPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Login"
+    BackgroundColor="#FFF7FB">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="30"
+            Spacing="22"
+            VerticalOptions="Center">
+
+            <Label
+                Text="Lobas Orders"
+                FontSize="34"
+                FontAttributes="Bold"
+                HorizontalOptions="Center"
+                TextColor="#7B2CBF" />
+
+            <Label
+                Text="Welcome back"
+                FontSize="18"
+                HorizontalOptions="Center"
+                TextColor="#555555" />
+
+            <Frame
+                Padding="20"
+                CornerRadius="24"
+                HasShadow="True"
+                BackgroundColor="White"
+                BorderColor="#F0D9FF">
+
+                <VerticalStackLayout Spacing="16">
+
+                    <Entry
+                        Placeholder="Email"
+                        Keyboard="Email"
+                        Text="{Binding Email}"
+                        ClearButtonVisibility="WhileEditing" />
+
+                    <Entry
+                        Placeholder="Password"
+                        IsPassword="True"
+                        Text="{Binding Password}" />
+
+                    <Button
+                        Text="Login"
+                        Command="{Binding LoginCommand}"
+                        BackgroundColor="#7B2CBF"
+                        TextColor="White"
+                        CornerRadius="18"
+                        HeightRequest="50" />
+
+                    <Button
+    Text="Login with biometric"
+    Command="{Binding BiometricLoginCommand}"
+    BackgroundColor="#EDE0FF"
+    TextColor="#7B2CBF"
+    CornerRadius="18"
+    HeightRequest="50" />
+
+                    <Button
+                        Text="Create account"
+                        Command="{Binding GoToRegisterCommand}"
+                        BackgroundColor="Transparent"
+                        TextColor="#7B2CBF" />
+
+                </VerticalStackLayout>
+            </Frame>
+
+            <ActivityIndicator
+                IsRunning="{Binding IsBusy}"
+                IsVisible="{Binding IsBusy}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
