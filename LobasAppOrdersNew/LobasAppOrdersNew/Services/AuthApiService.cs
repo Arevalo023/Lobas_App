@@ -58,5 +58,25 @@ namespace LobasAppOrdersNew.Services
                 };
             }
         }
+        public async Task<ApiResponse<UserModel>?> SocialLoginAsync(SocialLoginRequest request)
+        {
+            try
+            {
+                HttpResponseMessage response = await _httpClient.PostAsJsonAsync("Auth/social-login", request);
+
+                ApiResponse<UserModel>? result =
+                    await response.Content.ReadFromJsonAsync<ApiResponse<UserModel>>();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<UserModel>
+                {
+                    Message = $"Error al conectar con el servidor: {ex.Message}",
+                    User = null
+                };
+            }
+        }
     }
 }

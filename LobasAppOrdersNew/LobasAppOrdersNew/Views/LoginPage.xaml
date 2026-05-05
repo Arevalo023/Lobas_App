@@ -54,13 +54,23 @@
                         HeightRequest="50" />
 
                     <Button
-    Text="Login with biometric"
+    Text="Continue with Google"
+    Command="{Binding GoogleLoginCommand}"
+    BackgroundColor="White"
+    TextColor="#333333"
+    BorderColor="#DDDDDD"
+    BorderWidth="1"
+    CornerRadius="18"
+    HeightRequest="50" />
+
+                    <Button
+    Text="Entrar con huella"
     Command="{Binding BiometricLoginCommand}"
+    IsVisible="{Binding IsBiometricButtonVisible}"
     BackgroundColor="#EDE0FF"
     TextColor="#7B2CBF"
     CornerRadius="18"
     HeightRequest="50" />
-
                     <Button
                         Text="Create account"
                         Command="{Binding GoToRegisterCommand}"

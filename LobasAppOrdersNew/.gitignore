@@ -1,6 +1,11 @@
+# Visual Studio / build
 .vs/
 bin/
 obj/
 *.user
 *.suo
 *.vsidx
+
+# App settings with secrets
+**/appsettings.json
+**/appsettings.*.json
