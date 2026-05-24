@@ -2,7 +2,7 @@
 using LobasAppOrdersNew.Helpers;
 using LobasAppOrdersNew.Models;
 using LobasAppOrdersNew.Services;
-
+using LobasAppOrdersNew.Views;
 namespace LobasAppOrdersNew.ViewModels
 {
     public class LoginViewModel : BaseViewModel
@@ -15,6 +15,10 @@ namespace LobasAppOrdersNew.ViewModels
         private string _email = string.Empty;
         private string _password = string.Empty;
         private bool _isBiometricButtonVisible;
+        private bool _isPasswordHidden = true;
+        private string _passwordToggleText = "👁";
+        private bool _isLoginLoading;
+        private bool _isGoogleLoading;
 
         public LoginViewModel(
         AuthApiService authApiService,
@@ -33,6 +37,7 @@ namespace LobasAppOrdersNew.ViewModels
             GoToRegisterCommand = new Command(async () => await GoToRegisterAsync());
             BiometricLoginCommand = new Command(async () => await BiometricLoginAsync());
             GoogleLoginCommand = new Command(async () => await GoogleLoginAsync());
+            TogglePasswordVisibilityCommand = new Command(TogglePasswordVisibility);    
         }
 
         public string Email
@@ -67,8 +72,20 @@ namespace LobasAppOrdersNew.ViewModels
 
         public ICommand GoogleLoginCommand { get; }
 
+        public ICommand TogglePasswordVisibilityCommand { get; }
 
 
+        public bool IsPasswordHidden
+        {
+            get => _isPasswordHidden;
+            set => SetProperty(ref _isPasswordHidden, value);
+        }
+
+        public string PasswordToggleText
+        {
+            get => _passwordToggleText;
+            set => SetProperty(ref _passwordToggleText, value);
+        }
         private async Task LoginAsync()
         {
             if (IsBusy)
@@ -91,6 +108,7 @@ namespace LobasAppOrdersNew.ViewModels
             try
             {
                 IsBusy = true;
+                IsLoginLoading = true;
 
                 LoginRequest request = new LoginRequest
                 {
@@ -120,7 +138,7 @@ namespace LobasAppOrdersNew.ViewModels
                     "OK"
                 );
 
-                await Shell.Current.GoToAsync("//HomePage");
+                await GoToAppShellAsync();
             }
             catch (Exception ex)
             {
@@ -129,9 +147,15 @@ namespace LobasAppOrdersNew.ViewModels
             finally
             {
                 IsBusy = false;
+                IsLoginLoading = false;
+                
             }
         }
-
+        private void TogglePasswordVisibility()
+        {
+            IsPasswordHidden = !IsPasswordHidden;
+            PasswordToggleText = IsPasswordHidden ? "👁" : "🙈";
+        }
         private async Task GoogleLoginAsync()
         {
             if (IsBusy)
@@ -142,19 +166,19 @@ namespace LobasAppOrdersNew.ViewModels
             try
             {
                 IsBusy = true;
-
+                                IsGoogleLoading = true;
                 GoogleUserInfo? googleUser = await _googleAuthService.LoginWithGoogleAsync();
 
                 if (googleUser == null)
                 {
                     await Application.Current!.MainPage!.DisplayAlert(
                         "Google login",
-                        "Google login was cancelled or failed.",
+                        "Google sign-in was cancelled or was not completed. Please try again.",
                         "OK"
                     );
+
                     return;
                 }
-
                 SocialLoginRequest request = new SocialLoginRequest
                 {
                     Name = googleUser.Name,
@@ -185,6 +209,8 @@ namespace LobasAppOrdersNew.ViewModels
                     return;
                 }
 
+                response.User.BiometricEnabled = false;
+
                 await _sessionService.SaveUserSessionAsync(response.User);
 
                 await Application.Current!.MainPage!.DisplayAlert(
@@ -193,7 +219,7 @@ namespace LobasAppOrdersNew.ViewModels
                     "OK"
                 );
 
-                await Shell.Current.GoToAsync("//HomePage");
+                await GoToAppShellAsync();
             }
             catch (Exception ex)
             {
@@ -205,7 +231,9 @@ namespace LobasAppOrdersNew.ViewModels
             }
             finally
             {
+                IsGoogleLoading = false;
                 IsBusy = false;
+                
             }
         }
 
@@ -285,7 +313,7 @@ namespace LobasAppOrdersNew.ViewModels
                     "OK"
                 );
 
-                await Shell.Current.GoToAsync("//HomePage");
+                await GoToAppShellAsync();
             }
             catch (Exception ex)
             {
@@ -300,6 +328,14 @@ namespace LobasAppOrdersNew.ViewModels
         {
             await Shell.Current.GoToAsync("RegisterPage");
         }
+
+        private Task GoToAppShellAsync()
+        {
+            Application.Current!.MainPage = new AppShell();
+            return Task.CompletedTask;
+        }
+
+       
 
         private async Task CheckBiometricAvailabilityAsync()
         {
@@ -323,6 +359,18 @@ namespace LobasAppOrdersNew.ViewModels
             );
 
             IsBiometricButtonVisible = sameEmail && savedUser.BiometricEnabled;
+        }
+
+        public bool IsLoginLoading
+        {
+            get => _isLoginLoading;
+            set => SetProperty(ref _isLoginLoading, value);
+        }
+
+        public bool IsGoogleLoading
+        {
+            get => _isGoogleLoading;
+            set => SetProperty(ref _isGoogleLoading, value);
         }
     }
 }

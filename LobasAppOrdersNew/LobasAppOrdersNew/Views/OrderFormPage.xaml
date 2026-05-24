@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="LobasAppOrdersNew.Views.OrderFormPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Crear pedido"
+    BackgroundColor="{DynamicResource AppBackgroundColor}">
+
+    <ScrollView>
+        <Grid Padding="24">
+
+            <Frame
+                Style="{StaticResource CardFrameStyle}"
+                MaximumWidthRequest="760"
+                HorizontalOptions="Center">
+
+                <VerticalStackLayout Spacing="18">
+
+                    <VerticalStackLayout Spacing="4">
+                        <Label
+                            Text="Crear pedido"
+                            Style="{StaticResource PageTitleStyle}" />
+
+                        <Label
+                            Text="Selecciona un cliente y agrega productos al pedido"
+                            Style="{StaticResource PageSubtitleStyle}" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label
+                            Text="Cliente"
+                            TextColor="{DynamicResource AppTextColor}"
+                            FontAttributes="Bold" />
+
+                        <Picker
+                            ItemsSource="{Binding Customers}"
+                            ItemDisplayBinding="{Binding Name}"
+                            SelectedItem="{Binding SelectedCustomer}"
+                            Title="Selecciona un cliente"
+                            BackgroundColor="White"
+                            TextColor="{DynamicResource AppTextColor}" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Spacing="6">
+                        <Label
+        Text="Estatus"
+        TextColor="{DynamicResource AppTextColor}"
+        FontAttributes="Bold" />
+
+                        <Picker
+        ItemsSource="{Binding StatusOptions}"
+        SelectedItem="{Binding Status}"
+        Title="Selecciona un estatus"
+        BackgroundColor="White"
+        TextColor="{DynamicResource AppTextColor}" />
+                    </VerticalStackLayout>
+
+                    <Grid ColumnDefinitions="*,120,Auto" ColumnSpacing="10">
+
+                        <VerticalStackLayout Grid.Column="0" Spacing="6">
+                            <Label
+                                Text="Producto"
+                                TextColor="{DynamicResource AppTextColor}"
+                                FontAttributes="Bold" />
+
+                            <Picker
+                                ItemsSource="{Binding Products}"
+                                ItemDisplayBinding="{Binding Name}"
+                                SelectedItem="{Binding SelectedProduct}"
+                                Title="Selecciona producto"
+                                BackgroundColor="White"
+                                TextColor="{DynamicResource AppTextColor}" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Grid.Column="1" Spacing="6">
+                            <Label
+                                Text="Cantidad"
+                                TextColor="{DynamicResource AppTextColor}"
+                                FontAttributes="Bold" />
+
+                            <Entry
+                                Text="{Binding Quantity}"
+                                Keyboard="Numeric"
+                                BackgroundColor="White"
+                                TextColor="{DynamicResource AppTextColor}"
+                                HeightRequest="50" />
+                        </VerticalStackLayout>
+
+                        <Button
+                            Grid.Column="2"
+                            Text="+"
+                            Command="{Binding AddProductCommand}"
+                            BackgroundColor="{DynamicResource AppPrimaryColor}"
+                            TextColor="{DynamicResource AppButtonTextColor}"
+                            CornerRadius="18"
+                            WidthRequest="55"
+                            HeightRequest="55"
+                            VerticalOptions="End" />
+                    </Grid>
+
+                    <Label
+                        Text="Productos agregados"
+                        FontSize="18"
+                        FontAttributes="Bold"
+                        TextColor="{DynamicResource AppTextColor}" />
+
+                    <CollectionView
+                        ItemsSource="{Binding CartItems}"
+                        HeightRequest="220"
+                        SelectionMode="None">
+
+                        <CollectionView.EmptyView>
+                            <Label
+                                Text="Aún no has agregado productos."
+                                TextColor="{DynamicResource AppMutedTextColor}"
+                                HorizontalTextAlignment="Center"
+                                VerticalTextAlignment="Center" />
+                        </CollectionView.EmptyView>
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <SwipeView Margin="0,0,0,10">
+                                    <SwipeView.RightItems>
+                                        <SwipeItems Mode="Reveal">
+                                            <SwipeItem
+                                                Text="Quitar"
+                                                BackgroundColor="#DC2626"
+                                                Invoked="OnRemoveCartItemInvoked" />
+                                        </SwipeItems>
+                                    </SwipeView.RightItems>
+
+                                    <Frame
+                                        Style="{StaticResource CardFrameStyle}"
+                                        HasShadow="False">
+
+                                        <Grid
+                                            ColumnDefinitions="*,Auto"
+                                            RowDefinitions="Auto,Auto">
+
+                                            <Label
+                                                Grid.Row="0"
+                                                Grid.Column="0"
+                                                Text="{Binding ProductName}"
+                                                FontSize="16"
+                                                FontAttributes="Bold"
+                                                TextColor="{DynamicResource AppTextColor}" />
+
+                                            <Label
+                                                Grid.Row="0"
+                                                Grid.Column="1"
+                                                Text="{Binding SubtotalText}"
+                                                FontSize="15"
+                                                FontAttributes="Bold"
+                                                TextColor="{DynamicResource AppPrimaryColor}" />
+
+                                            <Label
+                                                Grid.Row="1"
+                                                Grid.Column="0"
+                                                Text="{Binding QuantityText}"
+                                                FontSize="13"
+                                                TextColor="{DynamicResource AppMutedTextColor}" />
+
+                                            <Label
+                                                Grid.Row="1"
+                                                Grid.Column="1"
+                                                Text="{Binding UnitPriceText}"
+                                                FontSize="13"
+                                                TextColor="{DynamicResource AppMutedTextColor}" />
+                                        </Grid>
+                                    </Frame>
+                                </SwipeView>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                    <Label
+                        Text="{Binding TotalText}"
+                        FontSize="22"
+                        FontAttributes="Bold"
+                        TextColor="{DynamicResource AppPrimaryColor}"
+                        HorizontalTextAlignment="End" />
+
+                    <Grid HeightRequest="52">
+                        <Button
+                            Text="Guardar pedido"
+                            Command="{Binding SaveOrderCommand}"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            HeightRequest="52" />
+
+                        <ActivityIndicator
+                            IsRunning="{Binding IsSaving}"
+                            IsVisible="{Binding IsSaving}"
+                            Color="White"
+                            WidthRequest="24"
+                            HeightRequest="24"
+                            HorizontalOptions="End"
+                            VerticalOptions="Center"
+                            Margin="0,0,18,0" />
+                    </Grid>
+
+                    <Button
+                        Text="Cancelar"
+                        Command="{Binding CancelCommand}"
+                        BackgroundColor="Transparent"
+                        TextColor="{DynamicResource AppPrimaryColor}"
+                        FontAttributes="Bold" />
+
+                </VerticalStackLayout>
+            </Frame>
+        </Grid>
+    </ScrollView>
+</ContentPage>

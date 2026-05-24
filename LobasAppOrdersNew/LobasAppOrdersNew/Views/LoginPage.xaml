@@ -4,86 +4,176 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Login"
-    BackgroundColor="#FFF7FB">
+    BackgroundColor="{DynamicResource AppBackgroundColor}">
 
     <ScrollView>
-        <VerticalStackLayout
-            Padding="30"
-            Spacing="22"
-            VerticalOptions="Center">
-
-            <Label
-                Text="Lobas Orders"
-                FontSize="34"
-                FontAttributes="Bold"
-                HorizontalOptions="Center"
-                TextColor="#7B2CBF" />
-
-            <Label
-                Text="Welcome back"
-                FontSize="18"
-                HorizontalOptions="Center"
-                TextColor="#555555" />
+        <Grid Padding="24">
 
             <Frame
-                Padding="20"
-                CornerRadius="24"
-                HasShadow="True"
-                BackgroundColor="White"
-                BorderColor="#F0D9FF">
+                Style="{StaticResource CardFrameStyle}"
+                WidthRequest="620"
+                MaximumWidthRequest="620"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                Margin="0,40">
 
-                <VerticalStackLayout Spacing="16">
+                <Grid
+                    ColumnDefinitions="0.95*,1.15*"
+                    ColumnSpacing="28">
 
-                    <Entry
-                        Placeholder="Email"
-                        Keyboard="Email"
-                        Text="{Binding Email}"
-                        ClearButtonVisibility="WhileEditing" />
+                    <!-- Lado izquierdo -->
+                    <VerticalStackLayout
+                        Grid.Column="0"
+                        Spacing="16"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center">
 
-                    <Entry
-                        Placeholder="Password"
-                        IsPassword="True"
-                        Text="{Binding Password}" />
+                        <Image
+                            Source="splash.png"
+                            HeightRequest="130"
+                            WidthRequest="130"
+                            HorizontalOptions="Center"
+                            Aspect="AspectFit" />
 
-                    <Button
-                        Text="Login"
-                        Command="{Binding LoginCommand}"
-                        BackgroundColor="#7B2CBF"
-                        TextColor="White"
-                        CornerRadius="18"
-                        HeightRequest="50" />
+                        <Label
+                            Text="Welcome back"
+                            Style="{StaticResource PageTitleStyle}"
+                            HorizontalTextAlignment="Center" />
 
-                    <Button
-    Text="Continue with Google"
-    Command="{Binding GoogleLoginCommand}"
-    BackgroundColor="White"
-    TextColor="#333333"
-    BorderColor="#DDDDDD"
-    BorderWidth="1"
-    CornerRadius="18"
-    HeightRequest="50" />
+                        <Label
+                            Text="Access your account and continue managing your orders."
+                            Style="{StaticResource PageSubtitleStyle}"
+                            HorizontalTextAlignment="Center"
+                            LineBreakMode="WordWrap" />
 
-                    <Button
-    Text="Entrar con huella"
-    Command="{Binding BiometricLoginCommand}"
-    IsVisible="{Binding IsBiometricButtonVisible}"
-    BackgroundColor="#EDE0FF"
-    TextColor="#7B2CBF"
-    CornerRadius="18"
-    HeightRequest="50" />
-                    <Button
-                        Text="Create account"
-                        Command="{Binding GoToRegisterCommand}"
-                        BackgroundColor="Transparent"
-                        TextColor="#7B2CBF" />
+                    </VerticalStackLayout>
 
-                </VerticalStackLayout>
+                    <!-- Lado derecho -->
+                    <VerticalStackLayout
+                        Grid.Column="1"
+                        Spacing="16"
+                        VerticalOptions="Center">
+
+                        <VerticalStackLayout Spacing="6">
+                            <Label
+                                Text="Email"
+                                TextColor="{DynamicResource AppTextColor}"
+                                FontAttributes="Bold" />
+
+                            <Entry
+                                Placeholder="Enter your email"
+                                Text="{Binding Email}"
+                                Keyboard="Email"
+                                BackgroundColor="White"
+                                TextColor="{DynamicResource AppTextColor}"
+                                PlaceholderColor="#C08497"
+                                HeightRequest="50" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="6">
+                            <Label
+                                Text="Password"
+                                TextColor="{DynamicResource AppTextColor}"
+                                FontAttributes="Bold" />
+
+                            <Grid ColumnDefinitions="*,Auto"
+                                  ColumnSpacing="8">
+
+                                <Entry
+                                    Grid.Column="0"
+                                    Placeholder="Enter your password"
+                                    Text="{Binding Password}"
+                                    IsPassword="{Binding IsPasswordHidden}"
+                                    BackgroundColor="White"
+                                    TextColor="{DynamicResource AppTextColor}"
+                                    PlaceholderColor="#C08497"
+                                    HeightRequest="50" />
+
+                                <Button
+                                    Grid.Column="1"
+                                    Text="{Binding PasswordToggleText}"
+                                    Command="{Binding TogglePasswordVisibilityCommand}"
+                                    BackgroundColor="#FBCFE8"
+                                    TextColor="{DynamicResource AppTextColor}"
+                                    WidthRequest="50"
+                                    HeightRequest="50"
+                                    CornerRadius="14"
+                                    Padding="0" />
+                            </Grid>
+                        </VerticalStackLayout>
+
+                        <Grid HeightRequest="52">
+                            <Button
+        Text="Login"
+        Command="{Binding LoginCommand}"
+        Style="{StaticResource PrimaryButtonStyle}"
+        HeightRequest="52" />
+
+                            <ActivityIndicator
+        IsRunning="{Binding IsLoginLoading}"
+        IsVisible="{Binding IsLoginLoading}"
+        Color="White"
+        WidthRequest="24"
+        HeightRequest="24"
+        HorizontalOptions="End"
+        VerticalOptions="Center"
+        Margin="0,0,18,0" />
+                        </Grid>
+
+                        <Grid HeightRequest="50">
+                            <Button
+        Text="Sign in with Google"
+        Command="{Binding GoogleLoginCommand}"
+        BackgroundColor="White"
+        TextColor="{DynamicResource AppTextColor}"
+        BorderColor="#F9A8D4"
+        BorderWidth="1"
+        CornerRadius="18"
+        HeightRequest="50"
+        FontAttributes="Bold" />
+
+                            <ActivityIndicator
+        IsRunning="{Binding IsGoogleLoading}"
+        IsVisible="{Binding IsGoogleLoading}"
+        Color="{DynamicResource AppPrimaryColor}"
+        WidthRequest="24"
+        HeightRequest="24"
+        HorizontalOptions="End"
+        VerticalOptions="Center"
+        Margin="0,0,18,0" />
+                        </Grid>
+
+                        <Button
+                            Text="Biometric Login"
+                            Command="{Binding BiometricLoginCommand}"
+                            BackgroundColor="#FCE7F3"
+                            TextColor="{DynamicResource AppSecondaryColor}"
+                            CornerRadius="18"
+                            HeightRequest="48"
+                            FontAttributes="Bold"
+                            IsVisible="{Binding IsBiometricButtonVisible}" />
+
+                        <HorizontalStackLayout
+                            HorizontalOptions="Center"
+                            Spacing="6">
+
+                            <Label
+                                Text="Don't have an account?"
+                                TextColor="{DynamicResource AppMutedTextColor}"
+                                VerticalOptions="Center" />
+
+                            <Button
+                                Text="Register"
+                                Command="{Binding GoToRegisterCommand}"
+                                BackgroundColor="Transparent"
+                                TextColor="{DynamicResource AppPrimaryColor}"
+                                FontAttributes="Bold"
+                                Padding="0" />
+                        </HorizontalStackLayout>
+
+                    </VerticalStackLayout>
+                </Grid>
             </Frame>
-
-            <ActivityIndicator
-                IsRunning="{Binding IsBusy}"
-                IsVisible="{Binding IsBusy}" />
-
-        </VerticalStackLayout>
+        </Grid>
     </ScrollView>
 </ContentPage>

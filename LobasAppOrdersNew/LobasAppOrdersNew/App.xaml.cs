@@ -1,15 +1,13 @@
-﻿namespace LobasAppOrdersNew
-{
-    public partial class App : Application
-    {
-        public App()
-        {
-            InitializeComponent();
-        }
+﻿using LobasAppOrdersNew.Views;
 
-        protected override Window CreateWindow(IActivationState? activationState)
-        {
-            return new Window(new AppShell());
-        }
+namespace LobasAppOrdersNew;
+
+public partial class App : Application
+{
+    public App(SplashPage splashPage)
+    {
+        InitializeComponent();
+
+        MainPage = splashPage;
     }
 }

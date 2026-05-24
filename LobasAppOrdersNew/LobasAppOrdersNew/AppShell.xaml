@@ -4,16 +4,67 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:views="clr-namespace:LobasAppOrdersNew.Views"
-    Shell.FlyoutBehavior="Disabled">
+    Shell.FlyoutBehavior="Flyout"
+    Title="Lobas Orders">
 
-    <ShellContent
-        Title="Login"
-        ContentTemplate="{DataTemplate views:LoginPage}"
-        Route="LoginPage" />
+    <Shell.FlyoutHeader>
+        <Grid BackgroundColor="#1F2937" Padding="20" HeightRequest="150">
+            <VerticalStackLayout VerticalOptions="Center">
+                <Label Text="Lobas Orders"
+                       TextColor="White"
+                       FontSize="24"
+                       FontAttributes="Bold" />
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate views:HomePage}"
-        Route="HomePage" />
+                <Label Text="Order Management App"
+                       TextColor="#D1D5DB"
+                       FontSize="14" />
+            </VerticalStackLayout>
+        </Grid>
+    </Shell.FlyoutHeader>
+    <FlyoutItem Title="Inicio" Icon="home.png">
+        <ShellContent
+        Title="Inicio"
+        ContentTemplate="{DataTemplate views:WelcomePage}"
+        Route="WelcomePage" />
+    </FlyoutItem>
 
+    <FlyoutItem Title="Clientes" Icon="customers.png">
+        <ShellContent
+        Title="Clientes"
+        ContentTemplate="{DataTemplate views:CustomersPage}"
+        Route="CustomersPage" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Productos" Icon="product.png">
+        <ShellContent
+        Title="Productos"
+        ContentTemplate="{DataTemplate views:ProductsPage}"
+        Route="ProductsPage" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Pedidos" Icon="orders.png">
+        <ShellContent
+        Title="Pedidos"
+        ContentTemplate="{DataTemplate views:OrdersPage}"
+        Route="OrdersPage" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Ajustes" Icon="settings.png">
+        <ShellContent
+        Title="Ajustes"
+        ContentTemplate="{DataTemplate views:SettingsPage}"
+        Route="SettingsPage" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Acerca de" Icon="about.png">
+        <ShellContent
+        Title="Acerca de"
+        ContentTemplate="{DataTemplate views:AboutPage}"
+        Route="AboutPage" />
+    </FlyoutItem>
+
+    <MenuItem
+    Text="Cerrar sesión"
+    IconImageSource="logout.png"
+    Clicked="OnLogoutClicked" />
 </Shell>

@@ -5,6 +5,7 @@ using LobasAppOrdersNew.Services;
 using LobasAppOrdersNew.ViewModels;
 using LobasAppOrdersNew.Views;
 using Plugin.Maui.Biometric;
+
 namespace LobasAppOrdersNew
 {
     public static class MauiProgram
@@ -12,6 +13,7 @@ namespace LobasAppOrdersNew
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
+
             builder
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
@@ -21,9 +23,9 @@ namespace LobasAppOrdersNew
                 });
 
             IConfigurationRoot config = new ConfigurationBuilder()
-           .SetBasePath(AppContext.BaseDirectory)
-           .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
-           .Build();
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
+                .Build();
 
             builder.Configuration.AddConfiguration(config);
 
@@ -34,27 +36,54 @@ namespace LobasAppOrdersNew
             };
 
             builder.Services.AddSingleton(googleAuthSettings);
+
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
+
+            // Services
             builder.Services.AddSingleton<AuthApiService>();
-
-            builder.Services.AddSingleton<GoogleAuthService>();
-            builder.Services.AddTransient<LoginViewModel>();
-            builder.Services.AddTransient<LoginPage>();
-            builder.Services.AddSingleton<SessionService>();
             builder.Services.AddSingleton<UserApiService>();
-
-            builder.Services.AddTransient<RegisterViewModel>();
-            builder.Services.AddTransient<RegisterPage>();
-            builder.Services.AddTransient<HomeViewModel>();
-            builder.Services.AddTransient<HomePage>();
-            builder.Services.AddTransient<LoginViewModel>();
-            builder.Services.AddTransient<LoginPage>();
+            builder.Services.AddSingleton<SessionService>();
             builder.Services.AddSingleton<GoogleAuthService>();
-
             builder.Services.AddSingleton<IBiometric>(BiometricAuthenticationService.Default);
             builder.Services.AddSingleton<AppBiometricService>();
+            builder.Services.AddSingleton<ProductApiService>();
+            builder.Services.AddSingleton<CustomerApiService>();
+
+            // ViewModels
+            builder.Services.AddTransient<LoginViewModel>();
+            builder.Services.AddTransient<RegisterViewModel>();
+            builder.Services.AddTransient<HomeViewModel>();
+            builder.Services.AddTransient<ProductsViewModel>();
+            builder.Services.AddTransient<CustomersViewModel>();
+            builder.Services.AddTransient<CustomerFormViewModel>();
+            builder.Services.AddTransient<ProductFormViewModel>();
+            builder.Services.AddTransient<OrderDetailViewModel>();
+
+            // Pages
+            builder.Services.AddTransient<LoginPage>();
+            builder.Services.AddTransient<RegisterPage>();
+            builder.Services.AddTransient<HomePage>();
+            builder.Services.AddTransient<SplashPage>();
+            builder.Services.AddTransient<ProductsPage>();
+            builder.Services.AddTransient<ProductFormPage>();
+            builder.Services.AddTransient<CustomersPage>();
+            builder.Services.AddTransient<CustomerFormPage>();
+
+            builder.Services.AddSingleton<OrderApiService>();
+            builder.Services.AddTransient<OrdersViewModel>();
+            builder.Services.AddTransient<OrderDetailPage>();
+            builder.Services.AddTransient<OrdersPage>();
+
+            builder.Services.AddTransient<OrderFormViewModel>();
+            builder.Services.AddTransient<OrderFormPage>();
+
+            builder.Services.AddTransient<OrderEditViewModel>();
+            builder.Services.AddTransient<OrderEditPage>();
+            builder.Services.AddTransient<WelcomeViewModel>();
+            builder.Services.AddTransient<WelcomePage>();
+
             return builder.Build();
         }
     }

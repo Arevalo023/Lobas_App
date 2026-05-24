@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="LobasAppOrdersNew.Views.OrdersPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Pedidos"
+    BackgroundColor="{DynamicResource AppBackgroundColor}">
+
+    <Grid
+        RowDefinitions="Auto,Auto,*"
+        Padding="20"
+        RowSpacing="16">
+
+        <VerticalStackLayout Grid.Row="0" Spacing="4">
+            <Label
+                Text="Pedidos"
+                Style="{StaticResource PageTitleStyle}" />
+
+            <Label
+                Text="Consulta y administra los pedidos registrados"
+                Style="{StaticResource PageSubtitleStyle}" />
+        </VerticalStackLayout>
+
+        <Grid
+            Grid.Row="1"
+            ColumnDefinitions="*,Auto"
+            ColumnSpacing="10">
+
+            <SearchBar
+                Grid.Column="0"
+                Placeholder="Buscar pedido por cliente, estatus o ID..."
+                Text="{Binding SearchText}"
+                BackgroundColor="White"
+                TextColor="{DynamicResource AppTextColor}"
+                PlaceholderColor="#C08497" />
+
+            <Button
+    Grid.Column="1"
+    Text="+"
+    FontSize="24"
+    FontAttributes="Bold"
+    BackgroundColor="{DynamicResource AppPrimaryColor}"
+    TextColor="{DynamicResource AppButtonTextColor}"
+    CornerRadius="18"
+    WidthRequest="55"
+    HeightRequest="55"
+    Clicked="OnAddOrderClicked" />
+        </Grid>
+
+        <RefreshView
+            Grid.Row="2"
+            Command="{Binding RefreshCommand}"
+            IsRefreshing="{Binding IsRefreshing}">
+
+            <CollectionView
+                ItemsSource="{Binding Orders}"
+                SelectionMode="None">
+
+                <CollectionView.EmptyView>
+                    <VerticalStackLayout
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        Spacing="10">
+
+                        <Label
+                            Text="No hay pedidos para mostrar."
+                            TextColor="{DynamicResource AppTextColor}"
+                            FontSize="16"
+                            HorizontalTextAlignment="Center" />
+
+                        <Label
+                            Text="Revisa que tu API local esté corriendo."
+                            TextColor="{DynamicResource AppMutedTextColor}"
+                            FontSize="13"
+                            HorizontalTextAlignment="Center" />
+
+                    </VerticalStackLayout>
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <SwipeView Margin="0,0,0,12">
+                            <SwipeView.LeftItems>
+                                <SwipeItems Mode="Reveal">
+                                    <SwipeItem
+            Text="Editar"
+            BackgroundColor="#6366F1"
+            Invoked="OnEditOrderInvoked" />
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+                            <SwipeView.RightItems>
+                                <SwipeItems Mode="Reveal">
+                                    <SwipeItem
+                                        Text="Eliminar"
+                                        BackgroundColor="#DC2626"
+                                        Invoked="OnDeleteOrderInvoked" />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+
+                            <Frame Style="{StaticResource CardFrameStyle}">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnOrderTapped" />
+                                </Frame.GestureRecognizers>
+
+                                <Grid
+                                    RowDefinitions="Auto,Auto,Auto"
+                                    ColumnDefinitions="*,Auto"
+                                    ColumnSpacing="10">
+
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        Text="{Binding OrderNumberText}"
+                                        FontSize="18"
+                                        FontAttributes="Bold"
+                                        TextColor="{DynamicResource AppTextColor}" />
+
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        Text="{Binding TotalText}"
+                                        FontSize="16"
+                                        FontAttributes="Bold"
+                                        TextColor="{DynamicResource AppPrimaryColor}" />
+
+                                    <Label
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Text="{Binding CustomerName}"
+                                        FontSize="14"
+                                        TextColor="{DynamicResource AppMutedTextColor}"
+                                        Margin="0,4,0,0" />
+
+                                    <Label
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Text="{Binding StatusText}"
+                                        FontSize="13"
+                                        FontAttributes="Bold"
+                                        TextColor="{DynamicResource AppSecondaryColor}"
+                                        Margin="0,4,0,0" />
+
+                                    <Label
+                                        Grid.Row="2"
+                                        Grid.Column="0"
+                                        Text="{Binding DateText}"
+                                        FontSize="13"
+                                        TextColor="{DynamicResource AppMutedTextColor}"
+                                        Margin="0,8,0,0" />
+
+                                    <Label
+                                        Grid.Row="2"
+                                        Grid.Column="1"
+                                        Text="{Binding Details.Count, StringFormat='Items: {0}'}"
+                                        FontSize="13"
+                                        TextColor="{DynamicResource AppMutedTextColor}"
+                                        Margin="0,8,0,0" />
+
+                                </Grid>
+                            </Frame>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+        </RefreshView>
+    </Grid>
+</ContentPage>

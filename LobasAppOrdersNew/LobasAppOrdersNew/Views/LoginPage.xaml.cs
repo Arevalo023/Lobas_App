@@ -1,14 +1,12 @@
 using LobasAppOrdersNew.ViewModels;
 
-namespace LobasAppOrdersNew.Views
-{
-    public partial class LoginPage : ContentPage
-    {
-        public LoginPage(LoginViewModel viewModel)
-        {
-            InitializeComponent();
+namespace LobasAppOrdersNew.Views;
 
-            BindingContext = viewModel;
-        }
+public partial class LoginPage : ContentPage
+{
+    public LoginPage(LoginViewModel viewModel)
+    {
+        InitializeComponent();
+        BindingContext = viewModel;
     }
 }

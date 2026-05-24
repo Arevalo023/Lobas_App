@@ -1,4 +1,5 @@
 ﻿using Google.Apis.Auth.OAuth2;
+using Google.Apis.Auth.OAuth2.Responses;
 using Google.Apis.Oauth2.v2;
 using Google.Apis.Oauth2.v2.Data;
 using Google.Apis.Services;
@@ -28,16 +29,25 @@ namespace LobasAppOrdersNew.Services
 
                 string[] scopes =
                 {
-                    Oauth2Service.Scope.UserinfoEmail,
-                    Oauth2Service.Scope.UserinfoProfile
-                };
+            Oauth2Service.Scope.UserinfoEmail,
+            Oauth2Service.Scope.UserinfoProfile
+        };
+
+                var dataStore = new FileDataStore("LobasOrders.GoogleAuth");
+
+                // Esto borra la sesión guardada de Google para que no entre automático
+                await dataStore.DeleteAsync<TokenResponse>("user");
+
+                using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource(
+        TimeSpan.FromSeconds(60)
+    );
 
                 UserCredential credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
                     secrets,
                     scopes,
                     "user",
-                    CancellationToken.None,
-                    new FileDataStore("LobasOrders.GoogleAuth")
+                    cancellationTokenSource.Token,
+                    dataStore
                 );
 
                 Oauth2Service oauthService = new Oauth2Service(
@@ -62,11 +72,31 @@ namespace LobasAppOrdersNew.Services
                     Name = userInfo.Name ?? userInfo.Email ?? "Google User"
                 };
             }
+            catch (TaskCanceledException)
+            {
+                await Application.Current!.MainPage!.DisplayAlert(
+                    "Google login",
+                    "Google sign-in was cancelled. Please try again.",
+                    "OK"
+                );
+
+                return null;
+            }
+            catch (OperationCanceledException)
+            {
+                await Application.Current!.MainPage!.DisplayAlert(
+                    "Google login",
+                    "Google sign-in was cancelled. Please try again.",
+                    "OK"
+                );
+
+                return null;
+            }
             catch (Exception ex)
             {
                 await Application.Current!.MainPage!.DisplayAlert(
                     "Google login error",
-                    ex.Message,
+                    $"Could not complete Google sign-in. Please try again.\n\nDetails: {ex.Message}",
                     "OK"
                 );
 

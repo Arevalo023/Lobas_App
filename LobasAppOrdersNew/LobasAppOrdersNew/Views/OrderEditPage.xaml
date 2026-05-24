@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="LobasAppOrdersNew.Views.OrderEditPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Editar pedido"
+    BackgroundColor="{DynamicResource AppBackgroundColor}">
+
+    <ScrollView>
+        <Grid Padding="24">
+
+            <Frame
+                Style="{StaticResource CardFrameStyle}"
+                MaximumWidthRequest="520"
+                HorizontalOptions="Center">
+
+                <VerticalStackLayout Spacing="18">
+
+                    <VerticalStackLayout Spacing="4">
+                        <Label
+                            Text="Editar pedido"
+                            Style="{StaticResource PageTitleStyle}" />
+
+                        <Label
+                            Text="Actualiza el cliente o el estatus del pedido"
+                            Style="{StaticResource PageSubtitleStyle}" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label
+                            Text="Cliente"
+                            TextColor="{DynamicResource AppTextColor}"
+                            FontAttributes="Bold" />
+
+                        <Picker
+                            ItemsSource="{Binding Customers}"
+                            ItemDisplayBinding="{Binding Name}"
+                            SelectedItem="{Binding SelectedCustomer}"
+                            Title="Selecciona un cliente"
+                            BackgroundColor="White"
+                            TextColor="{DynamicResource AppTextColor}" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Spacing="6">
+                        <Label
+        Text="Estatus"
+        TextColor="{DynamicResource AppTextColor}"
+        FontAttributes="Bold" />
+
+                        <Picker
+        ItemsSource="{Binding StatusOptions}"
+        SelectedItem="{Binding Status}"
+        Title="Selecciona un estatus"
+        BackgroundColor="White"
+        TextColor="{DynamicResource AppTextColor}" />
+                    </VerticalStackLayout>
+
+                    <Grid HeightRequest="52">
+                        <Button
+                            Text="Actualizar pedido"
+                            Command="{Binding SaveOrderCommand}"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            HeightRequest="52" />
+
+                        <ActivityIndicator
+                            IsRunning="{Binding IsSaving}"
+                            IsVisible="{Binding IsSaving}"
+                            Color="White"
+                            WidthRequest="24"
+                            HeightRequest="24"
+                            HorizontalOptions="End"
+                            VerticalOptions="Center"
+                            Margin="0,0,18,0" />
+                    </Grid>
+
+                    <Button
+                        Text="Cancelar"
+                        Command="{Binding CancelCommand}"
+                        BackgroundColor="Transparent"
+                        TextColor="{DynamicResource AppPrimaryColor}"
+                        FontAttributes="Bold" />
+
+                </VerticalStackLayout>
+            </Frame>
+        </Grid>
+    </ScrollView>
+</ContentPage>

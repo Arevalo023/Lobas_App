@@ -1,5 +1,6 @@
-﻿using System.Net.Http.Json;
-using LobasAppOrdersNew.Models;
+﻿using LobasAppOrdersNew.Models;
+using Microsoft.Extensions.Configuration;
+using System.Net.Http.Json;
 
 namespace LobasAppOrdersNew.Services
 {
@@ -7,13 +8,15 @@ namespace LobasAppOrdersNew.Services
     {
         private readonly HttpClient _httpClient;
 
-        private const string BaseUrl = "https://localhost:7269/api/";
 
-        public UserApiService()
+        public UserApiService(IConfiguration configuration)
         {
+            string baseUrl = configuration["ApiSettings:BaseUrl"]
+                ?? throw new InvalidOperationException("ApiSettings:BaseUrl is not configured.");
+
             _httpClient = new HttpClient
             {
-                BaseAddress = new Uri(BaseUrl)
+                BaseAddress = new Uri(baseUrl)
             };
         }
 

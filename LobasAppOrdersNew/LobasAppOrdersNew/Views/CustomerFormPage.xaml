@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="LobasAppOrdersNew.Views.CustomerFormPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Cliente"
+    BackgroundColor="{DynamicResource AppBackgroundColor}">
+
+    <ScrollView>
+        <Grid Padding="24">
+
+            <Frame
+                Style="{StaticResource CardFrameStyle}"
+                MaximumWidthRequest="520"
+                HorizontalOptions="Center"
+                VerticalOptions="Center">
+
+                <VerticalStackLayout Spacing="18">
+
+                    <VerticalStackLayout Spacing="4">
+                        <Label
+                            Text="{Binding PageHeader}"
+                            Style="{StaticResource PageTitleStyle}" />
+
+                        <Label
+                            Text="{Binding PageSubtitle}"
+                            Style="{StaticResource PageSubtitleStyle}" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label
+                            Text="Nombre"
+                            TextColor="{DynamicResource AppTextColor}"
+                            FontAttributes="Bold" />
+
+                        <Entry
+                            Placeholder="Ej. Diana Arévalo"
+                            Text="{Binding Name}"
+                            BackgroundColor="White"
+                            TextColor="{DynamicResource AppTextColor}"
+                            PlaceholderColor="#C08497"
+                            HeightRequest="50" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label
+                            Text="Email"
+                            TextColor="{DynamicResource AppTextColor}"
+                            FontAttributes="Bold" />
+
+                        <Entry
+                            Placeholder="cliente@email.com"
+                            Text="{Binding Email}"
+                            Keyboard="Email"
+                            BackgroundColor="White"
+                            TextColor="{DynamicResource AppTextColor}"
+                            PlaceholderColor="#C08497"
+                            HeightRequest="50" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label
+                            Text="Teléfono"
+                            TextColor="{DynamicResource AppTextColor}"
+                            FontAttributes="Bold" />
+
+                        <Entry
+                            Placeholder="8441234567"
+                            Text="{Binding Phone}"
+                            Keyboard="Telephone"
+                            BackgroundColor="White"
+                            TextColor="{DynamicResource AppTextColor}"
+                            PlaceholderColor="#C08497"
+                            HeightRequest="50" />
+                    </VerticalStackLayout>
+
+                    <Grid HeightRequest="52">
+                        <Button
+                            Text="{Binding SaveButtonText}"
+                            Command="{Binding SaveCustomerCommand}"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            HeightRequest="52" />
+
+                        <ActivityIndicator
+                            IsRunning="{Binding IsSaving}"
+                            IsVisible="{Binding IsSaving}"
+                            Color="White"
+                            WidthRequest="24"
+                            HeightRequest="24"
+                            HorizontalOptions="End"
+                            VerticalOptions="Center"
+                            Margin="0,0,18,0" />
+                    </Grid>
+
+                    <Button
+                        Text="Cancelar"
+                        Command="{Binding CancelCommand}"
+                        BackgroundColor="Transparent"
+                        TextColor="{DynamicResource AppPrimaryColor}"
+                        FontAttributes="Bold" />
+
+                </VerticalStackLayout>
+            </Frame>
+        </Grid>
+    </ScrollView>
+</ContentPage>
