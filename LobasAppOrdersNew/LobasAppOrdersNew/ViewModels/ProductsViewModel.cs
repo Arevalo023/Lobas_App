@@ -1,7 +1,8 @@
-ï»¿
+
 using LobasAppOrdersNew.Helpers;
 using LobasAppOrdersNew.Models;
 using LobasAppOrdersNew.Services;
+using LobasAppOrdersNew.Services.Interfaces;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -14,7 +15,7 @@ namespace LobasAppOrdersNew.ViewModels
         private string _searchText = string.Empty;
         private bool _isRefreshing;
 
-        public ProductsViewModel(ProductApiService productApiService)
+        public ProductsViewModel(ProductApiService productApiService, IDialogService dialogService, INavigationService navigationService) : base(dialogService, navigationService)
         {
             _productApiService = productApiService;
 
@@ -119,10 +120,10 @@ namespace LobasAppOrdersNew.ViewModels
                 return;
             }
 
-            bool confirm = await Application.Current!.MainPage!.DisplayAlert(
+            bool confirm = await DialogService.ShowConfirmationAsync(
                 "Eliminar producto",
-                $"Â¿Seguro que deseas eliminar \"{product.Name}\"?",
-                "SÃ­",
+                $"¿Seguro que deseas eliminar \"{product.Name}\"?",
+                "Sí",
                 "Cancelar"
             );
 
@@ -139,7 +140,7 @@ namespace LobasAppOrdersNew.ViewModels
 
                 if (!deleted)
                 {
-                    await Application.Current!.MainPage!.DisplayAlert(
+                    await DialogService.ShowAlertAsync(
                         "Error",
                         "The product could not be deleted.",
                         "OK"
@@ -149,7 +150,7 @@ namespace LobasAppOrdersNew.ViewModels
 
                 Products.Remove(product);
 
-                await Application.Current!.MainPage!.DisplayAlert(
+                await DialogService.ShowAlertAsync(
                     "Success",
                     "Product deleted successfully.",
                     "OK"

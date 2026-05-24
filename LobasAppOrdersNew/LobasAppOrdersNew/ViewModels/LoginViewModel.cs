@@ -1,7 +1,8 @@
-﻿using System.Windows.Input;
+using System.Windows.Input;
 using LobasAppOrdersNew.Helpers;
 using LobasAppOrdersNew.Models;
 using LobasAppOrdersNew.Services;
+using LobasAppOrdersNew.Services.Interfaces;
 using LobasAppOrdersNew.Views;
 using Microsoft.Extensions.DependencyInjection;
 namespace LobasAppOrdersNew.ViewModels
@@ -27,7 +28,10 @@ namespace LobasAppOrdersNew.ViewModels
         SessionService sessionService,
         AppBiometricService biometricService,
         GoogleAuthService googleAuthService,
-        IServiceProvider serviceProvider)
+        IServiceProvider serviceProvider,
+        IDialogService dialogService,
+        INavigationService navigationService)
+            : base(dialogService, navigationService)
         {
             _authApiService = authApiService;
             _sessionService = sessionService;
@@ -99,13 +103,13 @@ namespace LobasAppOrdersNew.ViewModels
 
             if (string.IsNullOrWhiteSpace(Email))
             {
-                await Application.Current!.MainPage!.DisplayAlert("Validation", "Email is required.", "OK");
+                await DialogService.ShowAlertAsync("Validation", "Email is required.", "OK");
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(Password))
             {
-                await Application.Current!.MainPage!.DisplayAlert("Validation", "Password is required.", "OK");
+                await DialogService.ShowAlertAsync("Validation", "Password is required.", "OK");
                 return;
             }
 
@@ -124,19 +128,19 @@ namespace LobasAppOrdersNew.ViewModels
 
                 if (response == null)
                 {
-                    await Application.Current!.MainPage!.DisplayAlert("Error", "No response from server.", "OK");
+                    await DialogService.ShowAlertAsync("Error", "No response from server.", "OK");
                     return;
                 }
 
                 if (response.User == null)
                 {
-                    await Application.Current!.MainPage!.DisplayAlert("Login failed", response.Message, "OK");
+                    await DialogService.ShowAlertAsync("Login failed", response.Message, "OK");
                     return;
                 }
 
                 await _sessionService.SaveUserSessionAsync(response.User);
 
-                await Application.Current!.MainPage!.DisplayAlert(
+                await DialogService.ShowAlertAsync(
                     "Welcome",
                     $"Hello {response.User.Name}!",
                     "OK"
@@ -146,7 +150,7 @@ namespace LobasAppOrdersNew.ViewModels
             }
             catch (Exception ex)
             {
-                await Application.Current!.MainPage!.DisplayAlert("Error", ex.Message, "OK");
+                await DialogService.ShowAlertAsync("Error", ex.Message, "OK");
             }
             finally
             {
@@ -175,7 +179,7 @@ namespace LobasAppOrdersNew.ViewModels
 
                 if (googleUser == null)
                 {
-                    await Application.Current!.MainPage!.DisplayAlert(
+                    await DialogService.ShowAlertAsync(
                         "Google login",
                         "Google sign-in was cancelled or was not completed. Please try again.",
                         "OK"
@@ -195,7 +199,7 @@ namespace LobasAppOrdersNew.ViewModels
 
                 if (response == null)
                 {
-                    await Application.Current!.MainPage!.DisplayAlert(
+                    await DialogService.ShowAlertAsync(
                         "Error",
                         "No response from server.",
                         "OK"
@@ -205,7 +209,7 @@ namespace LobasAppOrdersNew.ViewModels
 
                 if (response.User == null)
                 {
-                    await Application.Current!.MainPage!.DisplayAlert(
+                    await DialogService.ShowAlertAsync(
                         "Google login failed",
                         response.Message,
                         "OK"
@@ -217,7 +221,7 @@ namespace LobasAppOrdersNew.ViewModels
 
                 await _sessionService.SaveUserSessionAsync(response.User);
 
-                await Application.Current!.MainPage!.DisplayAlert(
+                await DialogService.ShowAlertAsync(
                     "Welcome",
                     $"Hello {response.User.Name}!",
                     "OK"
@@ -227,7 +231,7 @@ namespace LobasAppOrdersNew.ViewModels
             }
             catch (Exception ex)
             {
-                await Application.Current!.MainPage!.DisplayAlert(
+                await DialogService.ShowAlertAsync(
                     "Error",
                     ex.Message,
                     "OK"
@@ -254,7 +258,7 @@ namespace LobasAppOrdersNew.ViewModels
 
                 if (string.IsNullOrWhiteSpace(Email))
                 {
-                    await Application.Current!.MainPage!.DisplayAlert(
+                    await DialogService.ShowAlertAsync(
                         "Validation",
                         "Please enter your email first.",
                         "OK"
@@ -266,7 +270,7 @@ namespace LobasAppOrdersNew.ViewModels
 
                 if (user == null)
                 {
-                    await Application.Current!.MainPage!.DisplayAlert(
+                    await DialogService.ShowAlertAsync(
                         "No session",
                         "Please login with email and password first.",
                         "OK"
@@ -281,7 +285,7 @@ namespace LobasAppOrdersNew.ViewModels
 
                 if (!sameEmail)
                 {
-                    await Application.Current!.MainPage!.DisplayAlert(
+                    await DialogService.ShowAlertAsync(
                         "Invalid user",
                         "Biometric login is not enabled for this email.",
                         "OK"
@@ -291,7 +295,7 @@ namespace LobasAppOrdersNew.ViewModels
 
                 if (!user.BiometricEnabled)
                 {
-                    await Application.Current!.MainPage!.DisplayAlert(
+                    await DialogService.ShowAlertAsync(
                         "Biometric disabled",
                         "Please login with password first and enable biometric login.",
                         "OK"
@@ -303,7 +307,7 @@ namespace LobasAppOrdersNew.ViewModels
 
                 if (!authenticated)
                 {
-                    await Application.Current!.MainPage!.DisplayAlert(
+                    await DialogService.ShowAlertAsync(
                         "Access denied",
                         "Biometric authentication failed.",
                         "OK"
@@ -311,7 +315,7 @@ namespace LobasAppOrdersNew.ViewModels
                     return;
                 }
 
-                await Application.Current!.MainPage!.DisplayAlert(
+                await DialogService.ShowAlertAsync(
                     "Welcome",
                     $"Hello {user.Name}!",
                     "OK"
@@ -321,7 +325,7 @@ namespace LobasAppOrdersNew.ViewModels
             }
             catch (Exception ex)
             {
-                await Application.Current!.MainPage!.DisplayAlert("Error", ex.Message, "OK");
+                await DialogService.ShowAlertAsync("Error", ex.Message, "OK");
             }
             finally
             {
@@ -331,13 +335,12 @@ namespace LobasAppOrdersNew.ViewModels
         private async Task GoToRegisterAsync()
         {
             RegisterPage registerPage = _serviceProvider.GetRequiredService<RegisterPage>();
-            await Application.Current!.MainPage!.Navigation.PushAsync(registerPage);
+            await NavigationService.PushAsync(registerPage);
         }
 
-        private Task GoToAppShellAsync()
+        private async Task GoToAppShellAsync()
         {
-            Application.Current!.MainPage = new AppShell();
-            return Task.CompletedTask;
+            await NavigationService.SetRootAsync(new AppShell());
         }
 
        

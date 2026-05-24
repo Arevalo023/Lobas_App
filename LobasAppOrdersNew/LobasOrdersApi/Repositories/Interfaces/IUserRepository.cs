@@ -16,6 +16,8 @@ namespace LobasOrdersApi.Repositories.Interfaces
 
         bool Update(int id, User user);
 
+        bool UpdateName(int id, string name, DateTime changedAt);
+
         bool Delete(int id);
 
         bool UpdateBiometricStatus(int id, bool biometricEnabled);

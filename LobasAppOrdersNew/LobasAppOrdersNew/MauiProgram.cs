@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using LobasAppOrdersNew.Models;
 using LobasAppOrdersNew.Services;
+using LobasAppOrdersNew.Services.Interfaces;
 using LobasAppOrdersNew.ViewModels;
 using LobasAppOrdersNew.Views;
 using Plugin.Maui.Biometric;
@@ -41,6 +42,8 @@ namespace LobasAppOrdersNew
 #endif
 
             // Services
+            builder.Services.AddSingleton<IDialogService, DialogService>();
+            builder.Services.AddSingleton<INavigationService, NavigationService>();
             builder.Services.AddSingleton<AuthApiService>();
             builder.Services.AddSingleton<UserApiService>();
             builder.Services.AddSingleton<SessionService>();
@@ -59,6 +62,7 @@ namespace LobasAppOrdersNew
             builder.Services.AddTransient<CustomerFormViewModel>();
             builder.Services.AddTransient<ProductFormViewModel>();
             builder.Services.AddTransient<OrderDetailViewModel>();
+            builder.Services.AddTransient<ProfileViewModel>();
 
             // Pages
             builder.Services.AddTransient<LoginPage>();
@@ -69,6 +73,7 @@ namespace LobasAppOrdersNew
             builder.Services.AddTransient<ProductFormPage>();
             builder.Services.AddTransient<CustomersPage>();
             builder.Services.AddTransient<CustomerFormPage>();
+            builder.Services.AddTransient<ProfilePage>();
 
             builder.Services.AddSingleton<OrderApiService>();
             builder.Services.AddTransient<OrdersViewModel>();

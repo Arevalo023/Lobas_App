@@ -9,6 +9,7 @@ namespace LobasAppOrdersNew.Services
         private const string UserEmailKey = "user_email";
         private const string AuthProviderKey = "auth_provider";
         private const string BiometricEnabledKey = "biometric_enabled";
+        private const string LastNameChangedAtKey = "last_name_changed_at";
 
         public async Task SaveUserSessionAsync(UserModel user)
         {
@@ -17,6 +18,17 @@ namespace LobasAppOrdersNew.Services
             await SecureStorage.SetAsync(UserEmailKey, user.Email);
             await SecureStorage.SetAsync(AuthProviderKey, user.AuthProvider);
             await SecureStorage.SetAsync(BiometricEnabledKey, user.BiometricEnabled.ToString());
+
+            if (user.LastNameChangedAt.HasValue)
+            {
+                await SecureStorage.SetAsync(
+                    LastNameChangedAtKey,
+                    user.LastNameChangedAt.Value.ToString("O"));
+            }
+            else
+            {
+                SecureStorage.Remove(LastNameChangedAtKey);
+            }
         }
 
         public async Task<UserModel?> GetUserSessionAsync()
@@ -26,6 +38,7 @@ namespace LobasAppOrdersNew.Services
             string? userEmail = await SecureStorage.GetAsync(UserEmailKey);
             string? authProvider = await SecureStorage.GetAsync(AuthProviderKey);
             string? biometricEnabledText = await SecureStorage.GetAsync(BiometricEnabledKey);
+            string? lastNameChangedAtText = await SecureStorage.GetAsync(LastNameChangedAtKey);
 
             if (string.IsNullOrWhiteSpace(userIdText) ||
                 string.IsNullOrWhiteSpace(userName) ||
@@ -36,6 +49,7 @@ namespace LobasAppOrdersNew.Services
 
             int.TryParse(userIdText, out int userId);
             bool.TryParse(biometricEnabledText, out bool biometricEnabled);
+            DateTime.TryParse(lastNameChangedAtText, out DateTime lastNameChangedAt);
 
             return new UserModel
             {
@@ -44,6 +58,9 @@ namespace LobasAppOrdersNew.Services
                 Email = userEmail,
                 AuthProvider = authProvider ?? "Local",
                 BiometricEnabled = biometricEnabled,
+                LastNameChangedAt = string.IsNullOrWhiteSpace(lastNameChangedAtText)
+                    ? null
+                    : lastNameChangedAt,
                 IsActive = true
             };
         }
@@ -76,6 +93,7 @@ namespace LobasAppOrdersNew.Services
             SecureStorage.Remove(UserEmailKey);
             SecureStorage.Remove(AuthProviderKey);
             SecureStorage.Remove(BiometricEnabledKey);
+            SecureStorage.Remove(LastNameChangedAtKey);
         }
     }
 }

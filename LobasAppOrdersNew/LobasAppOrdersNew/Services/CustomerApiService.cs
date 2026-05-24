@@ -1,15 +1,20 @@
-﻿using System.Net.Http.Json;
+using System.Net.Http.Json;
 using Microsoft.Extensions.Configuration;
 using LobasAppOrdersNew.Models;
+
+using LobasAppOrdersNew.Services.Interfaces;
 
 namespace LobasAppOrdersNew.Services
 {
     public class CustomerApiService
     {
         private readonly HttpClient _httpClient;
+        private readonly IDialogService _dialogService;
 
-        public CustomerApiService(IConfiguration configuration)
+        public CustomerApiService(IConfiguration configuration, IDialogService dialogService)
         {
+            _dialogService = dialogService;
+
             string baseUrl = ApiEndpointResolver.GetBaseUrl(configuration);
 
             _httpClient = new HttpClient
@@ -29,7 +34,7 @@ namespace LobasAppOrdersNew.Services
             }
             catch (Exception ex)
             {
-                await Application.Current!.MainPage!.DisplayAlert(
+                await _dialogService.ShowAlertAsync(
                     "Error",
                     $"Could not load customers: {ex.Message}",
                     "OK"
@@ -47,7 +52,7 @@ namespace LobasAppOrdersNew.Services
             }
             catch (Exception ex)
             {
-                await Application.Current!.MainPage!.DisplayAlert(
+                await _dialogService.ShowAlertAsync(
                     "Error",
                     $"Could not load customer: {ex.Message}",
                     "OK"
@@ -77,7 +82,7 @@ namespace LobasAppOrdersNew.Services
             }
             catch (Exception ex)
             {
-                await Application.Current!.MainPage!.DisplayAlert(
+                await _dialogService.ShowAlertAsync(
                     "Error",
                     $"Could not search customers: {ex.Message}",
                     "OK"
@@ -98,7 +103,7 @@ namespace LobasAppOrdersNew.Services
             }
             catch (Exception ex)
             {
-                await Application.Current!.MainPage!.DisplayAlert(
+                await _dialogService.ShowAlertAsync(
                     "Error",
                     $"Could not create customer: {ex.Message}",
                     "OK"
@@ -119,7 +124,7 @@ namespace LobasAppOrdersNew.Services
             }
             catch (Exception ex)
             {
-                await Application.Current!.MainPage!.DisplayAlert(
+                await _dialogService.ShowAlertAsync(
                     "Error",
                     $"Could not update customer: {ex.Message}",
                     "OK"
@@ -140,7 +145,7 @@ namespace LobasAppOrdersNew.Services
             }
             catch (Exception ex)
             {
-                await Application.Current!.MainPage!.DisplayAlert(
+                await _dialogService.ShowAlertAsync(
                     "Error",
                     $"Could not delete customer: {ex.Message}",
                     "OK"

@@ -18,6 +18,11 @@
         public bool BiometricEnabled { get; set; }
     }
 
+    public class UserNameUpdateDto
+    {
+        public string Name { get; set; } = string.Empty;
+    }
+
     public class UserLoginDto
     {
         public string Email { get; set; } = string.Empty;
@@ -51,6 +56,8 @@
         public bool BiometricEnabled { get; set; }
 
         public DateTime CreatedAt { get; set; }
+
+        public DateTime? LastNameChangedAt { get; set; }
 
         public bool IsActive { get; set; }
     }

@@ -1,6 +1,7 @@
-﻿using System.Windows.Input;
+using System.Windows.Input;
 using LobasAppOrdersNew.Helpers;
 using LobasAppOrdersNew.Services;
+using LobasAppOrdersNew.Services.Interfaces;
 
 namespace LobasAppOrdersNew.ViewModels
 {
@@ -18,7 +19,10 @@ namespace LobasAppOrdersNew.ViewModels
         public WelcomeViewModel(
             ProductApiService productApiService,
             CustomerApiService customerApiService,
-            OrderApiService orderApiService)
+            OrderApiService orderApiService,
+            IDialogService dialogService,
+            INavigationService navigationService)
+            : base(dialogService, navigationService)
         {
             _productApiService = productApiService;
             _customerApiService = customerApiService;
@@ -103,17 +107,17 @@ namespace LobasAppOrdersNew.ViewModels
 
         private async Task GoToProductsAsync()
         {
-            await Shell.Current.GoToAsync("//ProductsPage");
+            await NavigationService.GoToRouteAsync("//ProductsPage");
         }
 
         private async Task GoToCustomersAsync()
         {
-            await Shell.Current.GoToAsync("//CustomersPage");
+            await NavigationService.GoToRouteAsync("//CustomersPage");
         }
 
         private async Task GoToOrdersAsync()
         {
-            await Shell.Current.GoToAsync("//OrdersPage");
+            await NavigationService.GoToRouteAsync("//OrdersPage");
         }
     }
 }

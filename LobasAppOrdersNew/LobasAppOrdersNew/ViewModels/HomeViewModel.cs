@@ -1,7 +1,10 @@
-﻿using System.Windows.Input;
+using System.Windows.Input;
 using LobasAppOrdersNew.Helpers;
 using LobasAppOrdersNew.Models;
 using LobasAppOrdersNew.Services;
+using LobasAppOrdersNew.Services.Interfaces;
+using LobasAppOrdersNew.Views;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace LobasAppOrdersNew.ViewModels
 {
@@ -9,14 +12,22 @@ namespace LobasAppOrdersNew.ViewModels
     {
         private readonly SessionService _sessionService;
         private readonly UserApiService _userApiService;
+        private readonly IServiceProvider _serviceProvider;
 
         private string _welcomeMessage = "Welcome";
         private bool _biometricEnabled;
 
-        public HomeViewModel(SessionService sessionService, UserApiService userApiService)
+        public HomeViewModel(
+            SessionService sessionService,
+            UserApiService userApiService,
+            IServiceProvider serviceProvider,
+            IDialogService dialogService,
+            INavigationService navigationService)
+            : base(dialogService, navigationService)
         {
             _sessionService = sessionService;
             _userApiService = userApiService;
+            _serviceProvider = serviceProvider;
 
             Title = "Home";
 
@@ -67,7 +78,7 @@ namespace LobasAppOrdersNew.ViewModels
 
             if (user == null)
             {
-                await Application.Current!.MainPage!.DisplayAlert("Session", "No active session found.", "OK");
+                await DialogService.ShowAlertAsync("Session", "No active session found.", "OK");
                 return;
             }
 
@@ -76,7 +87,7 @@ namespace LobasAppOrdersNew.ViewModels
 
             if (!response.Message.Contains("successfully", StringComparison.OrdinalIgnoreCase))
             {
-                await Application.Current!.MainPage!.DisplayAlert("Error", response.Message, "OK");
+                await DialogService.ShowAlertAsync("Error", response.Message, "OK");
                 return;
             }
 
@@ -88,7 +99,7 @@ namespace LobasAppOrdersNew.ViewModels
                 ? "Biometric login enabled."
                 : "Biometric login disabled.";
 
-            await Application.Current!.MainPage!.DisplayAlert("Success", message, "OK");
+            await DialogService.ShowAlertAsync("Success", message, "OK");
         }
 
         private async Task LogoutAsync()
@@ -98,7 +109,7 @@ namespace LobasAppOrdersNew.ViewModels
             if (user == null)
             {
                 _sessionService.ClearSession();
-                await Shell.Current.GoToAsync("//LoginPage");
+                await GoToLoginAsync();
                 return;
             }
 
@@ -107,7 +118,13 @@ namespace LobasAppOrdersNew.ViewModels
                 _sessionService.ClearSession();
             }
 
-            await Shell.Current.GoToAsync("//LoginPage");
+            await GoToLoginAsync();
+        }
+
+        private async Task GoToLoginAsync()
+        {
+            LoginPage loginPage = _serviceProvider.GetRequiredService<LoginPage>();
+            await NavigationService.SetRootAsync(new NavigationPage(loginPage));
         }
     }
 }

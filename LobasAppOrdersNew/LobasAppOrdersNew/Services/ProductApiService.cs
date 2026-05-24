@@ -1,15 +1,20 @@
-﻿using System.Net.Http.Json;
+using System.Net.Http.Json;
 using Microsoft.Extensions.Configuration;
 using LobasAppOrdersNew.Models;
+
+using LobasAppOrdersNew.Services.Interfaces;
 
 namespace LobasAppOrdersNew.Services
 {
     public class ProductApiService
     {
         private readonly HttpClient _httpClient;
+        private readonly IDialogService _dialogService;
 
-        public ProductApiService(IConfiguration configuration)
+        public ProductApiService(IConfiguration configuration, IDialogService dialogService)
         {
+            _dialogService = dialogService;
+
             string baseUrl = ApiEndpointResolver.GetBaseUrl(configuration);
 
             _httpClient = new HttpClient
@@ -29,7 +34,7 @@ namespace LobasAppOrdersNew.Services
             }
             catch (Exception ex)
             {
-                await Application.Current!.MainPage!.DisplayAlert(
+                await _dialogService.ShowAlertAsync(
                     "Error",
                     $"Could not load products: {ex.Message}",
                     "OK"
@@ -59,7 +64,7 @@ namespace LobasAppOrdersNew.Services
             }
             catch (Exception ex)
             {
-                await Application.Current!.MainPage!.DisplayAlert(
+                await _dialogService.ShowAlertAsync(
                     "Error",
                     $"Could not search products: {ex.Message}",
                     "OK"
@@ -80,7 +85,7 @@ namespace LobasAppOrdersNew.Services
             }
             catch (Exception ex)
             {
-                await Application.Current!.MainPage!.DisplayAlert(
+                await _dialogService.ShowAlertAsync(
                     "Error",
                     $"Could not create product: {ex.Message}",
                     "OK"
@@ -97,7 +102,7 @@ namespace LobasAppOrdersNew.Services
             }
             catch (Exception ex)
             {
-                await Application.Current!.MainPage!.DisplayAlert(
+                await _dialogService.ShowAlertAsync(
                     "Error",
                     $"Could not load product: {ex.Message}",
                     "OK"
@@ -118,7 +123,7 @@ namespace LobasAppOrdersNew.Services
             }
             catch (Exception ex)
             {
-                await Application.Current!.MainPage!.DisplayAlert(
+                await _dialogService.ShowAlertAsync(
                     "Error",
                     $"Could not update product: {ex.Message}",
                     "OK"
@@ -139,7 +144,7 @@ namespace LobasAppOrdersNew.Services
             }
             catch (Exception ex)
             {
-                await Application.Current!.MainPage!.DisplayAlert(
+                await _dialogService.ShowAlertAsync(
                     "Error",
                     $"Could not delete product: {ex.Message}",
                     "OK"

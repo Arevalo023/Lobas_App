@@ -1,8 +1,9 @@
-ï»¿using System.Globalization;
+using System.Globalization;
 using System.Windows.Input;
 using LobasAppOrdersNew.Helpers;
 using LobasAppOrdersNew.Models;
 using LobasAppOrdersNew.Services;
+using LobasAppOrdersNew.Services.Interfaces;
 
 namespace LobasAppOrdersNew.ViewModels
 {
@@ -18,10 +19,10 @@ namespace LobasAppOrdersNew.ViewModels
         private string _stock = string.Empty;
         private bool _isSaving;
         private string _pageHeader = "Agregar producto";
-        private string _pageSubtitle = "Captura la informaciÃ³n del producto";
+        private string _pageSubtitle = "Captura la información del producto";
         private string _saveButtonText = "Guardar producto";
 
-        public ProductFormViewModel(ProductApiService productApiService)
+        public ProductFormViewModel(ProductApiService productApiService, IDialogService dialogService, INavigationService navigationService) : base(dialogService, navigationService)
         {
             _productApiService = productApiService;
 
@@ -110,13 +111,13 @@ namespace LobasAppOrdersNew.ViewModels
 
                 if (product == null)
                 {
-                    await Application.Current!.MainPage!.DisplayAlert(
+                    await DialogService.ShowAlertAsync(
                         "Error",
                         "Product not found.",
                         "OK"
                     );
 
-                    await Shell.Current.GoToAsync("..");
+                    await NavigationService.GoBackAsync();
                     return;
                 }
 
@@ -125,7 +126,7 @@ namespace LobasAppOrdersNew.ViewModels
 
                 Title = "Editar producto";
                 PageHeader = "Editar producto";
-                PageSubtitle = "Actualiza la informaciÃ³n del producto";
+                PageSubtitle = "Actualiza la información del producto";
                 SaveButtonText = "Actualizar producto";
 
                 Name = product.Name;
@@ -148,7 +149,7 @@ namespace LobasAppOrdersNew.ViewModels
 
             if (string.IsNullOrWhiteSpace(Name))
             {
-                await Application.Current!.MainPage!.DisplayAlert(
+                await DialogService.ShowAlertAsync(
                     "Validation",
                     "Product name is required.",
                     "OK"
@@ -158,7 +159,7 @@ namespace LobasAppOrdersNew.ViewModels
 
             if (!TryParseDecimal(Price, out decimal price))
             {
-                await Application.Current!.MainPage!.DisplayAlert(
+                await DialogService.ShowAlertAsync(
                     "Validation",
                     "Price must be a valid number.",
                     "OK"
@@ -168,7 +169,7 @@ namespace LobasAppOrdersNew.ViewModels
 
             if (!int.TryParse(Stock, out int stock))
             {
-                await Application.Current!.MainPage!.DisplayAlert(
+                await DialogService.ShowAlertAsync(
                     "Validation",
                     "Stock must be a valid number.",
                     "OK"
@@ -178,7 +179,7 @@ namespace LobasAppOrdersNew.ViewModels
 
             if (price < 0)
             {
-                await Application.Current!.MainPage!.DisplayAlert(
+                await DialogService.ShowAlertAsync(
                     "Validation",
                     "Price cannot be negative.",
                     "OK"
@@ -188,7 +189,7 @@ namespace LobasAppOrdersNew.ViewModels
 
             if (stock < 0)
             {
-                await Application.Current!.MainPage!.DisplayAlert(
+                await DialogService.ShowAlertAsync(
                     "Validation",
                     "Stock cannot be negative.",
                     "OK"
@@ -222,7 +223,7 @@ namespace LobasAppOrdersNew.ViewModels
 
                 if (!success)
                 {
-                    await Application.Current!.MainPage!.DisplayAlert(
+                    await DialogService.ShowAlertAsync(
                         "Error",
                         IsEditMode
                             ? "The product could not be updated."
@@ -232,7 +233,7 @@ namespace LobasAppOrdersNew.ViewModels
                     return;
                 }
 
-                await Application.Current!.MainPage!.DisplayAlert(
+                await DialogService.ShowAlertAsync(
                     "Success",
                     IsEditMode
                         ? "Product updated successfully."
@@ -240,7 +241,7 @@ namespace LobasAppOrdersNew.ViewModels
                     "OK"
                 );
 
-                await Shell.Current.GoToAsync("..");
+                await NavigationService.GoBackAsync();
             }
             finally
             {
@@ -268,7 +269,7 @@ namespace LobasAppOrdersNew.ViewModels
 
         private async Task CancelAsync()
         {
-            await Shell.Current.GoToAsync("..");
+            await NavigationService.GoBackAsync();
         }
     }
 }

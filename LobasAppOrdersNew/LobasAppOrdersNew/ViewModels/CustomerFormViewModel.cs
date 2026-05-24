@@ -1,7 +1,8 @@
-ï»¿using System.Windows.Input;
+using System.Windows.Input;
 using LobasAppOrdersNew.Helpers;
 using LobasAppOrdersNew.Models;
 using LobasAppOrdersNew.Services;
+using LobasAppOrdersNew.Services.Interfaces;
 
 namespace LobasAppOrdersNew.ViewModels
 {
@@ -16,10 +17,10 @@ namespace LobasAppOrdersNew.ViewModels
         private string _phone = string.Empty;
         private bool _isSaving;
         private string _pageHeader = "Agregar cliente";
-        private string _pageSubtitle = "Captura la informaciÃ³n del cliente";
+        private string _pageSubtitle = "Captura la información del cliente";
         private string _saveButtonText = "Guardar cliente";
 
-        public CustomerFormViewModel(CustomerApiService customerApiService)
+        public CustomerFormViewModel(CustomerApiService customerApiService, IDialogService dialogService, INavigationService navigationService) : base(dialogService, navigationService)
         {
             _customerApiService = customerApiService;
 
@@ -102,13 +103,13 @@ namespace LobasAppOrdersNew.ViewModels
 
                 if (customer == null)
                 {
-                    await Application.Current!.MainPage!.DisplayAlert(
+                    await DialogService.ShowAlertAsync(
                         "Error",
                         "Customer not found.",
                         "OK"
                     );
 
-                    await Shell.Current.GoToAsync("..");
+                    await NavigationService.GoBackAsync();
                     return;
                 }
 
@@ -117,7 +118,7 @@ namespace LobasAppOrdersNew.ViewModels
 
                 Title = "Editar cliente";
                 PageHeader = "Editar cliente";
-                PageSubtitle = "Actualiza la informaciÃ³n del cliente";
+                PageSubtitle = "Actualiza la información del cliente";
                 SaveButtonText = "Actualizar cliente";
 
                 Name = customer.Name;
@@ -139,7 +140,7 @@ namespace LobasAppOrdersNew.ViewModels
 
             if (string.IsNullOrWhiteSpace(Name))
             {
-                await Application.Current!.MainPage!.DisplayAlert(
+                await DialogService.ShowAlertAsync(
                     "Validation",
                     "Customer name is required.",
                     "OK"
@@ -172,7 +173,7 @@ namespace LobasAppOrdersNew.ViewModels
 
                 if (!success)
                 {
-                    await Application.Current!.MainPage!.DisplayAlert(
+                    await DialogService.ShowAlertAsync(
                         "Error",
                         IsEditMode
                             ? "The customer could not be updated."
@@ -182,7 +183,7 @@ namespace LobasAppOrdersNew.ViewModels
                     return;
                 }
 
-                await Application.Current!.MainPage!.DisplayAlert(
+                await DialogService.ShowAlertAsync(
                     "Success",
                     IsEditMode
                         ? "Customer updated successfully."
@@ -190,7 +191,7 @@ namespace LobasAppOrdersNew.ViewModels
                     "OK"
                 );
 
-                await Shell.Current.GoToAsync("..");
+                await NavigationService.GoBackAsync();
             }
             finally
             {
@@ -201,7 +202,7 @@ namespace LobasAppOrdersNew.ViewModels
 
         private async Task CancelAsync()
         {
-            await Shell.Current.GoToAsync("..");
+            await NavigationService.GoBackAsync();
         }
     }
 }

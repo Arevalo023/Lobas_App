@@ -160,6 +160,7 @@ namespace LobasOrdersApi.Services
                 ProviderUserId = user.ProviderUserId,
                 BiometricEnabled = user.BiometricEnabled,
                 CreatedAt = user.CreatedAt,
+                LastNameChangedAt = user.LastNameChangedAt,
                 IsActive = user.IsActive
             };
         }

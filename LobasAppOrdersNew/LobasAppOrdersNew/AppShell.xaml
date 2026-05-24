@@ -112,6 +112,13 @@
             ContentTemplate="{DataTemplate views:OrdersPage}"
             Route="OrdersPage" />
     </FlyoutItem>
+    <FlyoutItem Title="Perfil" Icon="settings.png">
+        <ShellContent
+            Title="Perfil"
+            ContentTemplate="{DataTemplate views:ProfilePage}"
+            Route="ProfilePage" />
+    </FlyoutItem>
+
 
     <FlyoutItem Title="Ajustes" Icon="settings.png">
         <ShellContent

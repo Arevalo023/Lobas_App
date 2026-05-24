@@ -20,6 +20,6 @@ public partial class SplashPage : ContentPage
             .Services
             .GetRequiredService<LoginPage>();
 
-        Application.Current!.MainPage = new NavigationPage(loginPage);
+        Application.Current!.Windows[0].Page = new NavigationPage(loginPage);
     }
 }

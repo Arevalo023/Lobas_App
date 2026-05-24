@@ -69,6 +69,33 @@ namespace LobasOrdersApi.Controllers
             return Ok(new { message = "Estado biométrico actualizado correctamente" });
         }
 
+        [HttpPatch("{id}/name")]
+        public IActionResult UpdateName(int id, UserNameUpdateDto userDto)
+        {
+            try
+            {
+                UserResponseDto user = _userService.UpdateName(id, userDto);
+
+                return Ok(new
+                {
+                    message = "Nombre actualizado correctamente",
+                    user
+                });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
         [HttpDelete("{id}")]
         public IActionResult DeleteUser(int id)
         {

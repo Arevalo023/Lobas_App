@@ -1,4 +1,4 @@
-ï»¿using LobasAppOrdersNew.Views;
+using LobasAppOrdersNew.Views;
 using Microsoft.Extensions.DependencyInjection;
 
 
@@ -15,6 +15,7 @@ public partial class AppShell : Shell
         Routing.RegisterRoute(nameof(ProductsPage), typeof(ProductsPage));
         Routing.RegisterRoute(nameof(OrdersPage), typeof(OrdersPage));
         Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
+        Routing.RegisterRoute(nameof(ProfilePage), typeof(ProfilePage));
         Routing.RegisterRoute(nameof(AboutPage), typeof(AboutPage));
         Routing.RegisterRoute(nameof(ProductFormPage), typeof(ProductFormPage));
         Routing.RegisterRoute(nameof(CustomerFormPage), typeof(CustomerFormPage));
@@ -27,9 +28,9 @@ public partial class AppShell : Shell
     private async void OnLogoutClicked(object sender, EventArgs e)
     {
         bool confirm = await DisplayAlert(
-            "Cerrar sesiÃ³n",
-            "Â¿Seguro que deseas cerrar sesiÃ³n?",
-            "SÃ­",
+            "Cerrar sesión",
+            "¿Seguro que deseas cerrar sesión?",
+            "Sí",
             "Cancelar"
         );
 
@@ -43,7 +44,7 @@ public partial class AppShell : Shell
             .Services
             .GetRequiredService<LoginPage>();
 
-        Application.Current!.MainPage = new NavigationPage(loginPage);
+        Application.Current!.Windows[0].Page = new NavigationPage(loginPage);
 
     }
 }

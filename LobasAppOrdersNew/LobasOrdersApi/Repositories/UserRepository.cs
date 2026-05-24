@@ -24,7 +24,7 @@ namespace LobasOrdersApi.Repositories
 
             string query = @"
                 SELECT Id, Name, Email, PasswordHash, AuthProvider, ProviderUserId,
-                       BiometricEnabled, CreatedAt, IsActive
+                       BiometricEnabled, CreatedAt, LastNameChangedAt, IsActive
                 FROM Users
                 WHERE IsActive = 1
                 ORDER BY Id DESC";
@@ -49,7 +49,7 @@ namespace LobasOrdersApi.Repositories
 
             string query = @"
                 SELECT Id, Name, Email, PasswordHash, AuthProvider, ProviderUserId,
-                       BiometricEnabled, CreatedAt, IsActive
+                       BiometricEnabled, CreatedAt, LastNameChangedAt, IsActive
                 FROM Users
                 WHERE Id = @Id AND IsActive = 1";
 
@@ -75,7 +75,7 @@ namespace LobasOrdersApi.Repositories
 
             string query = @"
                 SELECT Id, Name, Email, PasswordHash, AuthProvider, ProviderUserId,
-                       BiometricEnabled, CreatedAt, IsActive
+                       BiometricEnabled, CreatedAt, LastNameChangedAt, IsActive
                 FROM Users
                 WHERE Email = @Email AND IsActive = 1";
 
@@ -101,7 +101,7 @@ namespace LobasOrdersApi.Repositories
 
             string query = @"
                 SELECT Id, Name, Email, PasswordHash, AuthProvider, ProviderUserId,
-                       BiometricEnabled, CreatedAt, IsActive
+                       BiometricEnabled, CreatedAt, LastNameChangedAt, IsActive
                 FROM Users
                 WHERE AuthProvider = @AuthProvider
                   AND ProviderUserId = @ProviderUserId
@@ -170,6 +170,29 @@ namespace LobasOrdersApi.Repositories
             return rowsAffected > 0;
         }
 
+        public bool UpdateName(int id, string name, DateTime changedAt)
+        {
+            string connectionString = _configuration.GetConnectionString("DefaultConnection")!;
+
+            using SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+
+            string query = @"
+                UPDATE Users
+                SET Name = @Name,
+                    LastNameChangedAt = @LastNameChangedAt
+                WHERE Id = @Id AND IsActive = 1";
+
+            using SqlCommand command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@Id", id);
+            command.Parameters.AddWithValue("@Name", name);
+            command.Parameters.AddWithValue("@LastNameChangedAt", changedAt);
+
+            int rowsAffected = command.ExecuteNonQuery();
+
+            return rowsAffected > 0;
+        }
+
         public bool Delete(int id)
         {
             string connectionString = _configuration.GetConnectionString("DefaultConnection")!;
@@ -223,6 +246,9 @@ namespace LobasOrdersApi.Repositories
                 ProviderUserId = reader["ProviderUserId"] == DBNull.Value ? null : reader["ProviderUserId"].ToString(),
                 BiometricEnabled = Convert.ToBoolean(reader["BiometricEnabled"]),
                 CreatedAt = Convert.ToDateTime(reader["CreatedAt"]),
+                LastNameChangedAt = reader["LastNameChangedAt"] == DBNull.Value
+                    ? null
+                    : Convert.ToDateTime(reader["LastNameChangedAt"]),
                 IsActive = Convert.ToBoolean(reader["IsActive"])
             };
         }

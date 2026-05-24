@@ -1,8 +1,9 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using LobasAppOrdersNew.Helpers;
 using LobasAppOrdersNew.Models;
 using LobasAppOrdersNew.Services;
+using LobasAppOrdersNew.Services.Interfaces;
 
 namespace LobasAppOrdersNew.ViewModels
 {
@@ -16,9 +17,7 @@ namespace LobasAppOrdersNew.ViewModels
         private string _status = string.Empty;
         private bool _isSaving;
 
-        public OrderEditViewModel(
-            OrderApiService orderApiService,
-            CustomerApiService customerApiService)
+        public OrderEditViewModel(OrderApiService orderApiService, CustomerApiService customerApiService, IDialogService dialogService, INavigationService navigationService) : base(dialogService, navigationService)
         {
             _orderApiService = orderApiService;
             _customerApiService = customerApiService;
@@ -90,13 +89,13 @@ namespace LobasAppOrdersNew.ViewModels
 
                 if (order == null)
                 {
-                    await Application.Current!.MainPage!.DisplayAlert(
+                    await DialogService.ShowAlertAsync(
                         "Error",
                         "Order not found.",
                         "OK"
                     );
 
-                    await Shell.Current.GoToAsync("..");
+                    await NavigationService.GoBackAsync();
                     return;
                 }
 
@@ -120,7 +119,7 @@ namespace LobasAppOrdersNew.ViewModels
 
             if (SelectedCustomer == null)
             {
-                await Application.Current!.MainPage!.DisplayAlert(
+                await DialogService.ShowAlertAsync(
                     "Validation",
                     "Please select a customer.",
                     "OK"
@@ -130,7 +129,7 @@ namespace LobasAppOrdersNew.ViewModels
 
             if (string.IsNullOrWhiteSpace(Status))
             {
-                await Application.Current!.MainPage!.DisplayAlert(
+                await DialogService.ShowAlertAsync(
                     "Validation",
                     "Status is required.",
                     "OK"
@@ -153,7 +152,7 @@ namespace LobasAppOrdersNew.ViewModels
 
                 if (!updated)
                 {
-                    await Application.Current!.MainPage!.DisplayAlert(
+                    await DialogService.ShowAlertAsync(
                         "Error",
                         "The order could not be updated.",
                         "OK"
@@ -161,13 +160,13 @@ namespace LobasAppOrdersNew.ViewModels
                     return;
                 }
 
-                await Application.Current!.MainPage!.DisplayAlert(
+                await DialogService.ShowAlertAsync(
                     "Success",
                     "Order updated successfully.",
                     "OK"
                 );
 
-                await Shell.Current.GoToAsync("..");
+                await NavigationService.GoBackAsync();
             }
             finally
             {
@@ -178,7 +177,7 @@ namespace LobasAppOrdersNew.ViewModels
 
         private async Task CancelAsync()
         {
-            await Shell.Current.GoToAsync("..");
+            await NavigationService.GoBackAsync();
         }
     }
 }

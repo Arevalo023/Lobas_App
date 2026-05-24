@@ -19,6 +19,53 @@ namespace LobasAppOrdersNew.Services
             };
         }
 
+        public async Task<UserModel?> GetUserByIdAsync(int userId)
+        {
+            try
+            {
+                return await _httpClient.GetFromJsonAsync<UserModel>($"Users/{userId}");
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<ApiResponse<UserModel>> UpdateNameAsync(int userId, string name)
+        {
+            try
+            {
+                HttpResponseMessage response = await _httpClient.PatchAsJsonAsync(
+                    $"Users/{userId}/name",
+                    new UserNameUpdateRequest { Name = name }
+                );
+
+                ApiResponse<UserModel>? result =
+                    await response.Content.ReadFromJsonAsync<ApiResponse<UserModel>>();
+
+                if (result != null)
+                {
+                    return result;
+                }
+
+                return new ApiResponse<UserModel>
+                {
+                    Message = response.IsSuccessStatusCode
+                        ? "Name updated successfully."
+                        : "Could not update name.",
+                    User = null
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<UserModel>
+                {
+                    Message = $"Error connecting to server: {ex.Message}",
+                    User = null
+                };
+            }
+        }
+
         public async Task<ApiResponse<UserModel>> UpdateBiometricStatusAsync(int userId, bool biometricEnabled)
         {
             try

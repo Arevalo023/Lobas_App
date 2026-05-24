@@ -1,7 +1,8 @@
-﻿using System.Windows.Input;
+using System.Windows.Input;
 using LobasAppOrdersNew.Helpers;
 using LobasAppOrdersNew.Models;
 using LobasAppOrdersNew.Services;
+using LobasAppOrdersNew.Services.Interfaces;
 
 namespace LobasAppOrdersNew.ViewModels
 {
@@ -14,7 +15,11 @@ namespace LobasAppOrdersNew.ViewModels
         private string _password = string.Empty;
         private string _confirmPassword = string.Empty;
 
-        public RegisterViewModel(AuthApiService authApiService)
+        public RegisterViewModel(
+            AuthApiService authApiService,
+            IDialogService dialogService,
+            INavigationService navigationService)
+            : base(dialogService, navigationService)
         {
             _authApiService = authApiService;
             Title = "Register";
@@ -60,25 +65,25 @@ namespace LobasAppOrdersNew.ViewModels
 
             if (string.IsNullOrWhiteSpace(Name))
             {
-                await Application.Current!.MainPage!.DisplayAlert("Validation", "Name is required.", "OK");
+                await DialogService.ShowAlertAsync("Validation", "Name is required.", "OK");
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(Email))
             {
-                await Application.Current!.MainPage!.DisplayAlert("Validation", "Email is required.", "OK");
+                await DialogService.ShowAlertAsync("Validation", "Email is required.", "OK");
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(Password))
             {
-                await Application.Current!.MainPage!.DisplayAlert("Validation", "Password is required.", "OK");
+                await DialogService.ShowAlertAsync("Validation", "Password is required.", "OK");
                 return;
             }
 
             if (Password != ConfirmPassword)
             {
-                await Application.Current!.MainPage!.DisplayAlert("Validation", "Passwords do not match.", "OK");
+                await DialogService.ShowAlertAsync("Validation", "Passwords do not match.", "OK");
                 return;
             }
 
@@ -97,27 +102,27 @@ namespace LobasAppOrdersNew.ViewModels
 
                 if (response == null)
                 {
-                    await Application.Current!.MainPage!.DisplayAlert("Error", "No response from server.", "OK");
+                    await DialogService.ShowAlertAsync("Error", "No response from server.", "OK");
                     return;
                 }
 
                 if (response.User == null)
                 {
-                    await Application.Current!.MainPage!.DisplayAlert("Register failed", response.Message, "OK");
+                    await DialogService.ShowAlertAsync("Register failed", response.Message, "OK");
                     return;
                 }
 
-                await Application.Current!.MainPage!.DisplayAlert(
+                await DialogService.ShowAlertAsync(
                     "Success",
                     "Account created successfully. Please log in.",
                     "OK"
                 );
 
-                await Application.Current!.MainPage!.Navigation.PopAsync();
+                await NavigationService.GoBackAsync();
             }
             catch (Exception ex)
             {
-                await Application.Current!.MainPage!.DisplayAlert("Error", ex.Message, "OK");
+                await DialogService.ShowAlertAsync("Error", ex.Message, "OK");
             }
             finally
             {
@@ -127,7 +132,7 @@ namespace LobasAppOrdersNew.ViewModels
 
         private async Task GoToLoginAsync()
         {
-            await Application.Current!.MainPage!.Navigation.PopAsync();
+            await NavigationService.GoBackAsync();
         }
     }
 }

@@ -1,4 +1,4 @@
-Ôªøusing Google.Apis.Auth.OAuth2;
+using Google.Apis.Auth.OAuth2;
 using Google.Apis.Auth.OAuth2.Responses;
 using Google.Apis.Oauth2.v2;
 using Google.Apis.Oauth2.v2.Data;
@@ -6,15 +6,19 @@ using Google.Apis.Services;
 using Google.Apis.Util.Store;
 using LobasAppOrdersNew.Models;
 
+using LobasAppOrdersNew.Services.Interfaces;
+
 namespace LobasAppOrdersNew.Services
 {
     public class GoogleAuthService
     {
         private readonly GoogleAuthSettings _googleAuthSettings;
+        private readonly IDialogService _dialogService;
 
-        public GoogleAuthService(GoogleAuthSettings googleAuthSettings)
+        public GoogleAuthService(GoogleAuthSettings googleAuthSettings, IDialogService dialogService)
         {
             _googleAuthSettings = googleAuthSettings;
+            _dialogService = dialogService;
         }
 
         public async Task<GoogleUserInfo?> LoginWithGoogleAsync()
@@ -23,7 +27,7 @@ namespace LobasAppOrdersNew.Services
             {
                 if (string.IsNullOrWhiteSpace(_googleAuthSettings.ClientSecret))
                 {
-                    await Application.Current!.MainPage!.DisplayAlert(
+                    await _dialogService.ShowAlertAsync(
                         "Google login setup",
                         "Google ClientSecret is missing. Add it to your local ignored appsettings.json under GoogleAuth:ClientSecret or set LOBAS_GOOGLE_CLIENT_SECRET.",
                         "OK"
@@ -46,7 +50,7 @@ namespace LobasAppOrdersNew.Services
 
                 var dataStore = new FileDataStore("LobasOrders.GoogleAuth");
 
-                // Esto borra la sesi√≥n guardada de Google para que no entre autom√°tico
+                // Esto borra la sesiÛn guardada de Google para que no entre autom·tico
                 await dataStore.DeleteAsync<TokenResponse>("user");
 
                 using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource(
@@ -85,7 +89,7 @@ namespace LobasAppOrdersNew.Services
             }
             catch (TaskCanceledException)
             {
-                await Application.Current!.MainPage!.DisplayAlert(
+                await _dialogService.ShowAlertAsync(
                     "Google login",
                     "Google sign-in was cancelled. Please try again.",
                     "OK"
@@ -95,7 +99,7 @@ namespace LobasAppOrdersNew.Services
             }
             catch (OperationCanceledException)
             {
-                await Application.Current!.MainPage!.DisplayAlert(
+                await _dialogService.ShowAlertAsync(
                     "Google login",
                     "Google sign-in was cancelled. Please try again.",
                     "OK"
@@ -105,7 +109,7 @@ namespace LobasAppOrdersNew.Services
             }
             catch (Exception ex)
             {
-                await Application.Current!.MainPage!.DisplayAlert(
+                await _dialogService.ShowAlertAsync(
                     "Google login error",
                     $"Could not complete Google sign-in. Please try again.\n\nDetails: {ex.Message}",
                     "OK"

@@ -1,8 +1,9 @@
-ï»¿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using LobasAppOrdersNew.Helpers;
 using LobasAppOrdersNew.Models;
 using LobasAppOrdersNew.Services;
+using LobasAppOrdersNew.Services.Interfaces;
 
 namespace LobasAppOrdersNew.ViewModels
 {
@@ -13,7 +14,7 @@ namespace LobasAppOrdersNew.ViewModels
         private string _searchText = string.Empty;
         private bool _isRefreshing;
 
-        public OrdersViewModel(OrderApiService orderApiService)
+        public OrdersViewModel(OrderApiService orderApiService, IDialogService dialogService, INavigationService navigationService) : base(dialogService, navigationService)
         {
             _orderApiService = orderApiService;
 
@@ -118,10 +119,10 @@ namespace LobasAppOrdersNew.ViewModels
                 return;
             }
 
-            bool confirm = await Application.Current!.MainPage!.DisplayAlert(
+            bool confirm = await DialogService.ShowConfirmationAsync(
                 "Eliminar pedido",
-                $"Â¿Seguro que deseas eliminar el pedido #{order.Id}?",
-                "SÃ­",
+                $"¿Seguro que deseas eliminar el pedido #{order.Id}?",
+                "Sí",
                 "Cancelar"
             );
 
@@ -138,7 +139,7 @@ namespace LobasAppOrdersNew.ViewModels
 
                 if (!deleted)
                 {
-                    await Application.Current!.MainPage!.DisplayAlert(
+                    await DialogService.ShowAlertAsync(
                         "Error",
                         "The order could not be deleted.",
                         "OK"
@@ -148,7 +149,7 @@ namespace LobasAppOrdersNew.ViewModels
 
                 Orders.Remove(order);
 
-                await Application.Current!.MainPage!.DisplayAlert(
+                await DialogService.ShowAlertAsync(
                     "Success",
                     "Order deleted successfully.",
                     "OK"

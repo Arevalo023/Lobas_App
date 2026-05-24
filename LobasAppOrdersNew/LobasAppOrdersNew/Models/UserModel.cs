@@ -22,6 +22,8 @@ namespace LobasAppOrdersNew.Models
 
         public DateTime CreatedAt { get; set; }
 
+        public DateTime? LastNameChangedAt { get; set; }
+
         public bool IsActive { get; set; }
     }
 }

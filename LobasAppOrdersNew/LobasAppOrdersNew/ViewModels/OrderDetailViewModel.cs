@@ -1,7 +1,8 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using LobasAppOrdersNew.Helpers;
 using LobasAppOrdersNew.Models;
 using LobasAppOrdersNew.Services;
+using LobasAppOrdersNew.Services.Interfaces;
 
 namespace LobasAppOrdersNew.ViewModels
 {
@@ -16,7 +17,7 @@ namespace LobasAppOrdersNew.ViewModels
         private string _statusText = string.Empty;
         private string _totalText = string.Empty;
 
-        public OrderDetailViewModel(OrderApiService orderApiService)
+        public OrderDetailViewModel(OrderApiService orderApiService, IDialogService dialogService, INavigationService navigationService) : base(dialogService, navigationService)
         {
             _orderApiService = orderApiService;
 
@@ -77,13 +78,13 @@ namespace LobasAppOrdersNew.ViewModels
 
                 if (order == null)
                 {
-                    await Application.Current!.MainPage!.DisplayAlert(
+                    await DialogService.ShowAlertAsync(
                         "Error",
                         "Order not found.",
                         "OK"
                     );
 
-                    await Shell.Current.GoToAsync("..");
+                    await NavigationService.GoBackAsync();
                     return;
                 }
 

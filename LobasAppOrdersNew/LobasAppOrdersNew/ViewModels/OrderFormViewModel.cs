@@ -1,8 +1,9 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using LobasAppOrdersNew.Helpers;
 using LobasAppOrdersNew.Models;
 using LobasAppOrdersNew.Services;
+using LobasAppOrdersNew.Services.Interfaces;
 
 namespace LobasAppOrdersNew.ViewModels
 {
@@ -18,10 +19,7 @@ namespace LobasAppOrdersNew.ViewModels
         private string _status = "Pendiente";
         private bool _isSaving;
 
-        public OrderFormViewModel(
-            OrderApiService orderApiService,
-            CustomerApiService customerApiService,
-            ProductApiService productApiService)
+        public OrderFormViewModel(OrderApiService orderApiService, CustomerApiService customerApiService, ProductApiService productApiService, IDialogService dialogService, INavigationService navigationService) : base(dialogService, navigationService)
         {
             _orderApiService = orderApiService;
             _customerApiService = customerApiService;
@@ -129,7 +127,7 @@ namespace LobasAppOrdersNew.ViewModels
         {
             if (SelectedProduct == null)
             {
-                await Application.Current!.MainPage!.DisplayAlert(
+                await DialogService.ShowAlertAsync(
                     "Validation",
                     "Please select a product.",
                     "OK"
@@ -139,7 +137,7 @@ namespace LobasAppOrdersNew.ViewModels
 
             if (!int.TryParse(Quantity, out int quantity) || quantity <= 0)
             {
-                await Application.Current!.MainPage!.DisplayAlert(
+                await DialogService.ShowAlertAsync(
                     "Validation",
                     "Quantity must be greater than zero.",
                     "OK"
@@ -149,7 +147,7 @@ namespace LobasAppOrdersNew.ViewModels
 
             if (quantity > SelectedProduct.Stock)
             {
-                await Application.Current!.MainPage!.DisplayAlert(
+                await DialogService.ShowAlertAsync(
                     "Validation",
                     $"Not enough stock. Available: {SelectedProduct.Stock}",
                     "OK"
@@ -166,7 +164,7 @@ namespace LobasAppOrdersNew.ViewModels
 
                 if (newQuantity > SelectedProduct.Stock)
                 {
-                    await Application.Current!.MainPage!.DisplayAlert(
+                    await DialogService.ShowAlertAsync(
                         "Validation",
                         $"Not enough stock. Available: {SelectedProduct.Stock}",
                         "OK"
@@ -215,7 +213,7 @@ namespace LobasAppOrdersNew.ViewModels
 
             if (SelectedCustomer == null)
             {
-                await Application.Current!.MainPage!.DisplayAlert(
+                await DialogService.ShowAlertAsync(
                     "Validation",
                     "Please select a customer.",
                     "OK"
@@ -225,7 +223,7 @@ namespace LobasAppOrdersNew.ViewModels
 
             if (CartItems.Count == 0)
             {
-                await Application.Current!.MainPage!.DisplayAlert(
+                await DialogService.ShowAlertAsync(
                     "Validation",
                     "Please add at least one product.",
                     "OK"
@@ -253,7 +251,7 @@ namespace LobasAppOrdersNew.ViewModels
 
                 if (!created)
                 {
-                    await Application.Current!.MainPage!.DisplayAlert(
+                    await DialogService.ShowAlertAsync(
                         "Error",
                         "The order could not be created.",
                         "OK"
@@ -261,13 +259,13 @@ namespace LobasAppOrdersNew.ViewModels
                     return;
                 }
 
-                await Application.Current!.MainPage!.DisplayAlert(
+                await DialogService.ShowAlertAsync(
                     "Success",
                     "Order created successfully.",
                     "OK"
                 );
 
-                await Shell.Current.GoToAsync("..");
+                await NavigationService.GoBackAsync();
             }
             finally
             {
@@ -278,7 +276,7 @@ namespace LobasAppOrdersNew.ViewModels
 
         private async Task CancelAsync()
         {
-            await Shell.Current.GoToAsync("..");
+            await NavigationService.GoBackAsync();
         }
     }
 }
