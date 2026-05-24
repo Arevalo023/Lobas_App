@@ -10,20 +10,28 @@ namespace LobasAppOrdersNew.ViewModels
     public class CustomersViewModel : BaseViewModel
     {
         private readonly CustomerApiService _customerApiService;
+        private readonly RealtimeNotificationService _realtimeNotificationService;
 
         private string _searchText = string.Empty;
         private bool _isRefreshing;
 
-        public CustomersViewModel(CustomerApiService customerApiService, IDialogService dialogService, INavigationService navigationService) : base(dialogService, navigationService)
+        public CustomersViewModel(
+            CustomerApiService customerApiService,
+            RealtimeNotificationService realtimeNotificationService,
+            IDialogService dialogService,
+            INavigationService navigationService) : base(dialogService, navigationService)
         {
             _customerApiService = customerApiService;
+            _realtimeNotificationService = realtimeNotificationService;
 
             Title = "Customers";
 
             Customers = new ObservableCollection<CustomerModel>();
 
-            LoadCustomersCommand = new Microsoft.Maui.Controls.Command(async () => await LoadCustomersAsync());
-            RefreshCommand = new Microsoft.Maui.Controls.Command(async () => await RefreshCustomersAsync());
+            LoadCustomersCommand = new Command(async () => await LoadCustomersAsync());
+            RefreshCommand = new Command(async () => await RefreshCustomersAsync());
+
+            _realtimeNotificationService.CustomersChanged += OnCustomersChanged;
         }
 
         public ObservableCollection<CustomerModel> Customers { get; }
@@ -121,8 +129,8 @@ namespace LobasAppOrdersNew.ViewModels
 
             bool confirm = await DialogService.ShowConfirmationAsync(
                 "Eliminar cliente",
-                $"¿Seguro que deseas eliminar \"{customer.Name}\"?",
-                "Sí",
+                $"\u00bfSeguro que deseas eliminar \"{customer.Name}\"?",
+                "S\u00ed",
                 "Cancelar"
             );
 
@@ -139,11 +147,6 @@ namespace LobasAppOrdersNew.ViewModels
 
                 if (!deleted)
                 {
-                    await DialogService.ShowAlertAsync(
-                        "Error",
-                        "The customer could not be deleted.",
-                        "OK"
-                    );
                     return;
                 }
 
@@ -159,6 +162,20 @@ namespace LobasAppOrdersNew.ViewModels
             {
                 IsBusy = false;
             }
+        }
+
+        private void OnCustomersChanged(object? sender, EventArgs e)
+        {
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                if (!string.IsNullOrWhiteSpace(SearchText))
+                {
+                    await SearchCustomersAsync();
+                    return;
+                }
+
+                await LoadCustomersAsync();
+            });
         }
     }
 }

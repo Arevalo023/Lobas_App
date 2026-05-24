@@ -1,3 +1,4 @@
+using LobasOrdersApi.Hubs;
 using LobasOrdersApi.Repositories;
 using LobasOrdersApi.Repositories.Interfaces;
 using LobasOrdersApi.Services;
@@ -7,6 +8,7 @@ using LobasOrdersApi.Services.Interfaces;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddSignalR();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 
@@ -45,5 +47,6 @@ if (!app.Environment.IsDevelopment())
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<AppNotificationsHub>("/hubs/notifications");
 
 app.Run();

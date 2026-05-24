@@ -52,6 +52,7 @@
 		<PackageReference Include="Google.Apis.Oauth2.v2" Version="1.68.0.1869" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.7" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.9" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.9" />
 		<PackageReference Include="Oscore.Maui.Biometric" Version="2.2.1" />
 		<PackageReference Include="Plugin.Maui.Biometric" Version="0.0.9" />
@@ -74,6 +75,9 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="Views\CustomerFormPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\CustomerAddressesPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\HomePage.xaml">

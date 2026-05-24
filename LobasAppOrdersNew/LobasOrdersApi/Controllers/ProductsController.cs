@@ -1,6 +1,8 @@
-﻿using LobasOrdersApi.DTOs;
+using LobasOrdersApi.DTOs;
+using LobasOrdersApi.Hubs;
 using LobasOrdersApi.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace LobasOrdersApi.Controllers
 {
@@ -9,10 +11,14 @@ namespace LobasOrdersApi.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _productService;
+        private readonly IHubContext<AppNotificationsHub> _hubContext;
 
-        public ProductsController(IProductService productService)
+        public ProductsController(
+            IProductService productService,
+            IHubContext<AppNotificationsHub> hubContext)
         {
             _productService = productService;
+            _hubContext = hubContext;
         }
 
         [HttpGet]
@@ -45,11 +51,13 @@ namespace LobasOrdersApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateProduct(ProductCreateDto productDto)
+        public async Task<IActionResult> CreateProduct(ProductCreateDto productDto)
         {
             try
             {
                 int newId = _productService.Create(productDto);
+
+                await _hubContext.Clients.All.SendAsync("ProductsChanged");
 
                 return Ok(new
                 {
@@ -64,7 +72,7 @@ namespace LobasOrdersApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateProduct(int id, ProductUpdateDto productDto)
+        public async Task<IActionResult> UpdateProduct(int id, ProductUpdateDto productDto)
         {
             try
             {
@@ -75,6 +83,8 @@ namespace LobasOrdersApi.Controllers
                     return NotFound(new { message = "Producto no encontrado" });
                 }
 
+                await _hubContext.Clients.All.SendAsync("ProductsChanged");
+
                 return Ok(new { message = "Producto actualizado correctamente" });
             }
             catch (Exception ex)
@@ -84,7 +94,7 @@ namespace LobasOrdersApi.Controllers
         }
 
         [HttpPatch("{id}/stock")]
-        public IActionResult UpdateStock(int id, [FromQuery] int stock)
+        public async Task<IActionResult> UpdateStock(int id, [FromQuery] int stock)
         {
             try
             {
@@ -95,6 +105,8 @@ namespace LobasOrdersApi.Controllers
                     return NotFound(new { message = "Producto no encontrado" });
                 }
 
+                await _hubContext.Clients.All.SendAsync("ProductsChanged");
+
                 return Ok(new { message = "Stock actualizado correctamente" });
             }
             catch (Exception ex)
@@ -104,7 +116,7 @@ namespace LobasOrdersApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteProduct(int id)
+        public async Task<IActionResult> DeleteProduct(int id)
         {
             bool deleted = _productService.Delete(id);
 
@@ -112,6 +124,8 @@ namespace LobasOrdersApi.Controllers
             {
                 return NotFound(new { message = "Producto no encontrado" });
             }
+
+            await _hubContext.Clients.All.SendAsync("ProductsChanged");
 
             return Ok(new { message = "Producto eliminado correctamente" });
         }

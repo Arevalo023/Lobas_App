@@ -24,5 +24,10 @@ namespace LobasAppOrdersNew.Services
                 ? baseUrl
                 : $"{baseUrl}/";
         }
+
+        public static string GetNotificationsHubUrl(IConfiguration configuration)
+        {
+            return new Uri(new Uri(GetBaseUrl(configuration)), "hubs/notifications").ToString();
+        }
     }
 }

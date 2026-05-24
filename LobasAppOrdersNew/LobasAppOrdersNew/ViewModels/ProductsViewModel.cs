@@ -1,30 +1,37 @@
-
+ï»¿using System.Collections.ObjectModel;
+using System.Windows.Input;
 using LobasAppOrdersNew.Helpers;
 using LobasAppOrdersNew.Models;
 using LobasAppOrdersNew.Services;
 using LobasAppOrdersNew.Services.Interfaces;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
 
 namespace LobasAppOrdersNew.ViewModels
 {
     public class ProductsViewModel : BaseViewModel
     {
         private readonly ProductApiService _productApiService;
+        private readonly RealtimeNotificationService _realtimeNotificationService;
 
         private string _searchText = string.Empty;
         private bool _isRefreshing;
 
-        public ProductsViewModel(ProductApiService productApiService, IDialogService dialogService, INavigationService navigationService) : base(dialogService, navigationService)
+        public ProductsViewModel(
+            ProductApiService productApiService,
+            RealtimeNotificationService realtimeNotificationService,
+            IDialogService dialogService,
+            INavigationService navigationService) : base(dialogService, navigationService)
         {
             _productApiService = productApiService;
+            _realtimeNotificationService = realtimeNotificationService;
 
             Title = "Products";
 
             Products = new ObservableCollection<ProductModel>();
 
-            LoadProductsCommand = new Microsoft.Maui.Controls.Command(async () => await LoadProductsAsync());
-            RefreshCommand = new Microsoft.Maui.Controls.Command(async () => await RefreshProductsAsync());
+            LoadProductsCommand = new Command(async () => await LoadProductsAsync());
+            RefreshCommand = new Command(async () => await RefreshProductsAsync());
+
+            _realtimeNotificationService.ProductsChanged += OnProductsChanged;
         }
 
         public ObservableCollection<ProductModel> Products { get; }
@@ -122,8 +129,8 @@ namespace LobasAppOrdersNew.ViewModels
 
             bool confirm = await DialogService.ShowConfirmationAsync(
                 "Eliminar producto",
-                $"¿Seguro que deseas eliminar \"{product.Name}\"?",
-                "Sí",
+                $"\u00bfSeguro que deseas eliminar \"{product.Name}\"?",
+                "S\u00ed",
                 "Cancelar"
             );
 
@@ -160,6 +167,20 @@ namespace LobasAppOrdersNew.ViewModels
             {
                 IsBusy = false;
             }
+        }
+
+        private void OnProductsChanged(object? sender, EventArgs e)
+        {
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                if (!string.IsNullOrWhiteSpace(SearchText))
+                {
+                    await SearchProductsAsync();
+                    return;
+                }
+
+                await LoadProductsAsync();
+            });
         }
     }
 }

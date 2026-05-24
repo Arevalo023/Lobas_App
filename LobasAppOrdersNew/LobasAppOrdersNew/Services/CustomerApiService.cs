@@ -1,4 +1,5 @@
 using System.Net.Http.Json;
+using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 using LobasAppOrdersNew.Models;
 
@@ -141,7 +142,23 @@ namespace LobasAppOrdersNew.Services
                 HttpResponseMessage response =
                     await _httpClient.DeleteAsync($"Customers/{id}");
 
-                return response.IsSuccessStatusCode;
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+
+                string errorMessage = await ReadErrorMessageAsync(
+                    response,
+                    "No se pudo eliminar el cliente."
+                );
+
+                await _dialogService.ShowAlertAsync(
+                    "No se puede eliminar",
+                    errorMessage,
+                    "OK"
+                );
+
+                return false;
             }
             catch (Exception ex)
             {
@@ -153,6 +170,34 @@ namespace LobasAppOrdersNew.Services
 
                 return false;
             }
+        }
+
+        private static async Task<string> ReadErrorMessageAsync(
+            HttpResponseMessage response,
+            string fallbackMessage)
+        {
+            try
+            {
+                string content = await response.Content.ReadAsStringAsync();
+
+                if (string.IsNullOrWhiteSpace(content))
+                {
+                    return fallbackMessage;
+                }
+
+                using JsonDocument document = JsonDocument.Parse(content);
+
+                if (document.RootElement.TryGetProperty("message", out JsonElement messageElement))
+                {
+                    return messageElement.GetString() ?? fallbackMessage;
+                }
+            }
+            catch
+            {
+                return fallbackMessage;
+            }
+
+            return fallbackMessage;
         }
     }
 }

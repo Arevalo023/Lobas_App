@@ -1,6 +1,8 @@
-﻿using LobasOrdersApi.DTOs;
+using LobasOrdersApi.DTOs;
+using LobasOrdersApi.Hubs;
 using LobasOrdersApi.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace LobasOrdersApi.Controllers
 {
@@ -9,10 +11,14 @@ namespace LobasOrdersApi.Controllers
     public class CustomersController : ControllerBase
     {
         private readonly ICustomerService _customerService;
+        private readonly IHubContext<AppNotificationsHub> _hubContext;
 
-        public CustomersController(ICustomerService customerService)
+        public CustomersController(
+            ICustomerService customerService,
+            IHubContext<AppNotificationsHub> hubContext)
         {
             _customerService = customerService;
+            _hubContext = hubContext;
         }
 
         [HttpGet]
@@ -45,11 +51,13 @@ namespace LobasOrdersApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateCustomer(CustomerCreateDto customerDto)
+        public async Task<IActionResult> CreateCustomer(CustomerCreateDto customerDto)
         {
             try
             {
                 int newId = _customerService.Create(customerDto);
+
+                await _hubContext.Clients.All.SendAsync("CustomersChanged");
 
                 return Ok(new
                 {
@@ -64,7 +72,7 @@ namespace LobasOrdersApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateCustomer(int id, CustomerUpdateDto customerDto)
+        public async Task<IActionResult> UpdateCustomer(int id, CustomerUpdateDto customerDto)
         {
             try
             {
@@ -75,6 +83,8 @@ namespace LobasOrdersApi.Controllers
                     return NotFound(new { message = "Cliente no encontrado" });
                 }
 
+                await _hubContext.Clients.All.SendAsync("CustomersChanged");
+
                 return Ok(new { message = "Cliente actualizado correctamente" });
             }
             catch (Exception ex)
@@ -84,16 +94,25 @@ namespace LobasOrdersApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteCustomer(int id)
+        public async Task<IActionResult> DeleteCustomer(int id)
         {
-            bool deleted = _customerService.Delete(id);
-
-            if (!deleted)
+            try
             {
-                return NotFound(new { message = "Cliente no encontrado" });
-            }
+                bool deleted = _customerService.Delete(id);
 
-            return Ok(new { message = "Cliente eliminado correctamente" });
+                if (!deleted)
+                {
+                    return NotFound(new { message = "Cliente no encontrado" });
+                }
+
+                await _hubContext.Clients.All.SendAsync("CustomersChanged");
+
+                return Ok(new { message = "Cliente eliminado correctamente" });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
     }
 }

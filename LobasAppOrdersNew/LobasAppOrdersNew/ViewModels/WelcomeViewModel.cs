@@ -10,6 +10,7 @@ namespace LobasAppOrdersNew.ViewModels
         private readonly ProductApiService _productApiService;
         private readonly CustomerApiService _customerApiService;
         private readonly OrderApiService _orderApiService;
+        private readonly RealtimeNotificationService _realtimeNotificationService;
 
         private int _productsCount;
         private int _customersCount;
@@ -20,6 +21,7 @@ namespace LobasAppOrdersNew.ViewModels
             ProductApiService productApiService,
             CustomerApiService customerApiService,
             OrderApiService orderApiService,
+            RealtimeNotificationService realtimeNotificationService,
             IDialogService dialogService,
             INavigationService navigationService)
             : base(dialogService, navigationService)
@@ -27,6 +29,7 @@ namespace LobasAppOrdersNew.ViewModels
             _productApiService = productApiService;
             _customerApiService = customerApiService;
             _orderApiService = orderApiService;
+            _realtimeNotificationService = realtimeNotificationService;
 
             Title = "Dashboard";
 
@@ -34,6 +37,10 @@ namespace LobasAppOrdersNew.ViewModels
             GoToProductsCommand = new Microsoft.Maui.Controls.Command(async () => await GoToProductsAsync());
             GoToCustomersCommand = new Microsoft.Maui.Controls.Command(async () => await GoToCustomersAsync());
             GoToOrdersCommand = new Microsoft.Maui.Controls.Command(async () => await GoToOrdersAsync());
+
+            _realtimeNotificationService.ProductsChanged += OnDashboardDataChanged;
+            _realtimeNotificationService.CustomersChanged += OnDashboardDataChanged;
+            _realtimeNotificationService.OrdersChanged += OnDashboardDataChanged;
         }
 
         public int ProductsCount
@@ -118,6 +125,11 @@ namespace LobasAppOrdersNew.ViewModels
         private async Task GoToOrdersAsync()
         {
             await NavigationService.GoToRouteAsync("//OrdersPage");
+        }
+
+        private void OnDashboardDataChanged(object? sender, EventArgs e)
+        {
+            MainThread.BeginInvokeOnMainThread(async () => await LoadDashboardAsync());
         }
     }
 }

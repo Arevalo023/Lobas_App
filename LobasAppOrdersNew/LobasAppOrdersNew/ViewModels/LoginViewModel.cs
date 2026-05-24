@@ -340,7 +340,8 @@ namespace LobasAppOrdersNew.ViewModels
 
         private async Task GoToAppShellAsync()
         {
-            await NavigationService.SetRootAsync(new AppShell());
+            AppShell appShell = _serviceProvider.GetRequiredService<AppShell>();
+            await NavigationService.SetRootAsync(appShell);
         }
 
        

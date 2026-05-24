@@ -1,6 +1,8 @@
-﻿using LobasOrdersApi.DTOs;
+using LobasOrdersApi.DTOs;
+using LobasOrdersApi.Hubs;
 using LobasOrdersApi.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace LobasOrdersApi.Controllers
 {
@@ -9,10 +11,14 @@ namespace LobasOrdersApi.Controllers
     public class OrdersController : ControllerBase
     {
         private readonly IOrderService _orderService;
+        private readonly IHubContext<AppNotificationsHub> _hubContext;
 
-        public OrdersController(IOrderService orderService)
+        public OrdersController(
+            IOrderService orderService,
+            IHubContext<AppNotificationsHub> hubContext)
         {
             _orderService = orderService;
+            _hubContext = hubContext;
         }
 
         [HttpGet]
@@ -53,11 +59,14 @@ namespace LobasOrdersApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateOrder(OrderCreateDto orderDto)
+        public async Task<IActionResult> CreateOrder(OrderCreateDto orderDto)
         {
             try
             {
                 int newId = _orderService.Create(orderDto);
+
+                await _hubContext.Clients.All.SendAsync("OrdersChanged");
+                await _hubContext.Clients.All.SendAsync("ProductsChanged");
 
                 return Ok(new
                 {
@@ -72,7 +81,7 @@ namespace LobasOrdersApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateOrder(int id, OrderUpdateDto orderDto)
+        public async Task<IActionResult> UpdateOrder(int id, OrderUpdateDto orderDto)
         {
             try
             {
@@ -83,6 +92,8 @@ namespace LobasOrdersApi.Controllers
                     return NotFound(new { message = "Pedido no encontrado" });
                 }
 
+                await _hubContext.Clients.All.SendAsync("OrdersChanged");
+
                 return Ok(new { message = "Pedido actualizado correctamente" });
             }
             catch (Exception ex)
@@ -92,7 +103,7 @@ namespace LobasOrdersApi.Controllers
         }
 
         [HttpPatch("{id}/status")]
-        public IActionResult UpdateStatus(int id, OrderStatusUpdateDto statusDto)
+        public async Task<IActionResult> UpdateStatus(int id, OrderStatusUpdateDto statusDto)
         {
             try
             {
@@ -103,6 +114,8 @@ namespace LobasOrdersApi.Controllers
                     return NotFound(new { message = "Pedido no encontrado" });
                 }
 
+                await _hubContext.Clients.All.SendAsync("OrdersChanged");
+
                 return Ok(new { message = "Estatus actualizado correctamente" });
             }
             catch (Exception ex)
@@ -112,7 +125,7 @@ namespace LobasOrdersApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteOrder(int id)
+        public async Task<IActionResult> DeleteOrder(int id)
         {
             bool deleted = _orderService.Delete(id);
 
@@ -120,6 +133,8 @@ namespace LobasOrdersApi.Controllers
             {
                 return NotFound(new { message = "Pedido no encontrado" });
             }
+
+            await _hubContext.Clients.All.SendAsync("OrdersChanged");
 
             return Ok(new { message = "Pedido eliminado correctamente" });
         }

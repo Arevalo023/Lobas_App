@@ -46,4 +46,17 @@ public partial class CustomersPage : ContentPage
             await _viewModel.DeleteCustomerAsync(customer);
         }
     }
+
+    private async void OnAddressesClicked(object sender, EventArgs e)
+    {
+        if (sender is Button button &&
+            button.BindingContext is CustomerModel customer)
+        {
+            string customerName = Uri.EscapeDataString(customer.Name);
+
+            await Shell.Current.GoToAsync(
+                $"{nameof(CustomerAddressesPage)}?customerId={customer.Id}&customerName={customerName}"
+            );
+        }
+    }
 }

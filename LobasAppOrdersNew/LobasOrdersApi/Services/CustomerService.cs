@@ -8,10 +8,14 @@ namespace LobasOrdersApi.Services
     public class CustomerService : ICustomerService
     {
         private readonly ICustomerRepository _customerRepository;
+        private readonly IOrderRepository _orderRepository;
 
-        public CustomerService(ICustomerRepository customerRepository)
+        public CustomerService(
+            ICustomerRepository customerRepository,
+            IOrderRepository orderRepository)
         {
             _customerRepository = customerRepository;
+            _orderRepository = orderRepository;
         }
 
         public List<CustomerResponseDto> GetAll()
@@ -75,6 +79,14 @@ namespace LobasOrdersApi.Services
 
         public bool Delete(int id)
         {
+            List<Order> customerOrders = _orderRepository.GetByCustomerId(id);
+
+            if (customerOrders.Count > 0)
+            {
+                throw new InvalidOperationException(
+                    "No se puede eliminar el cliente porque tiene pedidos registrados. Elimina o reasigna esos pedidos antes de eliminar el cliente.");
+            }
+
             return _customerRepository.Delete(id);
         }
 

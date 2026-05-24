@@ -1,3 +1,4 @@
+using LobasAppOrdersNew.Services;
 using LobasAppOrdersNew.Views;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -6,9 +7,13 @@ namespace LobasAppOrdersNew;
 
 public partial class AppShell : Shell
 {
-    public AppShell()
+    private readonly RealtimeNotificationService _realtimeNotificationService;
+
+    public AppShell(RealtimeNotificationService realtimeNotificationService)
     {
         InitializeComponent();
+
+        _realtimeNotificationService = realtimeNotificationService;
 
         Routing.RegisterRoute(nameof(WelcomePage), typeof(WelcomePage));
         Routing.RegisterRoute(nameof(CustomersPage), typeof(CustomersPage));
@@ -19,10 +24,18 @@ public partial class AppShell : Shell
         Routing.RegisterRoute(nameof(AboutPage), typeof(AboutPage));
         Routing.RegisterRoute(nameof(ProductFormPage), typeof(ProductFormPage));
         Routing.RegisterRoute(nameof(CustomerFormPage), typeof(CustomerFormPage));
+        Routing.RegisterRoute(nameof(CustomerAddressesPage), typeof(CustomerAddressesPage));
         Routing.RegisterRoute(nameof(OrderFormPage), typeof(OrderFormPage));
         Routing.RegisterRoute(nameof(OrderDetailPage), typeof(OrderDetailPage));
         Routing.RegisterRoute(nameof(OrderEditPage), typeof(OrderEditPage));
 
+    }
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+
+        await _realtimeNotificationService.StartAsync();
     }
 
     private async void OnLogoutClicked(object sender, EventArgs e)

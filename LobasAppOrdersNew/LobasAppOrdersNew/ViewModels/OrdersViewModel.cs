@@ -1,4 +1,4 @@
-using System.Collections.ObjectModel;
+ï»¿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using LobasAppOrdersNew.Helpers;
 using LobasAppOrdersNew.Models;
@@ -10,20 +10,28 @@ namespace LobasAppOrdersNew.ViewModels
     public class OrdersViewModel : BaseViewModel
     {
         private readonly OrderApiService _orderApiService;
+        private readonly RealtimeNotificationService _realtimeNotificationService;
 
         private string _searchText = string.Empty;
         private bool _isRefreshing;
 
-        public OrdersViewModel(OrderApiService orderApiService, IDialogService dialogService, INavigationService navigationService) : base(dialogService, navigationService)
+        public OrdersViewModel(
+            OrderApiService orderApiService,
+            RealtimeNotificationService realtimeNotificationService,
+            IDialogService dialogService,
+            INavigationService navigationService) : base(dialogService, navigationService)
         {
             _orderApiService = orderApiService;
+            _realtimeNotificationService = realtimeNotificationService;
 
             Title = "Orders";
 
             Orders = new ObservableCollection<OrderModel>();
 
-            LoadOrdersCommand = new Microsoft.Maui.Controls.Command(async () => await LoadOrdersAsync());
-            RefreshCommand = new Microsoft.Maui.Controls.Command(async () => await RefreshOrdersAsync());
+            LoadOrdersCommand = new Command(async () => await LoadOrdersAsync());
+            RefreshCommand = new Command(async () => await RefreshOrdersAsync());
+
+            _realtimeNotificationService.OrdersChanged += OnOrdersChanged;
         }
 
         public ObservableCollection<OrderModel> Orders { get; }
@@ -121,8 +129,8 @@ namespace LobasAppOrdersNew.ViewModels
 
             bool confirm = await DialogService.ShowConfirmationAsync(
                 "Eliminar pedido",
-                $"¿Seguro que deseas eliminar el pedido #{order.Id}?",
-                "Sí",
+                $"\u00bfSeguro que deseas eliminar el pedido #{order.Id}?",
+                "S\u00ed",
                 "Cancelar"
             );
 
@@ -159,6 +167,20 @@ namespace LobasAppOrdersNew.ViewModels
             {
                 IsBusy = false;
             }
+        }
+
+        private void OnOrdersChanged(object? sender, EventArgs e)
+        {
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                if (!string.IsNullOrWhiteSpace(SearchText))
+                {
+                    await SearchOrdersAsync();
+                    return;
+                }
+
+                await LoadOrdersAsync();
+            });
         }
     }
 }

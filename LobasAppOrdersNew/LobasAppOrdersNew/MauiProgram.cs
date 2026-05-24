@@ -48,10 +48,12 @@ namespace LobasAppOrdersNew
             builder.Services.AddSingleton<UserApiService>();
             builder.Services.AddSingleton<SessionService>();
             builder.Services.AddSingleton<GoogleAuthService>();
+            builder.Services.AddSingleton<RealtimeNotificationService>();
             builder.Services.AddSingleton<IBiometric>(BiometricAuthenticationService.Default);
             builder.Services.AddSingleton<AppBiometricService>();
             builder.Services.AddSingleton<ProductApiService>();
             builder.Services.AddSingleton<CustomerApiService>();
+            builder.Services.AddSingleton<AddressApiService>();
 
             // ViewModels
             builder.Services.AddTransient<LoginViewModel>();
@@ -60,6 +62,7 @@ namespace LobasAppOrdersNew
             builder.Services.AddTransient<ProductsViewModel>();
             builder.Services.AddTransient<CustomersViewModel>();
             builder.Services.AddTransient<CustomerFormViewModel>();
+            builder.Services.AddTransient<CustomerAddressesViewModel>();
             builder.Services.AddTransient<ProductFormViewModel>();
             builder.Services.AddTransient<OrderDetailViewModel>();
             builder.Services.AddTransient<ProfileViewModel>();
@@ -73,7 +76,9 @@ namespace LobasAppOrdersNew
             builder.Services.AddTransient<ProductFormPage>();
             builder.Services.AddTransient<CustomersPage>();
             builder.Services.AddTransient<CustomerFormPage>();
+            builder.Services.AddTransient<CustomerAddressesPage>();
             builder.Services.AddTransient<ProfilePage>();
+            builder.Services.AddTransient<AppShell>();
 
             builder.Services.AddSingleton<OrderApiService>();
             builder.Services.AddTransient<OrdersViewModel>();
