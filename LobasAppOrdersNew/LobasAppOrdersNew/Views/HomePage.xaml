@@ -3,6 +3,8 @@
     x:Class="LobasAppOrdersNew.Views.HomePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:LobasAppOrdersNew.ViewModels"
+    x:DataType="viewModels:HomeViewModel"
     Title="Home"
     BackgroundColor="{DynamicResource AppBackgroundColor}">
 
@@ -22,10 +24,10 @@
             HorizontalTextAlignment="Center"
             TextColor="{DynamicResource AppMutedTextColor}" />
 
-        <Frame
+        <Border
             Style="{StaticResource CardFrameStyle}"
             Padding="20"
-            CornerRadius="24">
+            StrokeShape="RoundRectangle 24">
 
             <VerticalStackLayout Spacing="14">
 
@@ -57,7 +59,7 @@
                     TextColor="{DynamicResource AppDangerColor}" />
 
             </VerticalStackLayout>
-        </Frame>
+        </Border>
 
     </VerticalStackLayout>
 </ContentPage>

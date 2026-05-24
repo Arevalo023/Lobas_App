@@ -3,13 +3,16 @@
     x:Class="LobasAppOrdersNew.Views.OrderFormPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:LobasAppOrdersNew.Models"
+    xmlns:viewModels="clr-namespace:LobasAppOrdersNew.ViewModels"
+    x:DataType="viewModels:OrderFormViewModel"
     Title="Crear pedido"
     BackgroundColor="{DynamicResource AppBackgroundColor}">
 
     <ScrollView>
         <Grid Padding="24">
 
-            <Frame
+            <Border
                 Style="{StaticResource CardFrameStyle}"
                 MaximumWidthRequest="760"
                 HorizontalOptions="Center">
@@ -34,7 +37,7 @@
 
                         <Picker
                             ItemsSource="{Binding Customers}"
-                            ItemDisplayBinding="{Binding Name}"
+                            ItemDisplayBinding="{Binding Name, x:DataType=models:CustomerModel}"
                             SelectedItem="{Binding SelectedCustomer}"
                             Title="Selecciona un cliente"
                             BackgroundColor="{DynamicResource AppInputBackgroundColor}"
@@ -66,7 +69,7 @@
 
                             <Picker
                                 ItemsSource="{Binding Products}"
-                                ItemDisplayBinding="{Binding Name}"
+                                ItemDisplayBinding="{Binding Name, x:DataType=models:ProductModel}"
                                 SelectedItem="{Binding SelectedProduct}"
                                 Title="Selecciona producto"
                                 BackgroundColor="{DynamicResource AppInputBackgroundColor}"
@@ -116,7 +119,7 @@
                         </CollectionView.EmptyView>
 
                         <CollectionView.ItemTemplate>
-                            <DataTemplate>
+                            <DataTemplate x:DataType="models:OrderCartItemModel">
                                 <SwipeView Margin="0,0,0,10">
                                     <SwipeView.RightItems>
                                         <SwipeItems Mode="Reveal">
@@ -127,9 +130,9 @@
                                         </SwipeItems>
                                     </SwipeView.RightItems>
 
-                                    <Frame
+                                    <Border
                                         Style="{StaticResource CardFrameStyle}"
-                                        HasShadow="False">
+                                        Shadow="{x:Null}">
 
                                         <Grid
                                             ColumnDefinitions="*,Auto"
@@ -165,7 +168,7 @@
                                                 FontSize="13"
                                                 TextColor="{DynamicResource AppMutedTextColor}" />
                                         </Grid>
-                                    </Frame>
+                                    </Border>
                                 </SwipeView>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
@@ -202,7 +205,7 @@
                         Style="{StaticResource SecondaryButtonStyle}" />
 
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
         </Grid>
     </ScrollView>
 </ContentPage>

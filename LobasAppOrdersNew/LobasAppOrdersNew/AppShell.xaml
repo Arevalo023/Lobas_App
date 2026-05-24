@@ -13,7 +13,7 @@
     Title="Lobas Orders">
 
     <Shell.ItemTemplate>
-        <DataTemplate>
+        <DataTemplate x:DataType="BaseShellItem">
             <Grid
                 Padding="20,13"
                 ColumnDefinitions="30,*"
@@ -37,38 +37,17 @@
         </DataTemplate>
     </Shell.ItemTemplate>
 
-    <Shell.MenuItemTemplate>
-        <DataTemplate>
-            <Grid
-                Padding="20,13"
-                ColumnDefinitions="30,*"
-                ColumnSpacing="12"
-                BackgroundColor="{DynamicResource AppCardColor}">
-
-                <Image
-                    Source="{Binding Icon}"
-                    HeightRequest="22"
-                    WidthRequest="22"
-                    VerticalOptions="Center" />
-
-                <Label
-                    Grid.Column="1"
-                    Text="{Binding Text}"
-                    TextColor="{DynamicResource AppDangerColor}"
-                    FontFamily="{DynamicResource AppBodyFontFamily}"
-                    FontSize="{DynamicResource AppBodyFontSize}"
-                    VerticalOptions="Center" />
-            </Grid>
-        </DataTemplate>
-    </Shell.MenuItemTemplate>
-
     <Shell.FlyoutHeader>
         <Grid
             BackgroundColor="{DynamicResource AppShellHeaderColor}"
             Padding="20"
-            HeightRequest="150">
+            RowDefinitions="Auto,Auto"
+            RowSpacing="16"
+            HeightRequest="220">
 
-            <VerticalStackLayout VerticalOptions="Center">
+            <VerticalStackLayout
+                Grid.Row="0"
+                VerticalOptions="Center">
                 <Label
                     Text="Lobas Orders"
                     TextColor="{DynamicResource AppShellHeaderTextColor}"
@@ -82,60 +61,129 @@
                     FontSize="{DynamicResource AppSubtitleFontSize}"
                     FontFamily="{DynamicResource AppBodyFontFamily}" />
             </VerticalStackLayout>
+
+            <Border
+                Grid.Row="1"
+                Padding="12"
+                BackgroundColor="#26FFFFFF"
+                Stroke="#40FFFFFF"
+                StrokeShape="RoundRectangle 22">
+
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnProfileHeaderTapped" />
+                </Border.GestureRecognizers>
+
+                <Grid
+                    ColumnDefinitions="48,*"
+                    ColumnSpacing="12">
+
+                    <Border
+                        WidthRequest="44"
+                        HeightRequest="44"
+                        BackgroundColor="{DynamicResource AppCardColor}"
+                        Stroke="{DynamicResource AppBorderColor}"
+                        StrokeShape="RoundRectangle 22"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center">
+
+                        <Image
+                            Source="{DynamicResource ProfileIconSource}"
+                            WidthRequest="24"
+                            HeightRequest="24"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center" />
+                    </Border>
+
+                    <VerticalStackLayout
+                        Grid.Column="1"
+                        Spacing="2"
+                        VerticalOptions="Center">
+
+                        <Label
+                            Text="Perfil"
+                            TextColor="{DynamicResource AppShellHeaderTextColor}"
+                            FontAttributes="Bold"
+                            FontFamily="{DynamicResource AppTitleFontFamily}"
+                            FontSize="{DynamicResource AppBodyFontSize}" />
+
+                        <Label
+                            Text="Ver y editar mi cuenta"
+                            TextColor="{DynamicResource AppShellHeaderMutedTextColor}"
+                            FontFamily="{DynamicResource AppBodyFontFamily}"
+                            FontSize="{DynamicResource AppCaptionFontSize}" />
+                    </VerticalStackLayout>
+                </Grid>
+            </Border>
         </Grid>
     </Shell.FlyoutHeader>
 
-    <FlyoutItem Title="Inicio" Icon="home.png">
+    <Shell.FlyoutFooter>
+        <Grid
+            Padding="20,14"
+            ColumnDefinitions="30,*"
+            ColumnSpacing="12"
+            BackgroundColor="{DynamicResource AppCardColor}">
+
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnLogoutClicked" />
+            </Grid.GestureRecognizers>
+
+            <Image
+                Source="{DynamicResource LogoutIconSource}"
+                HeightRequest="22"
+                WidthRequest="22"
+                VerticalOptions="Center" />
+
+            <Label
+                Grid.Column="1"
+                Text="Cerrar sesi&#xF3;n"
+                TextColor="{DynamicResource AppDangerColor}"
+                FontFamily="{DynamicResource AppBodyFontFamily}"
+                FontSize="{DynamicResource AppBodyFontSize}"
+                VerticalOptions="Center" />
+        </Grid>
+    </Shell.FlyoutFooter>
+
+    <FlyoutItem Title="Inicio" Icon="{DynamicResource HomeIconSource}">
         <ShellContent
             Title="Inicio"
             ContentTemplate="{DataTemplate views:WelcomePage}"
             Route="WelcomePage" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Clientes" Icon="customers.png">
+    <FlyoutItem Title="Clientes" Icon="{DynamicResource CustomersIconSource}">
         <ShellContent
             Title="Clientes"
             ContentTemplate="{DataTemplate views:CustomersPage}"
             Route="CustomersPage" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Productos" Icon="product.png">
+    <FlyoutItem Title="Productos" Icon="{DynamicResource ProductsIconSource}">
         <ShellContent
             Title="Productos"
             ContentTemplate="{DataTemplate views:ProductsPage}"
             Route="ProductsPage" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Pedidos" Icon="orders.png">
+    <FlyoutItem Title="Pedidos" Icon="{DynamicResource OrdersIconSource}">
         <ShellContent
             Title="Pedidos"
             ContentTemplate="{DataTemplate views:OrdersPage}"
             Route="OrdersPage" />
     </FlyoutItem>
-    <FlyoutItem Title="Perfil" Icon="settings.png">
-        <ShellContent
-            Title="Perfil"
-            ContentTemplate="{DataTemplate views:ProfilePage}"
-            Route="ProfilePage" />
-    </FlyoutItem>
 
-
-    <FlyoutItem Title="Ajustes" Icon="settings.png">
+    <FlyoutItem Title="Ajustes" Icon="{DynamicResource SettingsIconSource}">
         <ShellContent
             Title="Ajustes"
             ContentTemplate="{DataTemplate views:SettingsPage}"
             Route="SettingsPage" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Acerca de" Icon="about.png">
+    <FlyoutItem Title="Acerca de" Icon="{DynamicResource AboutIconSource}">
         <ShellContent
             Title="Acerca de"
             ContentTemplate="{DataTemplate views:AboutPage}"
             Route="AboutPage" />
     </FlyoutItem>
 
-    <MenuItem
-        Text="Cerrar sesion"
-        IconImageSource="logout.png"
-        Clicked="OnLogoutClicked" />
 </Shell>

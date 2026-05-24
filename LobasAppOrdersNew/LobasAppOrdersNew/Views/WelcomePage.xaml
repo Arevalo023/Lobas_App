@@ -3,6 +3,8 @@
     x:Class="LobasAppOrdersNew.Views.WelcomePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:LobasAppOrdersNew.ViewModels"
+    x:DataType="viewModels:WelcomeViewModel"
     Title="Inicio"
     BackgroundColor="{DynamicResource AppBackgroundColor}">
 
@@ -12,137 +14,201 @@
 
         <ScrollView>
             <VerticalStackLayout
-                Padding="24"
-                Spacing="20">
+                Padding="{OnIdiom Phone='16,18', Tablet='24', Desktop='28'}"
+                Spacing="{OnIdiom Phone=16, Tablet=20, Desktop=22}">
 
                 <!-- Header -->
-                <Frame
+                <Border
                     Style="{StaticResource CardFrameStyle}"
                     MaximumWidthRequest="900"
-                    HorizontalOptions="Center">
+                    HorizontalOptions="Center"
+                    Padding="{OnIdiom Phone='18', Tablet='22', Desktop='24'}">
 
                     <Grid
                         ColumnDefinitions="*,Auto"
-                        ColumnSpacing="20">
+                        ColumnSpacing="{OnIdiom Phone=12, Tablet=20, Desktop=24}">
 
                         <VerticalStackLayout
                             Grid.Column="0"
-                            Spacing="8"
+                            Spacing="{OnIdiom Phone=8, Tablet=10, Desktop=10}"
                             VerticalOptions="Center">
 
                             <Label
-                                Text="Welcome to Lobas Orders"
-                                Style="{StaticResource PageTitleStyle}" />
+                                Text="Bienvenida a Lobas Orders"
+                                Style="{StaticResource PageTitleStyle}"
+                                FontSize="{OnIdiom Phone=24, Tablet={DynamicResource AppTitleFontSize}, Desktop={DynamicResource AppTitleFontSize}}"
+                                LineBreakMode="WordWrap" />
 
                             <Label
-                                Text="Manage customers, products, and orders from one place."
-                                Style="{StaticResource PageSubtitleStyle}" />
+                                Text="Administra clientes, productos y pedidos desde un solo lugar."
+                                Style="{StaticResource PageSubtitleStyle}"
+                                LineBreakMode="WordWrap" />
 
                             <Label
-                                Text="Dashboard overview"
+                                Text="Resumen general de tu operaci&#xF3;n"
                                 FontSize="{DynamicResource AppBodyFontSize}"
-                                TextColor="{DynamicResource AppMutedTextColor}" />
+                                TextColor="{DynamicResource AppMutedTextColor}"
+                                LineBreakMode="WordWrap" />
 
                         </VerticalStackLayout>
 
                         <Image
                             Grid.Column="1"
                             Source="splash.png"
-                            WidthRequest="105"
-                            HeightRequest="105"
+                            WidthRequest="{OnIdiom Phone=82, Tablet=105, Desktop=112}"
+                            HeightRequest="{OnIdiom Phone=82, Tablet=105, Desktop=112}"
                             Aspect="AspectFit"
                             HorizontalOptions="End"
                             VerticalOptions="Center" />
 
                     </Grid>
-                </Frame>
+                </Border>
 
                 <!-- Stats -->
-                <Grid
+                <FlexLayout
                     MaximumWidthRequest="900"
                     HorizontalOptions="Center"
-                    ColumnDefinitions="*,*,*"
-                    ColumnSpacing="14">
+                    Direction="Row"
+                    Wrap="Wrap"
+                    JustifyContent="SpaceBetween"
+                    AlignItems="Stretch">
 
-                    <Frame
-                        Grid.Column="0"
+                    <Border
                         Style="{StaticResource CardFrameStyle}"
-                        HasShadow="True">
+                        Margin="0,0,0,12"
+                        FlexLayout.Basis="{OnIdiom Phone='100%', Tablet='31%', Desktop='31%'}">
 
-                        <VerticalStackLayout Spacing="8">
-                            <Label
-                                Text="Products"
-                                FontSize="15"
-                                FontAttributes="Bold"
-                                TextColor="{DynamicResource AppSecondaryColor}" />
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                            <Border
+                                WidthRequest="44"
+                                HeightRequest="44"
+                                BackgroundColor="{DynamicResource AppBackgroundColor}"
+                                Stroke="{DynamicResource AppBorderColor}"
+                                StrokeShape="RoundRectangle 22"
+                                VerticalOptions="Start">
 
-                            <Label
-                                Text="{Binding ProductsCountText}"
-                                FontSize="36"
-                                FontAttributes="Bold"
-                                TextColor="{DynamicResource AppPrimaryColor}" />
+                                <Image
+                                    Source="{DynamicResource ProductsIconSource}"
+                                    WidthRequest="24"
+                                    HeightRequest="24"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center" />
+                            </Border>
 
-                            <Label
-                                Text="Active catalog items"
-                                FontSize="13"
-                                TextColor="{DynamicResource AppMutedTextColor}" />
-                        </VerticalStackLayout>
-                    </Frame>
+                            <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                <Label
+                                    Text="Productos"
+                                    FontSize="15"
+                                    FontAttributes="Bold"
+                                    TextColor="{DynamicResource AppSecondaryColor}" />
 
-                    <Frame
-                        Grid.Column="1"
+                                <Label
+                                    Text="{Binding ProductsCountText}"
+                                    FontSize="{OnIdiom Phone=32, Tablet=36, Desktop=38}"
+                                    FontAttributes="Bold"
+                                    TextColor="{DynamicResource AppPrimaryColor}" />
+
+                                <Label
+                                    Text="Art&#xED;culos activos en cat&#xE1;logo"
+                                    FontSize="13"
+                                    TextColor="{DynamicResource AppMutedTextColor}"
+                                    LineBreakMode="WordWrap" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+
+                    <Border
                         Style="{StaticResource CardFrameStyle}"
-                        HasShadow="True">
+                        Margin="0,0,0,12"
+                        FlexLayout.Basis="{OnIdiom Phone='100%', Tablet='31%', Desktop='31%'}">
 
-                        <VerticalStackLayout Spacing="8">
-                            <Label
-                                Text="Customers"
-                                FontSize="15"
-                                FontAttributes="Bold"
-                                TextColor="{DynamicResource AppSecondaryColor}" />
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                            <Border
+                                WidthRequest="44"
+                                HeightRequest="44"
+                                BackgroundColor="{DynamicResource AppBackgroundColor}"
+                                Stroke="{DynamicResource AppBorderColor}"
+                                StrokeShape="RoundRectangle 22"
+                                VerticalOptions="Start">
 
-                            <Label
-                                Text="{Binding CustomersCountText}"
-                                FontSize="36"
-                                FontAttributes="Bold"
-                                TextColor="{DynamicResource AppPrimaryColor}" />
+                                <Image
+                                    Source="{DynamicResource CustomersIconSource}"
+                                    WidthRequest="24"
+                                    HeightRequest="24"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center" />
+                            </Border>
 
-                            <Label
-                                Text="Registered customers"
-                                FontSize="13"
-                                TextColor="{DynamicResource AppMutedTextColor}" />
-                        </VerticalStackLayout>
-                    </Frame>
+                            <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                <Label
+                                    Text="Clientes"
+                                    FontSize="15"
+                                    FontAttributes="Bold"
+                                    TextColor="{DynamicResource AppSecondaryColor}" />
 
-                    <Frame
-                        Grid.Column="2"
+                                <Label
+                                    Text="{Binding CustomersCountText}"
+                                    FontSize="{OnIdiom Phone=32, Tablet=36, Desktop=38}"
+                                    FontAttributes="Bold"
+                                    TextColor="{DynamicResource AppPrimaryColor}" />
+
+                                <Label
+                                    Text="Contactos registrados"
+                                    FontSize="13"
+                                    TextColor="{DynamicResource AppMutedTextColor}"
+                                    LineBreakMode="WordWrap" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+
+                    <Border
                         Style="{StaticResource CardFrameStyle}"
-                        HasShadow="True">
+                        Margin="0,0,0,12"
+                        FlexLayout.Basis="{OnIdiom Phone='100%', Tablet='31%', Desktop='31%'}">
 
-                        <VerticalStackLayout Spacing="8">
-                            <Label
-                                Text="Orders"
-                                FontSize="15"
-                                FontAttributes="Bold"
-                                TextColor="{DynamicResource AppSecondaryColor}" />
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                            <Border
+                                WidthRequest="44"
+                                HeightRequest="44"
+                                BackgroundColor="{DynamicResource AppBackgroundColor}"
+                                Stroke="{DynamicResource AppBorderColor}"
+                                StrokeShape="RoundRectangle 22"
+                                VerticalOptions="Start">
 
-                            <Label
-                                Text="{Binding OrdersCountText}"
-                                FontSize="36"
-                                FontAttributes="Bold"
-                                TextColor="{DynamicResource AppPrimaryColor}" />
+                                <Image
+                                    Source="{DynamicResource OrdersIconSource}"
+                                    WidthRequest="24"
+                                    HeightRequest="24"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center" />
+                            </Border>
 
-                            <Label
-                                Text="Created orders"
-                                FontSize="13"
-                                TextColor="{DynamicResource AppMutedTextColor}" />
-                        </VerticalStackLayout>
-                    </Frame>
+                            <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                <Label
+                                    Text="Pedidos"
+                                    FontSize="15"
+                                    FontAttributes="Bold"
+                                    TextColor="{DynamicResource AppSecondaryColor}" />
 
-                </Grid>
+                                <Label
+                                    Text="{Binding OrdersCountText}"
+                                    FontSize="{OnIdiom Phone=32, Tablet=36, Desktop=38}"
+                                    FontAttributes="Bold"
+                                    TextColor="{DynamicResource AppPrimaryColor}" />
+
+                                <Label
+                                    Text="Pedidos creados"
+                                    FontSize="13"
+                                    TextColor="{DynamicResource AppMutedTextColor}"
+                                    LineBreakMode="WordWrap" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+
+                </FlexLayout>
 
                 <!-- Quick actions -->
-                <Frame
+                <Border
                     Style="{StaticResource CardFrameStyle}"
                     MaximumWidthRequest="900"
                     HorizontalOptions="Center">
@@ -151,67 +217,72 @@
 
                         <VerticalStackLayout Spacing="4">
                             <Label
-                                Text="Quick actions"
+                                Text="Accesos r&#xE1;pidos"
                                 FontSize="22"
                                 FontAttributes="Bold"
                                 TextColor="{DynamicResource AppTextColor}" />
 
                             <Label
-                                Text="Open the main modules faster from here."
+                                Text="Entra directo a los m&#xF3;dulos principales."
                                 FontSize="{DynamicResource AppBodyFontSize}"
-                                TextColor="{DynamicResource AppMutedTextColor}" />
+                                TextColor="{DynamicResource AppMutedTextColor}"
+                                LineBreakMode="WordWrap" />
                         </VerticalStackLayout>
 
-                        <Grid
-                            ColumnDefinitions="*,*,*"
-                            ColumnSpacing="12">
+                        <FlexLayout
+                            Direction="Row"
+                            Wrap="Wrap"
+                            JustifyContent="SpaceBetween">
 
                             <Button
-                                Grid.Column="0"
-                                Text="Products"
+                                Text="Productos"
                                 Command="{Binding GoToProductsCommand}"
-                                Style="{StaticResource PrimaryButtonStyle}" />
+                                Style="{StaticResource PrimaryButtonStyle}"
+                                Margin="0,0,0,10"
+                                FlexLayout.Basis="{OnIdiom Phone='100%', Tablet='31%', Desktop='31%'}" />
 
                             <Button
-                                Grid.Column="1"
-                                Text="Customers"
+                                Text="Clientes"
                                 Command="{Binding GoToCustomersCommand}"
-                                Style="{StaticResource PrimaryButtonStyle}" />
+                                Style="{StaticResource PrimaryButtonStyle}"
+                                Margin="0,0,0,10"
+                                FlexLayout.Basis="{OnIdiom Phone='100%', Tablet='31%', Desktop='31%'}" />
 
                             <Button
-                                Grid.Column="2"
-                                Text="Orders"
+                                Text="Pedidos"
                                 Command="{Binding GoToOrdersCommand}"
-                                Style="{StaticResource PrimaryButtonStyle}" />
+                                Style="{StaticResource PrimaryButtonStyle}"
+                                Margin="0,0,0,10"
+                                FlexLayout.Basis="{OnIdiom Phone='100%', Tablet='31%', Desktop='31%'}" />
 
-                        </Grid>
+                        </FlexLayout>
 
                     </VerticalStackLayout>
-                </Frame>
+                </Border>
 
                 <!-- Info -->
-                <Frame
+                <Border
                     Style="{StaticResource CardFrameStyle}"
                     MaximumWidthRequest="900"
                     HorizontalOptions="Center"
-                    HasShadow="False">
+                    Shadow="{x:Null}">
 
                     <VerticalStackLayout Spacing="10">
 
                         <Label
-                            Text="System summary"
+                            Text="Resumen del sistema"
                             FontSize="20"
                             FontAttributes="Bold"
                             TextColor="{DynamicResource AppTextColor}" />
 
                         <Label
-                            Text="This application uses a .NET MAUI frontend connected to an ASP.NET Core REST API. It supports CRUD operations, search, swipe gestures, Google sign-in, biometric login, and dynamic theme switching."
+                            Text="La aplicaci&#xF3;n usa una interfaz .NET MAUI conectada a una API REST con ASP.NET Core. Incluye operaciones CRUD, b&#xFA;squeda, gestos de deslizamiento, inicio de sesi&#xF3;n con Google, acceso biom&#xE9;trico y cambio din&#xE1;mico de tema."
                             FontSize="{DynamicResource AppBodyFontSize}"
                             TextColor="{DynamicResource AppMutedTextColor}"
                             LineBreakMode="WordWrap" />
 
                     </VerticalStackLayout>
-                </Frame>
+                </Border>
 
             </VerticalStackLayout>
         </ScrollView>

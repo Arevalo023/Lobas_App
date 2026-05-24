@@ -3,6 +3,8 @@
     x:Class="LobasAppOrdersNew.Views.ProfilePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:LobasAppOrdersNew.ViewModels"
+    x:DataType="viewModels:ProfileViewModel"
     Title="Perfil"
     BackgroundColor="{DynamicResource AppBackgroundColor}">
 
@@ -19,7 +21,7 @@
                     Style="{StaticResource PageSubtitleStyle}" />
             </VerticalStackLayout>
 
-            <Frame Style="{StaticResource CardFrameStyle}">
+            <Border Style="{StaticResource CardFrameStyle}">
                 <VerticalStackLayout Spacing="14">
 
                     <Label
@@ -47,9 +49,9 @@
                         Style="{StaticResource PrimaryButtonStyle}" />
 
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
 
-            <Frame Style="{StaticResource CardFrameStyle}">
+            <Border Style="{StaticResource CardFrameStyle}">
                 <VerticalStackLayout Spacing="12">
 
                     <Label
@@ -78,7 +80,7 @@
                         Style="{StaticResource PrimaryButtonStyle}" />
 
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
 
         </VerticalStackLayout>
     </ScrollView>

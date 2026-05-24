@@ -19,7 +19,7 @@
                     Style="{StaticResource PageSubtitleStyle}" />
             </VerticalStackLayout>
 
-            <Frame Style="{StaticResource CardFrameStyle}">
+            <Border Style="{StaticResource CardFrameStyle}">
                 <VerticalStackLayout Spacing="16">
 
                     <Label
@@ -47,9 +47,9 @@
                         TextColor="{DynamicResource AppMutedTextColor}" />
 
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
 
-            <Frame Style="{StaticResource CardFrameStyle}">
+            <Border Style="{StaticResource CardFrameStyle}">
                 <VerticalStackLayout Spacing="12">
 
                     <Label
@@ -77,7 +77,7 @@
                         Style="{StaticResource PrimaryButtonStyle}" />
 
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
 
         </VerticalStackLayout>
     </ScrollView>

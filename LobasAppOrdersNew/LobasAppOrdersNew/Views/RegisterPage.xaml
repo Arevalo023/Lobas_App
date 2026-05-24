@@ -3,77 +3,139 @@
     x:Class="LobasAppOrdersNew.Views.RegisterPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:LobasAppOrdersNew.ViewModels"
+    x:DataType="viewModels:RegisterViewModel"
     Title="Register"
     BackgroundColor="{DynamicResource AppBackgroundColor}">
 
     <ScrollView>
-        <VerticalStackLayout
+        <Grid
             Padding="{OnIdiom Phone='16,18', Tablet='28', Desktop='32'}"
-            Spacing="{OnIdiom Phone=14, Tablet=20, Desktop=20}"
-            VerticalOptions="Start"
-            HorizontalOptions="Center"
-            MaximumWidthRequest="460">
+            RowDefinitions="Auto">
 
-            <Label
-                Text="Create Account"
-                Style="{StaticResource PageTitleStyle}"
-                FontSize="{OnIdiom Phone=24, Tablet={DynamicResource AppTitleFontSize}, Desktop={DynamicResource AppTitleFontSize}}"
-                HorizontalOptions="Center" />
-
-            <Label
-                Text="Join Lobas Orders"
-                Style="{StaticResource PageSubtitleStyle}"
-                HorizontalOptions="Center" />
-
-            <Frame
+            <Border
                 Style="{StaticResource CardFrameStyle}"
-                Padding="{OnIdiom Phone='18', Tablet='22', Desktop='22'}"
-                CornerRadius="24">
+                MaximumWidthRequest="460"
+                HorizontalOptions="Center"
+                VerticalOptions="Start"
+                Margin="0,12"
+                Padding="{OnIdiom Phone='18', Tablet='24', Desktop='26'}">
 
-                <VerticalStackLayout Spacing="16">
+                <VerticalStackLayout
+                    Spacing="{OnIdiom Phone=12, Tablet=16, Desktop=16}">
 
-                    <Entry
-                        Placeholder="Full name"
-                        Text="{Binding Name}"
-                        Style="{StaticResource InputEntryStyle}"
-                        ClearButtonVisibility="WhileEditing" />
+                    <Image
+                        Source="splash.png"
+                        HeightRequest="{OnIdiom Phone=78, Tablet=104, Desktop=110}"
+                        WidthRequest="{OnIdiom Phone=78, Tablet=104, Desktop=110}"
+                        HorizontalOptions="Center"
+                        Aspect="AspectFit" />
 
-                    <Entry
-                        Placeholder="Email"
-                        Keyboard="Email"
-                        Text="{Binding Email}"
-                        Style="{StaticResource InputEntryStyle}"
-                        ClearButtonVisibility="WhileEditing" />
-
-                    <Entry
-                        Placeholder="Password"
-                        IsPassword="True"
-                        Text="{Binding Password}"
-                        Style="{StaticResource InputEntryStyle}" />
-
-                    <Entry
-                        Placeholder="Confirm password"
-                        IsPassword="True"
-                        Text="{Binding ConfirmPassword}"
-                        Style="{StaticResource InputEntryStyle}" />
-
-                    <Button
+                    <Label
                         Text="Create account"
-                        Command="{Binding RegisterCommand}"
-                        Style="{StaticResource PrimaryButtonStyle}" />
+                        Style="{StaticResource PageTitleStyle}"
+                        FontSize="{OnIdiom Phone=24, Tablet={DynamicResource AppTitleFontSize}, Desktop={DynamicResource AppTitleFontSize}}"
+                        HorizontalTextAlignment="Center"
+                        Margin="0,2,0,0" />
 
-                    <Button
-                        Text="Already have an account? Login"
-                        Command="{Binding GoToLoginCommand}"
-                        Style="{StaticResource SecondaryButtonStyle}" />
+                    <Label
+                        Text="Set up your profile and start managing customers, products, and orders."
+                        Style="{StaticResource PageSubtitleStyle}"
+                        HorizontalTextAlignment="Center"
+                        LineBreakMode="WordWrap"
+                        Margin="0,0,0,4" />
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label
+                            Text="Full name"
+                            TextColor="{DynamicResource AppTextColor}"
+                            FontAttributes="Bold" />
+
+                        <Entry
+                            Placeholder="Enter your full name"
+                            Text="{Binding Name}"
+                            Style="{StaticResource InputEntryStyle}"
+                            ClearButtonVisibility="WhileEditing" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label
+                            Text="Email"
+                            TextColor="{DynamicResource AppTextColor}"
+                            FontAttributes="Bold" />
+
+                        <Entry
+                            Placeholder="Enter your email"
+                            Keyboard="Email"
+                            Text="{Binding Email}"
+                            Style="{StaticResource InputEntryStyle}"
+                            ClearButtonVisibility="WhileEditing" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label
+                            Text="Password"
+                            TextColor="{DynamicResource AppTextColor}"
+                            FontAttributes="Bold" />
+
+                        <Entry
+                            Placeholder="Create a password"
+                            IsPassword="True"
+                            Text="{Binding Password}"
+                            Style="{StaticResource InputEntryStyle}" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label
+                            Text="Confirm password"
+                            TextColor="{DynamicResource AppTextColor}"
+                            FontAttributes="Bold" />
+
+                        <Entry
+                            Placeholder="Repeat your password"
+                            IsPassword="True"
+                            Text="{Binding ConfirmPassword}"
+                            Style="{StaticResource InputEntryStyle}" />
+                    </VerticalStackLayout>
+
+                    <Grid HeightRequest="52">
+                        <Button
+                            Text="Create account"
+                            Command="{Binding RegisterCommand}"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            HeightRequest="52" />
+
+                        <ActivityIndicator
+                            IsRunning="{Binding IsBusy}"
+                            IsVisible="{Binding IsBusy}"
+                            Color="{DynamicResource AppButtonTextColor}"
+                            WidthRequest="24"
+                            HeightRequest="24"
+                            HorizontalOptions="End"
+                            VerticalOptions="Center"
+                            Margin="0,0,18,0" />
+                    </Grid>
+
+                    <HorizontalStackLayout
+                        HorizontalOptions="Center"
+                        Spacing="4"
+                        Margin="0,2,0,0">
+
+                        <Label
+                            Text="Already have an account?"
+                            TextColor="{DynamicResource AppMutedTextColor}"
+                            VerticalOptions="Center" />
+
+                        <Button
+                            Text="Login"
+                            Command="{Binding GoToLoginCommand}"
+                            Style="{StaticResource SecondaryButtonStyle}"
+                            Padding="6,0"
+                            MinimumWidthRequest="0" />
+                    </HorizontalStackLayout>
 
                 </VerticalStackLayout>
-            </Frame>
-
-            <ActivityIndicator
-                IsRunning="{Binding IsBusy}"
-                IsVisible="{Binding IsBusy}" />
-
-        </VerticalStackLayout>
+            </Border>
+        </Grid>
     </ScrollView>
 </ContentPage>

@@ -3,13 +3,16 @@
     x:Class="LobasAppOrdersNew.Views.OrderEditPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:LobasAppOrdersNew.Models"
+    xmlns:viewModels="clr-namespace:LobasAppOrdersNew.ViewModels"
+    x:DataType="viewModels:OrderEditViewModel"
     Title="Editar pedido"
     BackgroundColor="{DynamicResource AppBackgroundColor}">
 
     <ScrollView>
         <Grid Padding="24">
 
-            <Frame
+            <Border
                 Style="{StaticResource CardFrameStyle}"
                 MaximumWidthRequest="520"
                 HorizontalOptions="Center">
@@ -34,7 +37,7 @@
 
                         <Picker
                             ItemsSource="{Binding Customers}"
-                            ItemDisplayBinding="{Binding Name}"
+                            ItemDisplayBinding="{Binding Name, x:DataType=models:CustomerModel}"
                             SelectedItem="{Binding SelectedCustomer}"
                             Title="Selecciona un cliente"
                             BackgroundColor="{DynamicResource AppInputBackgroundColor}"
@@ -80,7 +83,7 @@
                         Style="{StaticResource SecondaryButtonStyle}" />
 
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
         </Grid>
     </ScrollView>
 </ContentPage>

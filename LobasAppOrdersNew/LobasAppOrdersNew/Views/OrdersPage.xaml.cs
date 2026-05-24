@@ -38,8 +38,8 @@ public partial class OrdersPage : ContentPage
 
     private async void OnOrderTapped(object sender, TappedEventArgs e)
     {
-        if (sender is Frame frame &&
-            frame.BindingContext is OrderModel order)
+        if (sender is Border border &&
+            border.BindingContext is OrderModel order)
         {
             await Shell.Current.GoToAsync(
                 $"{nameof(OrderDetailPage)}?orderId={order.Id}"

@@ -28,9 +28,9 @@ public partial class AppShell : Shell
     private async void OnLogoutClicked(object sender, EventArgs e)
     {
         bool confirm = await DisplayAlert(
-            "Cerrar sesión",
-            "¿Seguro que deseas cerrar sesión?",
-            "Sí",
+            "Cerrar sesi\u00f3n",
+            "\u00bfSeguro que deseas cerrar sesi\u00f3n?",
+            "S\u00ed",
             "Cancelar"
         );
 
@@ -46,5 +46,11 @@ public partial class AppShell : Shell
 
         Application.Current!.Windows[0].Page = new NavigationPage(loginPage);
 
+    }
+
+    private async void OnProfileHeaderTapped(object sender, TappedEventArgs e)
+    {
+        FlyoutIsPresented = false;
+        await GoToAsync(nameof(ProfilePage));
     }
 }

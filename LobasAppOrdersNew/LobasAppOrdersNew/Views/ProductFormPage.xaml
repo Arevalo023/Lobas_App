@@ -3,13 +3,15 @@
     x:Class="LobasAppOrdersNew.Views.ProductFormPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:LobasAppOrdersNew.ViewModels"
+    x:DataType="viewModels:ProductFormViewModel"
     Title="Agregar producto"
     BackgroundColor="{DynamicResource AppBackgroundColor}">
 
     <ScrollView>
         <Grid Padding="24">
 
-            <Frame
+            <Border
                 Style="{StaticResource CardFrameStyle}"
                 MaximumWidthRequest="520"
                 HorizontalOptions="Center"
@@ -107,7 +109,7 @@
                         Style="{StaticResource SecondaryButtonStyle}" />
 
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
         </Grid>
     </ScrollView>
 </ContentPage>

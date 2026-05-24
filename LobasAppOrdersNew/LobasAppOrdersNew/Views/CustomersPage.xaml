@@ -3,6 +3,9 @@
     x:Class="LobasAppOrdersNew.Views.CustomersPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:LobasAppOrdersNew.Models"
+    xmlns:viewModels="clr-namespace:LobasAppOrdersNew.ViewModels"
+    x:DataType="viewModels:CustomersViewModel"
     Title="Clientes"
     BackgroundColor="{DynamicResource AppBackgroundColor}">
 
@@ -76,7 +79,7 @@
                 </CollectionView.EmptyView>
 
                 <CollectionView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="models:CustomerModel">
                         <SwipeView Margin="0,0,0,12">
 
                             <SwipeView.LeftItems>
@@ -97,7 +100,7 @@
                                 </SwipeItems>
                             </SwipeView.RightItems>
 
-                            <Frame Style="{StaticResource CardFrameStyle}">
+                            <Border Style="{StaticResource CardFrameStyle}">
 
                                 <Grid
                                     RowDefinitions="Auto,Auto,Auto"
@@ -139,7 +142,7 @@
                                         Margin="0,8,0,0" />
 
                                 </Grid>
-                            </Frame>
+                            </Border>
                         </SwipeView>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

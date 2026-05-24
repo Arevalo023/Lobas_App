@@ -13,13 +13,12 @@
             VerticalOptions="Center"
             Spacing="18">
 
-            <Frame
+            <Border
                 WidthRequest="180"
                 HeightRequest="180"
-                CornerRadius="90"
+                StrokeShape="RoundRectangle 90"
                 BackgroundColor="{DynamicResource AppCardColor}"
-                BorderColor="{DynamicResource AppBorderColor}"
-                HasShadow="True"
+                Stroke="{DynamicResource AppBorderColor}"
                 Padding="18"
                 HorizontalOptions="Center">
 
@@ -31,7 +30,7 @@
                     HorizontalOptions="Center"
                     VerticalOptions="Center" />
 
-            </Frame>
+            </Border>
 
             <Label
                 Text="Lobas Orders"

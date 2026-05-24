@@ -11,7 +11,7 @@
             Padding="24"
             Spacing="18">
 
-            <Frame
+            <Border
                 Style="{StaticResource CardFrameStyle}"
                 MaximumWidthRequest="760"
                 HorizontalOptions="Center">
@@ -61,59 +61,59 @@
 
                     <VerticalStackLayout Spacing="10">
 
-                        <Frame
+                        <Border
                             Style="{StaticResource CardFrameStyle}"
-                            HasShadow="False">
+                            Shadow="{x:Null}">
                             <Label
                                 Text="✓ Inicio de sesión con correo y contraseña"
                                 TextColor="{DynamicResource AppTextColor}"
                                 FontSize="{DynamicResource AppBodyFontSize}" />
-                        </Frame>
+                        </Border>
 
-                        <Frame
+                        <Border
                             Style="{StaticResource CardFrameStyle}"
-                            HasShadow="False">
+                            Shadow="{x:Null}">
                             <Label
                                 Text="✓ Inicio de sesión con Google"
                                 TextColor="{DynamicResource AppTextColor}"
                                 FontSize="{DynamicResource AppBodyFontSize}" />
-                        </Frame>
+                        </Border>
 
-                        <Frame
+                        <Border
                             Style="{StaticResource CardFrameStyle}"
-                            HasShadow="False">
+                            Shadow="{x:Null}">
                             <Label
                                 Text="✓ Acceso mediante autenticación biométrica"
                                 TextColor="{DynamicResource AppTextColor}"
                                 FontSize="{DynamicResource AppBodyFontSize}" />
-                        </Frame>
+                        </Border>
 
-                        <Frame
+                        <Border
                             Style="{StaticResource CardFrameStyle}"
-                            HasShadow="False">
+                            Shadow="{x:Null}">
                             <Label
                                 Text="✓ CRUD de productos, clientes y pedidos"
                                 TextColor="{DynamicResource AppTextColor}"
                                 FontSize="{DynamicResource AppBodyFontSize}" />
-                        </Frame>
+                        </Border>
 
-                        <Frame
+                        <Border
                             Style="{StaticResource CardFrameStyle}"
-                            HasShadow="False">
+                            Shadow="{x:Null}">
                             <Label
                                 Text="✓ Búsqueda en listados y navegación con menú lateral"
                                 TextColor="{DynamicResource AppTextColor}"
                                 FontSize="{DynamicResource AppBodyFontSize}" />
-                        </Frame>
+                        </Border>
 
-                        <Frame
+                        <Border
                             Style="{StaticResource CardFrameStyle}"
-                            HasShadow="False">
+                            Shadow="{x:Null}">
                             <Label
                                 Text="✓ Cambio dinámico de tema visual"
                                 TextColor="{DynamicResource AppTextColor}"
                                 FontSize="{DynamicResource AppBodyFontSize}" />
-                        </Frame>
+                        </Border>
 
                     </VerticalStackLayout>
 
@@ -129,11 +129,11 @@
                         ColumnSpacing="12"
                         RowSpacing="12">
 
-                        <Frame
+                        <Border
                             Grid.Row="0"
                             Grid.Column="0"
                             Style="{StaticResource CardFrameStyle}"
-                            HasShadow="False">
+                            Shadow="{x:Null}">
                             <VerticalStackLayout>
                                 <Label
                                     Text=".NET MAUI"
@@ -144,13 +144,13 @@
                                     TextColor="{DynamicResource AppMutedTextColor}"
                                     FontSize="13" />
                             </VerticalStackLayout>
-                        </Frame>
+                        </Border>
 
-                        <Frame
+                        <Border
                             Grid.Row="0"
                             Grid.Column="1"
                             Style="{StaticResource CardFrameStyle}"
-                            HasShadow="False">
+                            Shadow="{x:Null}">
                             <VerticalStackLayout>
                                 <Label
                                     Text="ASP.NET Core API"
@@ -161,13 +161,13 @@
                                     TextColor="{DynamicResource AppMutedTextColor}"
                                     FontSize="13" />
                             </VerticalStackLayout>
-                        </Frame>
+                        </Border>
 
-                        <Frame
+                        <Border
                             Grid.Row="1"
                             Grid.Column="0"
                             Style="{StaticResource CardFrameStyle}"
-                            HasShadow="False">
+                            Shadow="{x:Null}">
                             <VerticalStackLayout>
                                 <Label
                                     Text="SQL Server"
@@ -178,13 +178,13 @@
                                     TextColor="{DynamicResource AppMutedTextColor}"
                                     FontSize="13" />
                             </VerticalStackLayout>
-                        </Frame>
+                        </Border>
 
-                        <Frame
+                        <Border
                             Grid.Row="1"
                             Grid.Column="1"
                             Style="{StaticResource CardFrameStyle}"
-                            HasShadow="False">
+                            Shadow="{x:Null}">
                             <VerticalStackLayout>
                                 <Label
                                     Text="MVVM"
@@ -195,13 +195,13 @@
                                     TextColor="{DynamicResource AppMutedTextColor}"
                                     FontSize="13" />
                             </VerticalStackLayout>
-                        </Frame>
+                        </Border>
 
-                        <Frame
+                        <Border
                             Grid.Row="2"
                             Grid.Column="0"
                             Style="{StaticResource CardFrameStyle}"
-                            HasShadow="False">
+                            Shadow="{x:Null}">
                             <VerticalStackLayout>
                                 <Label
                                     Text="Google Auth"
@@ -212,13 +212,13 @@
                                     TextColor="{DynamicResource AppMutedTextColor}"
                                     FontSize="13" />
                             </VerticalStackLayout>
-                        </Frame>
+                        </Border>
 
-                        <Frame
+                        <Border
                             Grid.Row="2"
                             Grid.Column="1"
                             Style="{StaticResource CardFrameStyle}"
-                            HasShadow="False">
+                            Shadow="{x:Null}">
                             <VerticalStackLayout>
                                 <Label
                                     Text="Biometric Auth"
@@ -229,7 +229,7 @@
                                     TextColor="{DynamicResource AppMutedTextColor}"
                                     FontSize="13" />
                             </VerticalStackLayout>
-                        </Frame>
+                        </Border>
 
                     </Grid>
 
@@ -239,9 +239,9 @@
                         FontAttributes="Bold"
                         TextColor="{DynamicResource AppTextColor}" />
 
-                    <Frame
+                    <Border
                         Style="{StaticResource CardFrameStyle}"
-                        HasShadow="False">
+                        Shadow="{x:Null}">
                         <VerticalStackLayout Spacing="8">
 
                             <Label
@@ -266,10 +266,10 @@
                                 FontSize="13" />
 
                         </VerticalStackLayout>
-                    </Frame>
+                    </Border>
 
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
 
         </VerticalStackLayout>
     </ScrollView>
