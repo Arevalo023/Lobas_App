@@ -149,6 +149,36 @@ namespace LobasOrdersApi.Repositories
             return Convert.ToInt32(command.ExecuteScalar());
         }
 
+        public int CreateWithDetailsAndStockUpdate(Order order, List<OrderDetail> details)
+        {
+            string connectionString = _configuration.GetConnectionString("DefaultConnection")!;
+
+            using SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+
+            using SqlTransaction transaction = connection.BeginTransaction();
+
+            try
+            {
+                int orderId = InsertOrder(connection, transaction, order);
+
+                foreach (OrderDetail detail in details)
+                {
+                    InsertOrderDetail(connection, transaction, orderId, detail);
+                    DecrementProductStock(connection, transaction, detail.ProductId, detail.Quantity);
+                }
+
+                transaction.Commit();
+
+                return orderId;
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
+            }
+        }
+
         public bool Update(int id, Order order)
         {
             string connectionString = _configuration.GetConnectionString("DefaultConnection")!;
@@ -250,6 +280,68 @@ namespace LobasOrdersApi.Repositories
                 CreatedAt = Convert.ToDateTime(reader["CreatedAt"]),
                 IsActive = Convert.ToBoolean(reader["IsActive"])
             };
+        }
+
+        private static int InsertOrder(SqlConnection connection, SqlTransaction transaction, Order order)
+        {
+            string query = @"
+                INSERT INTO Orders (CustomerId, Total, Status)
+                VALUES (@CustomerId, @Total, @Status);
+
+                SELECT SCOPE_IDENTITY();";
+
+            using SqlCommand command = new SqlCommand(query, connection, transaction);
+            command.Parameters.AddWithValue("@CustomerId", order.CustomerId);
+            command.Parameters.AddWithValue("@Total", order.Total);
+            command.Parameters.AddWithValue("@Status", order.Status);
+
+            return Convert.ToInt32(command.ExecuteScalar());
+        }
+
+        private static void InsertOrderDetail(
+            SqlConnection connection,
+            SqlTransaction transaction,
+            int orderId,
+            OrderDetail detail)
+        {
+            string query = @"
+                INSERT INTO OrderDetails (OrderId, ProductId, Quantity, UnitPrice, Subtotal)
+                VALUES (@OrderId, @ProductId, @Quantity, @UnitPrice, @Subtotal);";
+
+            using SqlCommand command = new SqlCommand(query, connection, transaction);
+            command.Parameters.AddWithValue("@OrderId", orderId);
+            command.Parameters.AddWithValue("@ProductId", detail.ProductId);
+            command.Parameters.AddWithValue("@Quantity", detail.Quantity);
+            command.Parameters.AddWithValue("@UnitPrice", detail.UnitPrice);
+            command.Parameters.AddWithValue("@Subtotal", detail.Subtotal);
+
+            command.ExecuteNonQuery();
+        }
+
+        private static void DecrementProductStock(
+            SqlConnection connection,
+            SqlTransaction transaction,
+            int productId,
+            int quantity)
+        {
+            string query = @"
+                UPDATE Products
+                SET Stock = Stock - @Quantity
+                WHERE Id = @Id
+                AND IsActive = 1
+                AND Stock >= @Quantity";
+
+            using SqlCommand command = new SqlCommand(query, connection, transaction);
+            command.Parameters.AddWithValue("@Id", productId);
+            command.Parameters.AddWithValue("@Quantity", quantity);
+
+            int rowsAffected = command.ExecuteNonQuery();
+
+            if (rowsAffected == 0)
+            {
+                throw new InvalidOperationException(
+                    $"No hay stock suficiente para el producto con Id {productId}");
+            }
         }
     }
 }

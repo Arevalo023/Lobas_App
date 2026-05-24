@@ -22,17 +22,16 @@ namespace LobasAppOrdersNew
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-            IConfigurationRoot config = new ConfigurationBuilder()
-                .SetBasePath(AppContext.BaseDirectory)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
-                .Build();
+            IConfigurationRoot config = LoadConfiguration();
 
             builder.Configuration.AddConfiguration(config);
 
             GoogleAuthSettings googleAuthSettings = new GoogleAuthSettings
             {
                 ClientId = config["GoogleAuth:ClientId"] ?? string.Empty,
-                ClientSecret = config["GoogleAuth:ClientSecret"] ?? string.Empty
+                ClientSecret = config["GoogleAuth:ClientSecret"]
+                    ?? Environment.GetEnvironmentVariable("LOBAS_GOOGLE_CLIENT_SECRET")
+                    ?? string.Empty
             };
 
             builder.Services.AddSingleton(googleAuthSettings);
@@ -85,6 +84,18 @@ namespace LobasAppOrdersNew
             builder.Services.AddTransient<WelcomePage>();
 
             return builder.Build();
+        }
+
+        private static IConfigurationRoot LoadConfiguration()
+        {
+            using Stream appSettingsStream = FileSystem
+                .OpenAppPackageFileAsync("appsettings.json")
+                .GetAwaiter()
+                .GetResult();
+
+            return new ConfigurationBuilder()
+                .AddJsonStream(appSettingsStream)
+                .Build();
         }
     }
 }

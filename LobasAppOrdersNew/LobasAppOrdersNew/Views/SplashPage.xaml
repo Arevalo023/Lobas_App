@@ -3,7 +3,7 @@
     x:Class="LobasAppOrdersNew.Views.SplashPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    BackgroundColor="#FCE7F3"
+    BackgroundColor="{DynamicResource AppBackgroundColor}"
     NavigationPage.HasNavigationBar="False">
 
     <Grid Padding="30">
@@ -17,8 +17,8 @@
                 WidthRequest="180"
                 HeightRequest="180"
                 CornerRadius="90"
-                BackgroundColor="#FFFFFF"
-                BorderColor="#F9A8D4"
+                BackgroundColor="{DynamicResource AppCardColor}"
+                BorderColor="{DynamicResource AppBorderColor}"
                 HasShadow="True"
                 Padding="18"
                 HorizontalOptions="Center">
@@ -35,20 +35,22 @@
 
             <Label
                 Text="Lobas Orders"
-                TextColor="#831843"
-                FontSize="32"
+                TextColor="{DynamicResource AppTextColor}"
+                FontSize="{DynamicResource AppTitleFontSize}"
                 FontAttributes="Bold"
+                FontFamily="{DynamicResource AppTitleFontFamily}"
                 HorizontalTextAlignment="Center" />
 
             <Label
                 Text="Order Management App"
-                TextColor="#BE185D"
-                FontSize="15"
+                TextColor="{DynamicResource AppSecondaryColor}"
+                FontSize="{DynamicResource AppBodyFontSize}"
+                FontFamily="{DynamicResource AppBodyFontFamily}"
                 HorizontalTextAlignment="Center" />
 
             <ActivityIndicator
                 IsRunning="True"
-                Color="#DB2777"
+                Color="{DynamicResource AppPrimaryColor}"
                 WidthRequest="40"
                 HeightRequest="40"
                 Margin="0,22,0,0"

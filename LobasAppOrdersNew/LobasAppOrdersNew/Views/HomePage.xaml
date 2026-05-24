@@ -4,7 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Home"
-    BackgroundColor="#FFF7FB">
+    BackgroundColor="{DynamicResource AppBackgroundColor}">
 
     <VerticalStackLayout
         Padding="30"
@@ -13,60 +13,48 @@
 
         <Label
             Text="Lobas Orders"
-            FontSize="34"
-            FontAttributes="Bold"
-            HorizontalOptions="Center"
-            TextColor="#7B2CBF" />
+            Style="{StaticResource PageTitleStyle}"
+            HorizontalOptions="Center" />
 
         <Label
             Text="{Binding WelcomeMessage}"
-            FontSize="20"
+            FontSize="{DynamicResource AppSubtitleFontSize}"
             HorizontalTextAlignment="Center"
-            TextColor="#555555" />
+            TextColor="{DynamicResource AppMutedTextColor}" />
 
         <Frame
+            Style="{StaticResource CardFrameStyle}"
             Padding="20"
-            CornerRadius="24"
-            HasShadow="True"
-            BackgroundColor="White"
-            BorderColor="#F0D9FF">
+            CornerRadius="24">
 
             <VerticalStackLayout Spacing="14">
 
                 <Label
                     Text="Authentication settings"
-                    FontSize="18"
-                    FontAttributes="Bold"
-                    HorizontalTextAlignment="Center"
-                    TextColor="#333333" />
+                    Style="{StaticResource SectionTitleStyle}"
+                    HorizontalTextAlignment="Center" />
 
                 <Label
                     Text="{Binding BiometricEnabled, StringFormat='Biometric enabled: {0}'}"
-                    FontSize="15"
+                    FontSize="{DynamicResource AppBodyFontSize}"
                     HorizontalTextAlignment="Center"
-                    TextColor="#777777" />
+                    TextColor="{DynamicResource AppMutedTextColor}" />
 
                 <Button
                     Text="Enable biometric login"
                     Command="{Binding EnableBiometricCommand}"
-                    BackgroundColor="#7B2CBF"
-                    TextColor="White"
-                    CornerRadius="18"
-                    HeightRequest="48" />
+                    Style="{StaticResource PrimaryButtonStyle}" />
 
                 <Button
                     Text="Disable biometric login"
                     Command="{Binding DisableBiometricCommand}"
-                    BackgroundColor="#EDE0FF"
-                    TextColor="#7B2CBF"
-                    CornerRadius="18"
-                    HeightRequest="48" />
+                    Style="{StaticResource SecondaryButtonStyle}" />
 
                 <Button
                     Text="Logout"
                     Command="{Binding LogoutCommand}"
                     BackgroundColor="Transparent"
-                    TextColor="#B00020" />
+                    TextColor="{DynamicResource AppDangerColor}" />
 
             </VerticalStackLayout>
         </Frame>

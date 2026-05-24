@@ -15,7 +15,7 @@
                     Style="{StaticResource PageTitleStyle}" />
 
                 <Label
-                    Text="Personaliza el estilo visual de la aplicación"
+                    Text="Personaliza los colores y la tipografía de la aplicación"
                     Style="{StaticResource PageSubtitleStyle}" />
             </VerticalStackLayout>
 
@@ -23,46 +23,54 @@
                 <VerticalStackLayout Spacing="16">
 
                     <Label
-                        Text="Tema de la aplicación"
-                        FontSize="20"
-                        FontAttributes="Bold"
-                        TextColor="{DynamicResource AppTextColor}" />
+                        Text="Estilo visual"
+                        Style="{StaticResource SectionTitleStyle}" />
 
                     <Label
-                        Text="Puedes cambiar entre dos estilos de color y texto."
+                        Text="El estilo elegido se guarda en este dispositivo y se aplica al iniciar la app."
                         FontSize="{DynamicResource AppBodyFontSize}"
                         TextColor="{DynamicResource AppMutedTextColor}" />
 
                     <Button
-                        Text="Usar tema rosa"
+                        Text="Lobas claro"
                         Style="{StaticResource PrimaryButtonStyle}"
                         Clicked="OnPinkThemeClicked" />
 
                     <Button
-                        Text="Usar tema oscuro"
-                        BackgroundColor="#111827"
-                        TextColor="White"
-                        CornerRadius="18"
-                        HeightRequest="50"
-                        FontAttributes="Bold"
+                        Text="Nocturno profesional"
+                        Style="{StaticResource PrimaryButtonStyle}"
                         Clicked="OnDarkThemeClicked" />
+
+                    <Label
+                        x:Name="CurrentThemeLabel"
+                        FontSize="{DynamicResource AppCaptionFontSize}"
+                        TextColor="{DynamicResource AppMutedTextColor}" />
 
                 </VerticalStackLayout>
             </Frame>
 
             <Frame Style="{StaticResource CardFrameStyle}">
-                <VerticalStackLayout Spacing="10">
+                <VerticalStackLayout Spacing="12">
 
                     <Label
                         Text="Vista previa"
-                        FontSize="20"
-                        FontAttributes="Bold"
+                        Style="{StaticResource SectionTitleStyle}" />
+
+                    <Label
+                        Text="Texto principal"
+                        FontSize="{DynamicResource AppBodyFontSize}"
+                        FontFamily="{DynamicResource AppBodyFontFamily}"
                         TextColor="{DynamicResource AppTextColor}" />
 
                     <Label
-                        Text="Este texto cambia según el tema seleccionado."
-                        FontSize="{DynamicResource AppBodyFontSize}"
+                        Text="Texto secundario y de apoyo"
+                        FontSize="{DynamicResource AppCaptionFontSize}"
+                        FontFamily="{DynamicResource AppBodyFontFamily}"
                         TextColor="{DynamicResource AppMutedTextColor}" />
+
+                    <Entry
+                        Placeholder="Campo de ejemplo"
+                        Style="{StaticResource InputEntryStyle}" />
 
                     <Button
                         Text="Botón de ejemplo"

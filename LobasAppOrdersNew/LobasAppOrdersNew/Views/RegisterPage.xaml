@@ -4,70 +4,68 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Register"
-    BackgroundColor="#FFF7FB">
+    BackgroundColor="{DynamicResource AppBackgroundColor}">
 
     <ScrollView>
         <VerticalStackLayout
-            Padding="30"
-            Spacing="22"
-            VerticalOptions="Center">
+            Padding="{OnIdiom Phone='16,18', Tablet='28', Desktop='32'}"
+            Spacing="{OnIdiom Phone=14, Tablet=20, Desktop=20}"
+            VerticalOptions="Start"
+            HorizontalOptions="Center"
+            MaximumWidthRequest="460">
 
             <Label
                 Text="Create Account"
-                FontSize="32"
-                FontAttributes="Bold"
-                HorizontalOptions="Center"
-                TextColor="#7B2CBF" />
+                Style="{StaticResource PageTitleStyle}"
+                FontSize="{OnIdiom Phone=24, Tablet={DynamicResource AppTitleFontSize}, Desktop={DynamicResource AppTitleFontSize}}"
+                HorizontalOptions="Center" />
 
             <Label
                 Text="Join Lobas Orders"
-                FontSize="18"
-                HorizontalOptions="Center"
-                TextColor="#555555" />
+                Style="{StaticResource PageSubtitleStyle}"
+                HorizontalOptions="Center" />
 
             <Frame
-                Padding="20"
-                CornerRadius="24"
-                HasShadow="True"
-                BackgroundColor="White"
-                BorderColor="#F0D9FF">
+                Style="{StaticResource CardFrameStyle}"
+                Padding="{OnIdiom Phone='18', Tablet='22', Desktop='22'}"
+                CornerRadius="24">
 
                 <VerticalStackLayout Spacing="16">
 
                     <Entry
                         Placeholder="Full name"
                         Text="{Binding Name}"
+                        Style="{StaticResource InputEntryStyle}"
                         ClearButtonVisibility="WhileEditing" />
 
                     <Entry
                         Placeholder="Email"
                         Keyboard="Email"
                         Text="{Binding Email}"
+                        Style="{StaticResource InputEntryStyle}"
                         ClearButtonVisibility="WhileEditing" />
 
                     <Entry
                         Placeholder="Password"
                         IsPassword="True"
-                        Text="{Binding Password}" />
+                        Text="{Binding Password}"
+                        Style="{StaticResource InputEntryStyle}" />
 
                     <Entry
                         Placeholder="Confirm password"
                         IsPassword="True"
-                        Text="{Binding ConfirmPassword}" />
+                        Text="{Binding ConfirmPassword}"
+                        Style="{StaticResource InputEntryStyle}" />
 
                     <Button
                         Text="Create account"
                         Command="{Binding RegisterCommand}"
-                        BackgroundColor="#7B2CBF"
-                        TextColor="White"
-                        CornerRadius="18"
-                        HeightRequest="50" />
+                        Style="{StaticResource PrimaryButtonStyle}" />
 
                     <Button
                         Text="Already have an account? Login"
                         Command="{Binding GoToLoginCommand}"
-                        BackgroundColor="Transparent"
-                        TextColor="#7B2CBF" />
+                        Style="{StaticResource SecondaryButtonStyle}" />
 
                 </VerticalStackLayout>
             </Frame>

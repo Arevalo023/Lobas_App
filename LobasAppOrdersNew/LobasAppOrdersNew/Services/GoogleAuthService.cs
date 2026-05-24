@@ -21,6 +21,17 @@ namespace LobasAppOrdersNew.Services
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(_googleAuthSettings.ClientSecret))
+                {
+                    await Application.Current!.MainPage!.DisplayAlert(
+                        "Google login setup",
+                        "Google ClientSecret is missing. Add it to your local ignored appsettings.json under GoogleAuth:ClientSecret or set LOBAS_GOOGLE_CLIENT_SECRET.",
+                        "OK"
+                    );
+
+                    return null;
+                }
+
                 ClientSecrets secrets = new ClientSecrets
                 {
                     ClientId = _googleAuthSettings.ClientId,

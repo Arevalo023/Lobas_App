@@ -37,8 +37,9 @@
                             ItemDisplayBinding="{Binding Name}"
                             SelectedItem="{Binding SelectedCustomer}"
                             Title="Selecciona un cliente"
-                            BackgroundColor="White"
-                            TextColor="{DynamicResource AppTextColor}" />
+                            BackgroundColor="{DynamicResource AppInputBackgroundColor}"
+                            TextColor="{DynamicResource AppTextColor}"
+                            TitleColor="{DynamicResource AppPlaceholderColor}" />
                     </VerticalStackLayout>
                     <VerticalStackLayout Spacing="6">
                         <Label
@@ -50,8 +51,9 @@
         ItemsSource="{Binding StatusOptions}"
         SelectedItem="{Binding Status}"
         Title="Selecciona un estatus"
-        BackgroundColor="White"
-        TextColor="{DynamicResource AppTextColor}" />
+        BackgroundColor="{DynamicResource AppInputBackgroundColor}"
+        TextColor="{DynamicResource AppTextColor}"
+        TitleColor="{DynamicResource AppPlaceholderColor}" />
                     </VerticalStackLayout>
 
                     <Grid ColumnDefinitions="*,120,Auto" ColumnSpacing="10">
@@ -67,8 +69,9 @@
                                 ItemDisplayBinding="{Binding Name}"
                                 SelectedItem="{Binding SelectedProduct}"
                                 Title="Selecciona producto"
-                                BackgroundColor="White"
-                                TextColor="{DynamicResource AppTextColor}" />
+                                BackgroundColor="{DynamicResource AppInputBackgroundColor}"
+                                TextColor="{DynamicResource AppTextColor}"
+                                TitleColor="{DynamicResource AppPlaceholderColor}" />
                         </VerticalStackLayout>
 
                         <VerticalStackLayout Grid.Column="1" Spacing="6">
@@ -80,18 +83,14 @@
                             <Entry
                                 Text="{Binding Quantity}"
                                 Keyboard="Numeric"
-                                BackgroundColor="White"
-                                TextColor="{DynamicResource AppTextColor}"
-                                HeightRequest="50" />
+                                Style="{StaticResource InputEntryStyle}" />
                         </VerticalStackLayout>
 
                         <Button
                             Grid.Column="2"
                             Text="+"
                             Command="{Binding AddProductCommand}"
-                            BackgroundColor="{DynamicResource AppPrimaryColor}"
-                            TextColor="{DynamicResource AppButtonTextColor}"
-                            CornerRadius="18"
+                            Style="{StaticResource PrimaryButtonStyle}"
                             WidthRequest="55"
                             HeightRequest="55"
                             VerticalOptions="End" />
@@ -123,7 +122,7 @@
                                         <SwipeItems Mode="Reveal">
                                             <SwipeItem
                                                 Text="Quitar"
-                                                BackgroundColor="#DC2626"
+                                                BackgroundColor="{DynamicResource AppDangerColor}"
                                                 Invoked="OnRemoveCartItemInvoked" />
                                         </SwipeItems>
                                     </SwipeView.RightItems>
@@ -189,7 +188,7 @@
                         <ActivityIndicator
                             IsRunning="{Binding IsSaving}"
                             IsVisible="{Binding IsSaving}"
-                            Color="White"
+                            Color="{DynamicResource AppButtonTextColor}"
                             WidthRequest="24"
                             HeightRequest="24"
                             HorizontalOptions="End"
@@ -200,9 +199,7 @@
                     <Button
                         Text="Cancelar"
                         Command="{Binding CancelCommand}"
-                        BackgroundColor="Transparent"
-                        TextColor="{DynamicResource AppPrimaryColor}"
-                        FontAttributes="Bold" />
+                        Style="{StaticResource SecondaryButtonStyle}" />
 
                 </VerticalStackLayout>
             </Frame>

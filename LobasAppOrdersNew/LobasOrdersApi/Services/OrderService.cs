@@ -121,21 +121,7 @@ namespace LobasOrdersApi.Services
                     : orderDto.Status.Trim()
             };
 
-            int orderId = _orderRepository.Create(order);
-
-            foreach (OrderDetail detail in orderDetails)
-            {
-                detail.OrderId = orderId;
-
-                _orderDetailRepository.Create(detail);
-
-                Product product = _productRepository.GetById(detail.ProductId)!;
-                int newStock = product.Stock - detail.Quantity;
-
-                _productRepository.UpdateStock(product.Id, newStock);
-            }
-
-            return orderId;
+            return _orderRepository.CreateWithDetailsAndStockUpdate(order, orderDetails);
         }
 
         public bool Update(int id, OrderUpdateDto orderDto)

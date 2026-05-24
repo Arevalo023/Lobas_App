@@ -30,18 +30,16 @@
                 Grid.Column="0"
                 Placeholder="Buscar producto..."
                 Text="{Binding SearchText}"
-                BackgroundColor="White"
+                BackgroundColor="{DynamicResource AppInputBackgroundColor}"
                 TextColor="{DynamicResource AppTextColor}"
-                PlaceholderColor="#C08497" />
+                PlaceholderColor="{DynamicResource AppPlaceholderColor}" />
 
             <Button
     Grid.Column="1"
     Text="+"
     FontSize="24"
     FontAttributes="Bold"
-    BackgroundColor="{DynamicResource AppPrimaryColor}"
-    TextColor="{DynamicResource AppButtonTextColor}"
-    CornerRadius="18"
+    Style="{StaticResource PrimaryButtonStyle}"
     WidthRequest="55"
     HeightRequest="55"
     Clicked="OnAddProductClicked" />
@@ -85,7 +83,7 @@
                                 <SwipeItems Mode="Reveal">
                                     <SwipeItem
                     Text="Editar"
-                    BackgroundColor="#6366F1"
+                    BackgroundColor="{DynamicResource AppEditColor}"
                     Invoked="OnEditProductInvoked" />
                                 </SwipeItems>
                             </SwipeView.LeftItems>
@@ -94,7 +92,7 @@
                                 <SwipeItems Mode="Reveal">
                                     <SwipeItem
                     Text="Eliminar"
-                    BackgroundColor="#DC2626"
+                    BackgroundColor="{DynamicResource AppDangerColor}"
                     Invoked="OnDeleteProductInvoked" />
                                 </SwipeItems>
                             </SwipeView.RightItems>

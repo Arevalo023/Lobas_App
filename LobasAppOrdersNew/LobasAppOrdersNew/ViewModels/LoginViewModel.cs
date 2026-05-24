@@ -3,6 +3,7 @@ using LobasAppOrdersNew.Helpers;
 using LobasAppOrdersNew.Models;
 using LobasAppOrdersNew.Services;
 using LobasAppOrdersNew.Views;
+using Microsoft.Extensions.DependencyInjection;
 namespace LobasAppOrdersNew.ViewModels
 {
     public class LoginViewModel : BaseViewModel
@@ -11,12 +12,13 @@ namespace LobasAppOrdersNew.ViewModels
         private readonly SessionService _sessionService;
         private readonly AppBiometricService _biometricService;
         private readonly GoogleAuthService _googleAuthService;
+        private readonly IServiceProvider _serviceProvider;
 
         private string _email = string.Empty;
         private string _password = string.Empty;
         private bool _isBiometricButtonVisible;
         private bool _isPasswordHidden = true;
-        private string _passwordToggleText = "👁";
+        private string _passwordToggleText = "Show";
         private bool _isLoginLoading;
         private bool _isGoogleLoading;
 
@@ -24,12 +26,14 @@ namespace LobasAppOrdersNew.ViewModels
         AuthApiService authApiService,
         SessionService sessionService,
         AppBiometricService biometricService,
-        GoogleAuthService googleAuthService)
+        GoogleAuthService googleAuthService,
+        IServiceProvider serviceProvider)
         {
             _authApiService = authApiService;
             _sessionService = sessionService;
             _biometricService = biometricService;
             _googleAuthService = googleAuthService;
+            _serviceProvider = serviceProvider;
 
             Title = "Login";
 
@@ -154,7 +158,7 @@ namespace LobasAppOrdersNew.ViewModels
         private void TogglePasswordVisibility()
         {
             IsPasswordHidden = !IsPasswordHidden;
-            PasswordToggleText = IsPasswordHidden ? "👁" : "🙈";
+            PasswordToggleText = IsPasswordHidden ? "Show" : "Hide";
         }
         private async Task GoogleLoginAsync()
         {
@@ -326,7 +330,8 @@ namespace LobasAppOrdersNew.ViewModels
         }
         private async Task GoToRegisterAsync()
         {
-            await Shell.Current.GoToAsync("RegisterPage");
+            RegisterPage registerPage = _serviceProvider.GetRequiredService<RegisterPage>();
+            await Application.Current!.MainPage!.Navigation.PushAsync(registerPage);
         }
 
         private Task GoToAppShellAsync()

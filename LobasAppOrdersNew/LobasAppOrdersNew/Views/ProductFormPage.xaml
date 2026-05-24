@@ -36,10 +36,7 @@
                         <Entry
                             Placeholder="Ej. Collar para mascota"
                             Text="{Binding Name}"
-                            BackgroundColor="White"
-                            TextColor="{DynamicResource AppTextColor}"
-                            PlaceholderColor="#C08497"
-                            HeightRequest="50" />
+                            Style="{StaticResource InputEntryStyle}" />
                     </VerticalStackLayout>
 
                     <VerticalStackLayout Spacing="6">
@@ -51,9 +48,7 @@
                         <Editor
                             Placeholder="Descripción del producto"
                             Text="{Binding Description}"
-                            BackgroundColor="White"
-                            TextColor="{DynamicResource AppTextColor}"
-                            PlaceholderColor="#C08497"
+                            Style="{StaticResource InputEditorStyle}"
                             AutoSize="TextChanges"
                             HeightRequest="90" />
                     </VerticalStackLayout>
@@ -70,10 +65,7 @@
                                 Placeholder="0.00"
                                 Text="{Binding Price}"
                                 Keyboard="Numeric"
-                                BackgroundColor="White"
-                                TextColor="{DynamicResource AppTextColor}"
-                                PlaceholderColor="#C08497"
-                                HeightRequest="50" />
+                                Style="{StaticResource InputEntryStyle}" />
                         </VerticalStackLayout>
 
                         <VerticalStackLayout Grid.Column="1" Spacing="6">
@@ -86,10 +78,7 @@
                                 Placeholder="0"
                                 Text="{Binding Stock}"
                                 Keyboard="Numeric"
-                                BackgroundColor="White"
-                                TextColor="{DynamicResource AppTextColor}"
-                                PlaceholderColor="#C08497"
-                                HeightRequest="50" />
+                                Style="{StaticResource InputEntryStyle}" />
                         </VerticalStackLayout>
 
                     </Grid>
@@ -104,7 +93,7 @@
                         <ActivityIndicator
                             IsRunning="{Binding IsSaving}"
                             IsVisible="{Binding IsSaving}"
-                            Color="White"
+                            Color="{DynamicResource AppButtonTextColor}"
                             WidthRequest="24"
                             HeightRequest="24"
                             HorizontalOptions="End"
@@ -115,9 +104,7 @@
                     <Button
                         Text="Cancelar"
                         Command="{Binding CancelCommand}"
-                        BackgroundColor="Transparent"
-                        TextColor="{DynamicResource AppPrimaryColor}"
-                        FontAttributes="Bold" />
+                        Style="{StaticResource SecondaryButtonStyle}" />
 
                 </VerticalStackLayout>
             </Frame>

@@ -113,7 +113,7 @@ namespace LobasAppOrdersNew.ViewModels
                     "OK"
                 );
 
-                await Shell.Current.GoToAsync("..");
+                await Application.Current!.MainPage!.Navigation.PopAsync();
             }
             catch (Exception ex)
             {
@@ -127,7 +127,7 @@ namespace LobasAppOrdersNew.ViewModels
 
         private async Task GoToLoginAsync()
         {
-            await Shell.Current.GoToAsync("..");
+            await Application.Current!.MainPage!.Navigation.PopAsync();
         }
     }
 }

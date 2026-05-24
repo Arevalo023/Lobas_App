@@ -11,8 +11,7 @@ namespace LobasAppOrdersNew.Services
 
         public UserApiService(IConfiguration configuration)
         {
-            string baseUrl = configuration["ApiSettings:BaseUrl"]
-                ?? throw new InvalidOperationException("ApiSettings:BaseUrl is not configured.");
+            string baseUrl = ApiEndpointResolver.GetBaseUrl(configuration);
 
             _httpClient = new HttpClient
             {

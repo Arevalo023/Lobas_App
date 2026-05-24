@@ -14,6 +14,8 @@ namespace LobasOrdersApi.Repositories.Interfaces
 
         int Create(Order order);
 
+        int CreateWithDetailsAndStockUpdate(Order order, List<OrderDetail> details);
+
         bool Update(int id, Order order);
 
         bool UpdateStatus(int id, string status);

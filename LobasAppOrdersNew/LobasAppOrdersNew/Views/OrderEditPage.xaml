@@ -37,8 +37,9 @@
                             ItemDisplayBinding="{Binding Name}"
                             SelectedItem="{Binding SelectedCustomer}"
                             Title="Selecciona un cliente"
-                            BackgroundColor="White"
-                            TextColor="{DynamicResource AppTextColor}" />
+                            BackgroundColor="{DynamicResource AppInputBackgroundColor}"
+                            TextColor="{DynamicResource AppTextColor}"
+                            TitleColor="{DynamicResource AppPlaceholderColor}" />
                     </VerticalStackLayout>
                     <VerticalStackLayout Spacing="6">
                         <Label
@@ -50,8 +51,9 @@
         ItemsSource="{Binding StatusOptions}"
         SelectedItem="{Binding Status}"
         Title="Selecciona un estatus"
-        BackgroundColor="White"
-        TextColor="{DynamicResource AppTextColor}" />
+        BackgroundColor="{DynamicResource AppInputBackgroundColor}"
+        TextColor="{DynamicResource AppTextColor}"
+        TitleColor="{DynamicResource AppPlaceholderColor}" />
                     </VerticalStackLayout>
 
                     <Grid HeightRequest="52">
@@ -64,7 +66,7 @@
                         <ActivityIndicator
                             IsRunning="{Binding IsSaving}"
                             IsVisible="{Binding IsSaving}"
-                            Color="White"
+                            Color="{DynamicResource AppButtonTextColor}"
                             WidthRequest="24"
                             HeightRequest="24"
                             HorizontalOptions="End"
@@ -75,9 +77,7 @@
                     <Button
                         Text="Cancelar"
                         Command="{Binding CancelCommand}"
-                        BackgroundColor="Transparent"
-                        TextColor="{DynamicResource AppPrimaryColor}"
-                        FontAttributes="Bold" />
+                        Style="{StaticResource SecondaryButtonStyle}" />
 
                 </VerticalStackLayout>
             </Frame>

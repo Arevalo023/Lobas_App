@@ -5,66 +5,130 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:views="clr-namespace:LobasAppOrdersNew.Views"
     Shell.FlyoutBehavior="Flyout"
+    Shell.BackgroundColor="{DynamicResource AppCardColor}"
+    Shell.ForegroundColor="{DynamicResource AppTextColor}"
+    Shell.TitleColor="{DynamicResource AppTextColor}"
+    Shell.UnselectedColor="{DynamicResource AppMutedTextColor}"
+    FlyoutBackgroundColor="{DynamicResource AppCardColor}"
     Title="Lobas Orders">
 
-    <Shell.FlyoutHeader>
-        <Grid BackgroundColor="#1F2937" Padding="20" HeightRequest="150">
-            <VerticalStackLayout VerticalOptions="Center">
-                <Label Text="Lobas Orders"
-                       TextColor="White"
-                       FontSize="24"
-                       FontAttributes="Bold" />
+    <Shell.ItemTemplate>
+        <DataTemplate>
+            <Grid
+                Padding="20,13"
+                ColumnDefinitions="30,*"
+                ColumnSpacing="12"
+                BackgroundColor="{DynamicResource AppCardColor}">
 
-                <Label Text="Order Management App"
-                       TextColor="#D1D5DB"
-                       FontSize="14" />
+                <Image
+                    Source="{Binding FlyoutIcon}"
+                    HeightRequest="22"
+                    WidthRequest="22"
+                    VerticalOptions="Center" />
+
+                <Label
+                    Grid.Column="1"
+                    Text="{Binding Title}"
+                    TextColor="{DynamicResource AppTextColor}"
+                    FontFamily="{DynamicResource AppBodyFontFamily}"
+                    FontSize="{DynamicResource AppBodyFontSize}"
+                    VerticalOptions="Center" />
+            </Grid>
+        </DataTemplate>
+    </Shell.ItemTemplate>
+
+    <Shell.MenuItemTemplate>
+        <DataTemplate>
+            <Grid
+                Padding="20,13"
+                ColumnDefinitions="30,*"
+                ColumnSpacing="12"
+                BackgroundColor="{DynamicResource AppCardColor}">
+
+                <Image
+                    Source="{Binding Icon}"
+                    HeightRequest="22"
+                    WidthRequest="22"
+                    VerticalOptions="Center" />
+
+                <Label
+                    Grid.Column="1"
+                    Text="{Binding Text}"
+                    TextColor="{DynamicResource AppDangerColor}"
+                    FontFamily="{DynamicResource AppBodyFontFamily}"
+                    FontSize="{DynamicResource AppBodyFontSize}"
+                    VerticalOptions="Center" />
+            </Grid>
+        </DataTemplate>
+    </Shell.MenuItemTemplate>
+
+    <Shell.FlyoutHeader>
+        <Grid
+            BackgroundColor="{DynamicResource AppShellHeaderColor}"
+            Padding="20"
+            HeightRequest="150">
+
+            <VerticalStackLayout VerticalOptions="Center">
+                <Label
+                    Text="Lobas Orders"
+                    TextColor="{DynamicResource AppShellHeaderTextColor}"
+                    FontSize="24"
+                    FontAttributes="Bold"
+                    FontFamily="{DynamicResource AppTitleFontFamily}" />
+
+                <Label
+                    Text="Order Management App"
+                    TextColor="{DynamicResource AppShellHeaderMutedTextColor}"
+                    FontSize="{DynamicResource AppSubtitleFontSize}"
+                    FontFamily="{DynamicResource AppBodyFontFamily}" />
             </VerticalStackLayout>
         </Grid>
     </Shell.FlyoutHeader>
+
     <FlyoutItem Title="Inicio" Icon="home.png">
         <ShellContent
-        Title="Inicio"
-        ContentTemplate="{DataTemplate views:WelcomePage}"
-        Route="WelcomePage" />
+            Title="Inicio"
+            ContentTemplate="{DataTemplate views:WelcomePage}"
+            Route="WelcomePage" />
     </FlyoutItem>
 
     <FlyoutItem Title="Clientes" Icon="customers.png">
         <ShellContent
-        Title="Clientes"
-        ContentTemplate="{DataTemplate views:CustomersPage}"
-        Route="CustomersPage" />
+            Title="Clientes"
+            ContentTemplate="{DataTemplate views:CustomersPage}"
+            Route="CustomersPage" />
     </FlyoutItem>
 
     <FlyoutItem Title="Productos" Icon="product.png">
         <ShellContent
-        Title="Productos"
-        ContentTemplate="{DataTemplate views:ProductsPage}"
-        Route="ProductsPage" />
+            Title="Productos"
+            ContentTemplate="{DataTemplate views:ProductsPage}"
+            Route="ProductsPage" />
     </FlyoutItem>
 
     <FlyoutItem Title="Pedidos" Icon="orders.png">
         <ShellContent
-        Title="Pedidos"
-        ContentTemplate="{DataTemplate views:OrdersPage}"
-        Route="OrdersPage" />
+            Title="Pedidos"
+            ContentTemplate="{DataTemplate views:OrdersPage}"
+            Route="OrdersPage" />
     </FlyoutItem>
 
     <FlyoutItem Title="Ajustes" Icon="settings.png">
         <ShellContent
-        Title="Ajustes"
-        ContentTemplate="{DataTemplate views:SettingsPage}"
-        Route="SettingsPage" />
+            Title="Ajustes"
+            ContentTemplate="{DataTemplate views:SettingsPage}"
+            Route="SettingsPage" />
     </FlyoutItem>
 
     <FlyoutItem Title="Acerca de" Icon="about.png">
         <ShellContent
-        Title="Acerca de"
-        ContentTemplate="{DataTemplate views:AboutPage}"
-        Route="AboutPage" />
+            Title="Acerca de"
+            ContentTemplate="{DataTemplate views:AboutPage}"
+            Route="AboutPage" />
     </FlyoutItem>
 
     <MenuItem
-    Text="Cerrar sesión"
-    IconImageSource="logout.png"
-    Clicked="OnLogoutClicked" />
+        Text="Cerrar sesion"
+        IconImageSource="logout.png"
+        Clicked="OnLogoutClicked" />
 </Shell>
