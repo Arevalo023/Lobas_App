@@ -59,14 +59,24 @@ namespace LobasOrdersApi.Controllers
         [HttpPatch("{id}/biometric")]
         public IActionResult UpdateBiometricStatus(int id, [FromQuery] bool biometricEnabled)
         {
-            bool updated = _userService.UpdateBiometricStatus(id, biometricEnabled);
-
-            if (!updated)
+            try
             {
-                return NotFound(new { message = "Usuario no encontrado" });
-            }
+                UserResponseDto user = _userService.UpdateBiometricStatus(id, biometricEnabled);
 
-            return Ok(new { message = "Estado biométrico actualizado correctamente" });
+                return Ok(new
+                {
+                    message = "Estado biométrico actualizado correctamente",
+                    user
+                });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpPatch("{id}/name")]

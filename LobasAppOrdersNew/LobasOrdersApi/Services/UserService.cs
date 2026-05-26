@@ -106,9 +106,25 @@ namespace LobasOrdersApi.Services
             return _userRepository.Delete(id);
         }
 
-        public bool UpdateBiometricStatus(int id, bool biometricEnabled)
+        public UserResponseDto UpdateBiometricStatus(int id, bool biometricEnabled)
         {
-            return _userRepository.UpdateBiometricStatus(id, biometricEnabled);
+            User? existingUser = _userRepository.GetById(id);
+
+            if (existingUser == null)
+            {
+                throw new KeyNotFoundException("Usuario no encontrado");
+            }
+
+            bool updated = _userRepository.UpdateBiometricStatus(id, biometricEnabled);
+
+            if (!updated)
+            {
+                throw new KeyNotFoundException("Usuario no encontrado");
+            }
+
+            User updatedUser = _userRepository.GetById(id)!;
+
+            return MapToResponseDto(updatedUser);
         }
 
         private UserResponseDto MapToResponseDto(User user)

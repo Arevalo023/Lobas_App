@@ -30,6 +30,7 @@ namespace LobasAppOrdersNew
             GoogleAuthSettings googleAuthSettings = new GoogleAuthSettings
             {
                 ClientId = config["GoogleAuth:ClientId"] ?? string.Empty,
+                AndroidClientId = config["GoogleAuth:AndroidClientId"] ?? string.Empty,
                 ClientSecret = config["GoogleAuth:ClientSecret"]
                     ?? Environment.GetEnvironmentVariable("LOBAS_GOOGLE_CLIENT_SECRET")
                     ?? string.Empty

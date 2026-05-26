@@ -34,7 +34,7 @@ namespace LobasAppOrdersNew.ViewModels
 
             LoadProfileCommand = new Command(async () => await LoadProfileAsync());
             SaveNameCommand = new Command(async () => await SaveNameAsync());
-            DisableBiometricCommand = new Command(async () => await DisableBiometricAsync());
+            ToggleBiometricCommand = new Command(async () => await ToggleBiometricAsync());
         }
 
         public string Name
@@ -67,6 +67,9 @@ namespace LobasAppOrdersNew.ViewModels
             set => SetProperty(ref _biometricStatus, value);
         }
 
+        public string BiometricActionText =>
+            BiometricEnabled ? "Deshabilitar biometria" : "Habilitar biometria";
+
         public string LastNameChangedText
         {
             get => _lastNameChangedText;
@@ -83,7 +86,7 @@ namespace LobasAppOrdersNew.ViewModels
 
         public ICommand SaveNameCommand { get; }
 
-        public ICommand DisableBiometricCommand { get; }
+        public ICommand ToggleBiometricCommand { get; }
 
         public async Task LoadProfileAsync()
         {
@@ -151,6 +154,7 @@ namespace LobasAppOrdersNew.ViewModels
 
                 if (response.User == null)
                 {
+                    Name = _currentUser.Name;
                     await DialogService.ShowAlertAsync("Perfil", response.Message, "OK");
                     return;
                 }
@@ -168,25 +172,22 @@ namespace LobasAppOrdersNew.ViewModels
             }
         }
 
-        private async Task DisableBiometricAsync()
+        private async Task ToggleBiometricAsync()
         {
             if (IsBusy || _currentUser == null)
             {
                 return;
             }
 
-            if (!_currentUser.BiometricEnabled)
-            {
-                await DialogService.ShowAlertAsync(
-                    "Biometria",
-                    "La biometria ya esta deshabilitada.",
-                    "OK");
-                return;
-            }
+            bool targetEnabled = !_currentUser.BiometricEnabled;
+            string title = targetEnabled ? "Habilitar biometria" : "Deshabilitar biometria";
+            string question = targetEnabled
+                ? "Seguro que deseas habilitar el acceso biometrico?"
+                : "Seguro que deseas deshabilitar el acceso biometrico?";
 
             bool confirm = await DialogService.ShowConfirmationAsync(
-                "Deshabilitar biometria",
-                "Seguro que deseas deshabilitar el acceso biometrico?",
+                title,
+                question,
                 "Si",
                 "Cancelar");
 
@@ -195,23 +196,33 @@ namespace LobasAppOrdersNew.ViewModels
                 return;
             }
 
-            ApiResponse<UserModel> response =
-                await _userApiService.UpdateBiometricStatusAsync(_currentUser.Id, false);
-
-            if (!response.Message.Contains("successfully", StringComparison.OrdinalIgnoreCase))
+            try
             {
-                await DialogService.ShowAlertAsync("Error", response.Message, "OK");
-                return;
+                IsBusy = true;
+
+                ApiResponse<UserModel> response =
+                    await _userApiService.UpdateBiometricStatusAsync(_currentUser.Id, targetEnabled);
+
+                if (response.User == null)
+                {
+                    await DialogService.ShowAlertAsync("Error", response.Message, "OK");
+                    return;
+                }
+
+                _currentUser = response.User;
+                await _sessionService.SaveUserSessionAsync(_currentUser);
+                ApplyUser(_currentUser);
+
+                string message = targetEnabled
+                    ? "Biometria habilitada correctamente."
+                    : "Biometria deshabilitada correctamente.";
+
+                await DialogService.ShowAlertAsync("Biometria", message, "OK");
             }
-
-            _currentUser.BiometricEnabled = false;
-            await _sessionService.SaveUserSessionAsync(_currentUser);
-            ApplyUser(_currentUser);
-
-            await DialogService.ShowAlertAsync(
-                "Biometria",
-                "Biometria deshabilitada correctamente.",
-                "OK");
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         private void ApplyUser(UserModel user)
@@ -224,6 +235,7 @@ namespace LobasAppOrdersNew.ViewModels
             LastNameChangedText = user.LastNameChangedAt.HasValue
                 ? $"Ultimo cambio: {user.LastNameChangedAt.Value:dd/MM/yyyy HH:mm}"
                 : "Sin cambios registrados";
+            OnPropertyChanged(nameof(BiometricActionText));
         }
     }
 }

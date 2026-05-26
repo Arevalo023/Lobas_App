@@ -85,15 +85,14 @@ namespace LobasAppOrdersNew.ViewModels
             ApiResponse<UserModel> response =
                 await _userApiService.UpdateBiometricStatusAsync(user.Id, enabled);
 
-            if (!response.Message.Contains("successfully", StringComparison.OrdinalIgnoreCase))
+            if (response.User == null)
             {
                 await DialogService.ShowAlertAsync("Error", response.Message, "OK");
                 return;
             }
 
-            user.BiometricEnabled = enabled;
-            await _sessionService.SaveUserSessionAsync(user);
-            BiometricEnabled = enabled;
+            await _sessionService.SaveUserSessionAsync(response.User);
+            BiometricEnabled = response.User.BiometricEnabled;
 
             string message = enabled
                 ? "Biometric login enabled."

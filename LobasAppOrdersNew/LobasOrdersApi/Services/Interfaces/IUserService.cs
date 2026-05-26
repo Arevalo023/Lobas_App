@@ -14,6 +14,6 @@ namespace LobasOrdersApi.Services.Interfaces
 
         bool Delete(int id);
 
-        bool UpdateBiometricStatus(int id, bool biometricEnabled);
+        UserResponseDto UpdateBiometricStatus(int id, bool biometricEnabled);
     }
 }

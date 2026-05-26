@@ -75,6 +75,14 @@ namespace LobasAppOrdersNew.Services
                     null
                 );
 
+                ApiResponse<UserModel>? result =
+                    await response.Content.ReadFromJsonAsync<ApiResponse<UserModel>>();
+
+                if (result != null)
+                {
+                    return result;
+                }
+
                 if (!response.IsSuccessStatusCode)
                 {
                     return new ApiResponse<UserModel>
@@ -87,7 +95,7 @@ namespace LobasAppOrdersNew.Services
                 return new ApiResponse<UserModel>
                 {
                     Message = "Biometric status updated successfully.",
-                    User = null
+                    User = await GetUserByIdAsync(userId)
                 };
             }
             catch (Exception ex)

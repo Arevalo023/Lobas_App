@@ -74,9 +74,8 @@
                         TextColor="{DynamicResource AppTextColor}" />
 
                     <Button
-                        Text="Deshabilitar biometria"
-                        Command="{Binding DisableBiometricCommand}"
-                        IsEnabled="{Binding BiometricEnabled}"
+                        Text="{Binding BiometricActionText}"
+                        Command="{Binding ToggleBiometricCommand}"
                         Style="{StaticResource PrimaryButtonStyle}" />
 
                 </VerticalStackLayout>
