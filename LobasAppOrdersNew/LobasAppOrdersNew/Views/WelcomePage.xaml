@@ -88,6 +88,7 @@
                                 VerticalOptions="Start">
 
                                 <Image
+                                    x:Name="ProductsIconImage"
                                     Source="{DynamicResource ProductsIconSource}"
                                     WidthRequest="24"
                                     HeightRequest="24"
@@ -132,6 +133,7 @@
                                 VerticalOptions="Start">
 
                                 <Image
+                                    x:Name="CustomersIconImage"
                                     Source="{DynamicResource CustomersIconSource}"
                                     WidthRequest="24"
                                     HeightRequest="24"
@@ -176,6 +178,7 @@
                                 VerticalOptions="Start">
 
                                 <Image
+                                    x:Name="OrdersIconImage"
                                     Source="{DynamicResource OrdersIconSource}"
                                     WidthRequest="24"
                                     HeightRequest="24"

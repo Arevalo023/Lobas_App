@@ -19,6 +19,7 @@ namespace LobasAppOrdersNew.ViewModels
         private string _zipCode = string.Empty;
         private bool _isMain;
         private bool _isSaving;
+        private AddressModel? _editingAddress;
 
         public CustomerAddressesViewModel(
             AddressApiService addressApiService,
@@ -31,7 +32,7 @@ namespace LobasAppOrdersNew.ViewModels
             Addresses = new ObservableCollection<AddressModel>();
 
             SaveAddressCommand = new Command(async () => await SaveAddressAsync());
-            CancelCommand = new Command(async () => await NavigationService.GoBackAsync());
+            CancelCommand = new Command(async () => await CancelAsync());
         }
 
         public ObservableCollection<AddressModel> Addresses { get; }
@@ -57,6 +58,20 @@ namespace LobasAppOrdersNew.ViewModels
         public string PageSubtitle => string.IsNullOrWhiteSpace(CustomerName)
             ? "Agrega las direcciones del cliente"
             : $"Direcciones de {CustomerName}";
+
+        public string FormTitle => IsEditing
+            ? "Editar direcci\u00f3n"
+            : "Nueva direcci\u00f3n";
+
+        public string SaveButtonText => IsEditing
+            ? "Actualizar direcci\u00f3n"
+            : "Guardar direcci\u00f3n";
+
+        public string CancelButtonText => IsEditing
+            ? "Cancelar edici\u00f3n"
+            : "Volver";
+
+        public bool IsEditing => _editingAddress != null;
 
         public string Street
         {
@@ -153,6 +168,21 @@ namespace LobasAppOrdersNew.ViewModels
             }
         }
 
+        public void BeginEditAddress(AddressModel address)
+        {
+            _editingAddress = address;
+            Street = address.Street;
+            City = address.City;
+            State = address.State;
+            ZipCode = address.ZipCode;
+            IsMain = address.IsMain;
+
+            OnPropertyChanged(nameof(FormTitle));
+            OnPropertyChanged(nameof(SaveButtonText));
+            OnPropertyChanged(nameof(CancelButtonText));
+            OnPropertyChanged(nameof(IsEditing));
+        }
+
         private async Task SaveAddressAsync()
         {
             if (IsBusy)
@@ -188,9 +218,11 @@ namespace LobasAppOrdersNew.ViewModels
                     IsMain = IsMain
                 };
 
-                bool created = await _addressApiService.CreateAddressAsync(request);
+                bool saved = IsEditing && _editingAddress != null
+                    ? await _addressApiService.UpdateAddressAsync(_editingAddress.Id, request)
+                    : await _addressApiService.CreateAddressAsync(request);
 
-                if (!created)
+                if (!saved)
                 {
                     await DialogService.ShowAlertAsync(
                         "Error",
@@ -212,11 +244,28 @@ namespace LobasAppOrdersNew.ViewModels
 
         private void ClearForm()
         {
+            _editingAddress = null;
             Street = string.Empty;
             City = string.Empty;
             State = string.Empty;
             ZipCode = string.Empty;
             IsMain = false;
+
+            OnPropertyChanged(nameof(FormTitle));
+            OnPropertyChanged(nameof(SaveButtonText));
+            OnPropertyChanged(nameof(CancelButtonText));
+            OnPropertyChanged(nameof(IsEditing));
+        }
+
+        private async Task CancelAsync()
+        {
+            if (IsEditing)
+            {
+                ClearForm();
+                return;
+            }
+
+            await NavigationService.GoBackAsync();
         }
 
         private async Task ReloadAddressesAsync()

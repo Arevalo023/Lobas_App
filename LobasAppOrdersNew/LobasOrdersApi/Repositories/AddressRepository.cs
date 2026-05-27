@@ -91,6 +91,24 @@ namespace LobasOrdersApi.Repositories
             return addresses;
         }
 
+        public int CountByCustomerId(int customerId)
+        {
+            string connectionString = _configuration.GetConnectionString("DefaultConnection")!;
+
+            using SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+
+            string query = @"
+                SELECT COUNT(*)
+                FROM Addresses
+                WHERE CustomerId = @CustomerId";
+
+            using SqlCommand command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@CustomerId", customerId);
+
+            return Convert.ToInt32(command.ExecuteScalar());
+        }
+
         public int Create(Address address)
         {
             string connectionString = _configuration.GetConnectionString("DefaultConnection")!;

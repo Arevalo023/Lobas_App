@@ -66,6 +66,27 @@ namespace LobasAppOrdersNew.Services
             }
         }
 
+        public async Task<bool> UpdateAddressAsync(int id, AddressRequest address)
+        {
+            try
+            {
+                HttpResponseMessage response =
+                    await _httpClient.PutAsJsonAsync($"Addresses/{id}", address);
+
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                await _dialogService.ShowAlertAsync(
+                    "Error",
+                    $"No se pudo actualizar la direcci\u00f3n: {ex.Message}",
+                    "OK"
+                );
+
+                return false;
+            }
+        }
+
         public async Task<bool> DeleteAddressAsync(int id)
         {
             try

@@ -9,13 +9,16 @@ namespace LobasOrdersApi.Services
     {
         private readonly ICustomerRepository _customerRepository;
         private readonly IOrderRepository _orderRepository;
+        private readonly IAddressRepository _addressRepository;
 
         public CustomerService(
             ICustomerRepository customerRepository,
-            IOrderRepository orderRepository)
+            IOrderRepository orderRepository,
+            IAddressRepository addressRepository)
         {
             _customerRepository = customerRepository;
             _orderRepository = orderRepository;
+            _addressRepository = addressRepository;
         }
 
         public List<CustomerResponseDto> GetAll()
@@ -107,7 +110,8 @@ namespace LobasOrdersApi.Services
                 Email = customer.Email,
                 Phone = customer.Phone,
                 CreatedAt = customer.CreatedAt,
-                IsActive = customer.IsActive
+                IsActive = customer.IsActive,
+                AddressCount = _addressRepository.CountByCustomerId(customer.Id)
             };
         }
     }

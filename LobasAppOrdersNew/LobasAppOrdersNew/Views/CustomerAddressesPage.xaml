@@ -31,7 +31,7 @@
 
                 <VerticalStackLayout Spacing="14">
                     <Label
-                        Text="Nueva direcci&#xF3;n"
+                        Text="{Binding FormTitle}"
                         Style="{StaticResource SectionTitleStyle}" />
 
                     <VerticalStackLayout Spacing="6">
@@ -121,7 +121,7 @@
 
                     <Grid HeightRequest="52">
                         <Button
-                            Text="Guardar direcci&#xF3;n"
+                            Text="{Binding SaveButtonText}"
                             Command="{Binding SaveAddressCommand}"
                             Style="{StaticResource PrimaryButtonStyle}"
                             HeightRequest="52" />
@@ -138,7 +138,7 @@
                     </Grid>
 
                     <Button
-                        Text="Volver"
+                        Text="{Binding CancelButtonText}"
                         Command="{Binding CancelCommand}"
                         Style="{StaticResource SecondaryButtonStyle}" />
                 </VerticalStackLayout>
@@ -169,6 +169,15 @@
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="models:AddressModel">
                                 <SwipeView Margin="0,0,0,10">
+                                    <SwipeView.LeftItems>
+                                        <SwipeItems Mode="Reveal">
+                                            <SwipeItem
+                                                Text="Editar"
+                                                BackgroundColor="{DynamicResource AppEditColor}"
+                                                Invoked="OnEditAddressInvoked" />
+                                        </SwipeItems>
+                                    </SwipeView.LeftItems>
+
                                     <SwipeView.RightItems>
                                         <SwipeItems Mode="Reveal">
                                             <SwipeItem

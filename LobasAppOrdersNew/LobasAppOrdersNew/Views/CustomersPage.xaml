@@ -145,7 +145,7 @@
                                         Grid.Row="3"
                                         Grid.Column="0"
                                         Grid.ColumnSpan="2"
-                                        Text="Direcciones"
+                                        Text="{Binding AddressesButtonText}"
                                         Clicked="OnAddressesClicked"
                                         Style="{StaticResource SecondaryButtonStyle}"
                                         HeightRequest="44"

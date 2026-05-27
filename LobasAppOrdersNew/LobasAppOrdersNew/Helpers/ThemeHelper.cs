@@ -7,6 +7,8 @@ namespace LobasAppOrdersNew.Helpers
 
         private const string SelectedThemePreferenceKey = "SelectedTheme";
 
+        public static event EventHandler? ThemeChanged;
+
         public static string CurrentThemeKey =>
             Preferences.Default.Get(SelectedThemePreferenceKey, PinkThemeKey);
 
@@ -53,6 +55,8 @@ namespace LobasAppOrdersNew.Helpers
             {
                 Preferences.Default.Set(SelectedThemePreferenceKey, themeKey);
             }
+
+            ThemeChanged?.Invoke(null, EventArgs.Empty);
         }
 
         private static void ApplyPinkResources()
@@ -118,7 +122,7 @@ namespace LobasAppOrdersNew.Helpers
             Application.Current.Resources["ProfileIconSource"] = "settings_blanco.png";
             Application.Current.Resources["SettingsIconSource"] = "settings_blanco.png";
             Application.Current.Resources["AboutIconSource"] = "about_blanco.png";
-            Application.Current.Resources["LogoutIconSource"] = "logout_blanco.png";
+            Application.Current.Resources["LogoutIconSource"] = "logout_rojo.png";
             Application.Current.Resources["AppTitleFontSize"] = 32.0;
             Application.Current.Resources["AppSubtitleFontSize"] = 15.0;
             Application.Current.Resources["AppBodyFontSize"] = 16.0;

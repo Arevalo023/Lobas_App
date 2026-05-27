@@ -21,10 +21,51 @@
                 BackgroundColor="{DynamicResource AppCardColor}">
 
                 <Image
-                    Source="{Binding FlyoutIcon}"
                     HeightRequest="22"
                     WidthRequest="22"
-                    VerticalOptions="Center" />
+                    VerticalOptions="Center">
+                    <Image.Style>
+                        <Style TargetType="Image">
+                            <Setter Property="Source" Value="{DynamicResource HomeIconSource}" />
+                            <Style.Triggers>
+                                <DataTrigger
+                                    TargetType="Image"
+                                    Binding="{Binding Title}"
+                                    Value="Clientes">
+                                    <Setter Property="Source" Value="{DynamicResource CustomersIconSource}" />
+                                </DataTrigger>
+
+                                <DataTrigger
+                                    TargetType="Image"
+                                    Binding="{Binding Title}"
+                                    Value="Productos">
+                                    <Setter Property="Source" Value="{DynamicResource ProductsIconSource}" />
+                                </DataTrigger>
+
+                                <DataTrigger
+                                    TargetType="Image"
+                                    Binding="{Binding Title}"
+                                    Value="Pedidos">
+                                    <Setter Property="Source" Value="{DynamicResource OrdersIconSource}" />
+                                </DataTrigger>
+
+                                <DataTrigger
+                                    TargetType="Image"
+                                    Binding="{Binding Title}"
+                                    Value="Ajustes">
+                                    <Setter Property="Source" Value="{DynamicResource SettingsIconSource}" />
+                                </DataTrigger>
+
+                                <DataTrigger
+                                    TargetType="Image"
+                                    Binding="{Binding Title}"
+                                    Value="Acerca de">
+                                    <Setter Property="Source" Value="{DynamicResource AboutIconSource}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
 
                 <Label
                     Grid.Column="1"
@@ -87,6 +128,7 @@
                         VerticalOptions="Center">
 
                         <Image
+                            x:Name="ProfileIconImage"
                             Source="{DynamicResource ProfileIconSource}"
                             WidthRequest="24"
                             HeightRequest="24"
@@ -129,6 +171,7 @@
             </Grid.GestureRecognizers>
 
             <Image
+                x:Name="LogoutIconImage"
                 Source="{DynamicResource LogoutIconSource}"
                 HeightRequest="22"
                 WidthRequest="22"
@@ -144,42 +187,42 @@
         </Grid>
     </Shell.FlyoutFooter>
 
-    <FlyoutItem Title="Inicio" Icon="{DynamicResource HomeIconSource}">
+    <FlyoutItem x:Name="HomeFlyoutItem" Title="Inicio" Icon="{DynamicResource HomeIconSource}">
         <ShellContent
             Title="Inicio"
             ContentTemplate="{DataTemplate views:WelcomePage}"
             Route="WelcomePage" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Clientes" Icon="{DynamicResource CustomersIconSource}">
+    <FlyoutItem x:Name="CustomersFlyoutItem" Title="Clientes" Icon="{DynamicResource CustomersIconSource}">
         <ShellContent
             Title="Clientes"
             ContentTemplate="{DataTemplate views:CustomersPage}"
             Route="CustomersPage" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Productos" Icon="{DynamicResource ProductsIconSource}">
+    <FlyoutItem x:Name="ProductsFlyoutItem" Title="Productos" Icon="{DynamicResource ProductsIconSource}">
         <ShellContent
             Title="Productos"
             ContentTemplate="{DataTemplate views:ProductsPage}"
             Route="ProductsPage" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Pedidos" Icon="{DynamicResource OrdersIconSource}">
+    <FlyoutItem x:Name="OrdersFlyoutItem" Title="Pedidos" Icon="{DynamicResource OrdersIconSource}">
         <ShellContent
             Title="Pedidos"
             ContentTemplate="{DataTemplate views:OrdersPage}"
             Route="OrdersPage" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Ajustes" Icon="{DynamicResource SettingsIconSource}">
+    <FlyoutItem x:Name="SettingsFlyoutItem" Title="Ajustes" Icon="{DynamicResource SettingsIconSource}">
         <ShellContent
             Title="Ajustes"
             ContentTemplate="{DataTemplate views:SettingsPage}"
             Route="SettingsPage" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Acerca de" Icon="{DynamicResource AboutIconSource}">
+    <FlyoutItem x:Name="AboutFlyoutItem" Title="Acerca de" Icon="{DynamicResource AboutIconSource}">
         <ShellContent
             Title="Acerca de"
             ContentTemplate="{DataTemplate views:AboutPage}"

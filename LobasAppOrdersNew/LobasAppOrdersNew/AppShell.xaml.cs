@@ -1,5 +1,6 @@
 using LobasAppOrdersNew.Services;
 using LobasAppOrdersNew.Views;
+using LobasAppOrdersNew.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 
 
@@ -29,6 +30,8 @@ public partial class AppShell : Shell
         Routing.RegisterRoute(nameof(OrderDetailPage), typeof(OrderDetailPage));
         Routing.RegisterRoute(nameof(OrderEditPage), typeof(OrderEditPage));
 
+        ThemeHelper.ThemeChanged += OnThemeChanged;
+        RefreshThemeIcons();
     }
 
     protected override async void OnAppearing()
@@ -65,5 +68,30 @@ public partial class AppShell : Shell
     {
         FlyoutIsPresented = false;
         await GoToAsync(nameof(ProfilePage));
+    }
+
+    private void OnThemeChanged(object? sender, EventArgs e)
+    {
+        MainThread.BeginInvokeOnMainThread(RefreshThemeIcons);
+    }
+
+    private void RefreshThemeIcons()
+    {
+        HomeFlyoutItem.Icon = GetImageSource("HomeIconSource");
+        CustomersFlyoutItem.Icon = GetImageSource("CustomersIconSource");
+        ProductsFlyoutItem.Icon = GetImageSource("ProductsIconSource");
+        OrdersFlyoutItem.Icon = GetImageSource("OrdersIconSource");
+        SettingsFlyoutItem.Icon = GetImageSource("SettingsIconSource");
+        AboutFlyoutItem.Icon = GetImageSource("AboutIconSource");
+
+        ProfileIconImage.Source = GetImageSource("ProfileIconSource");
+        LogoutIconImage.Source = GetImageSource("LogoutIconSource");
+    }
+
+    private static ImageSource GetImageSource(string resourceKey)
+    {
+        string fileName = Application.Current!.Resources[resourceKey]?.ToString() ?? string.Empty;
+
+        return ImageSource.FromFile(fileName);
     }
 }

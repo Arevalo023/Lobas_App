@@ -44,4 +44,13 @@ public partial class CustomerAddressesPage : ContentPage, IQueryAttributable
             await _viewModel.DeleteAddressAsync(address);
         }
     }
+
+    private void OnEditAddressInvoked(object sender, EventArgs e)
+    {
+        if (sender is SwipeItem swipeItem &&
+            swipeItem.BindingContext is AddressModel address)
+        {
+            _viewModel.BeginEditAddress(address);
+        }
+    }
 }

@@ -10,6 +10,8 @@ namespace LobasOrdersApi.Repositories.Interfaces
 
         List<Address> GetByCustomerId(int customerId);
 
+        int CountByCustomerId(int customerId);
+
         int Create(Address address);
 
         bool Update(int id, Address address);

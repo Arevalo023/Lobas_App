@@ -19,7 +19,8 @@
                 <VerticalStackLayout Spacing="18">
 
                     <Image
-                        Source="splash.png"
+                        x:Name="AboutIconImage"
+                        Source="{DynamicResource AboutIconSource}"
                         WidthRequest="120"
                         HeightRequest="120"
                         Aspect="AspectFit"
