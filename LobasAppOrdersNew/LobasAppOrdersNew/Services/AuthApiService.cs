@@ -8,14 +8,14 @@ namespace LobasAppOrdersNew.Services
     {
         private readonly HttpClient _httpClient;
 
-
         public AuthApiService(IConfiguration configuration)
         {
             string baseUrl = ApiEndpointResolver.GetBaseUrl(configuration);
 
             _httpClient = new HttpClient
             {
-                BaseAddress = new Uri(baseUrl)
+                BaseAddress = new Uri(baseUrl),
+                Timeout = TimeSpan.FromSeconds(90)
             };
         }
 
@@ -29,6 +29,14 @@ namespace LobasAppOrdersNew.Services
                     await response.Content.ReadFromJsonAsync<ApiResponse<UserModel>>();
 
                 return result;
+            }
+            catch (TaskCanceledException)
+            {
+                return new ApiResponse<UserModel>
+                {
+                    Message = "El servidor tardó demasiado en responder. Intenta nuevamente en unos segundos.",
+                    User = null
+                };
             }
             catch (Exception ex)
             {
@@ -51,6 +59,14 @@ namespace LobasAppOrdersNew.Services
 
                 return result;
             }
+            catch (TaskCanceledException)
+            {
+                return new ApiResponse<UserModel>
+                {
+                    Message = "El servidor tardó demasiado en responder. Intenta nuevamente en unos segundos.",
+                    User = null
+                };
+            }
             catch (Exception ex)
             {
                 return new ApiResponse<UserModel>
@@ -60,6 +76,7 @@ namespace LobasAppOrdersNew.Services
                 };
             }
         }
+
         public async Task<ApiResponse<UserModel>?> SocialLoginAsync(SocialLoginRequest request)
         {
             try
@@ -87,6 +104,14 @@ namespace LobasAppOrdersNew.Services
                     );
 
                 return result;
+            }
+            catch (TaskCanceledException)
+            {
+                return new ApiResponse<UserModel>
+                {
+                    Message = "El servidor tardó demasiado en responder. Intenta nuevamente en unos segundos.",
+                    User = null
+                };
             }
             catch (Exception ex)
             {

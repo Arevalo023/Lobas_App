@@ -31,14 +31,14 @@
                             Aspect="AspectFit" />
 
                         <Label
-                            Text="Welcome back"
+                            Text="Bienvenido de nuevo"
                             Style="{StaticResource PageTitleStyle}"
                             FontSize="{OnIdiom Phone=24, Tablet={DynamicResource AppTitleFontSize}, Desktop={DynamicResource AppTitleFontSize}}"
                             HorizontalTextAlignment="Center"
                             Margin="0,2,0,0" />
 
                         <Label
-                            Text="Access your account and continue managing your orders."
+                            Text="Ingresa para poder ser manejando tus órdenes."
                             Style="{StaticResource PageSubtitleStyle}"
                             HorizontalTextAlignment="Center"
                             LineBreakMode="WordWrap"
@@ -51,7 +51,7 @@
                                 FontAttributes="Bold" />
 
                             <Entry
-                                Placeholder="Enter your email"
+                                Placeholder="Ingresa tu correo"
                                 Text="{Binding Email}"
                                 Keyboard="Email"
                                 Style="{StaticResource InputEntryStyle}" />
@@ -68,7 +68,7 @@
 
                                 <Entry
                                     Grid.Column="0"
-                                    Placeholder="Enter your password"
+                                    Placeholder="Ingresa tu contraseña"
                                     Text="{Binding Password}"
                                     IsPassword="{Binding IsPasswordHidden}"
                                     Style="{StaticResource InputEntryStyle}" />
@@ -105,31 +105,54 @@
                                 Margin="0,0,18,0" />
                         </Grid>
 
-                        <Grid HeightRequest="50">
-                            <Button
-                                Text="Sign in with Google"
-                                Command="{Binding GoogleLoginCommand}"
-                                BackgroundColor="{DynamicResource AppInputBackgroundColor}"
-                                TextColor="{DynamicResource AppTextColor}"
-                                BorderColor="{DynamicResource AppBorderColor}"
-                                BorderWidth="1"
-                                CornerRadius="18"
-                                HeightRequest="50"
-                                FontAttributes="Bold" />
+                        <Border
+                            BackgroundColor="{DynamicResource AppInputBackgroundColor}"
+                            Stroke="{DynamicResource AppBorderColor}"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 18"
+                            HeightRequest="50">
 
-                            <ActivityIndicator
-                                IsRunning="{Binding IsGoogleLoading}"
-                                IsVisible="{Binding IsGoogleLoading}"
-                                Color="{DynamicResource AppPrimaryColor}"
-                                WidthRequest="24"
-                                HeightRequest="24"
-                                HorizontalOptions="End"
-                                VerticalOptions="Center"
-                                Margin="0,0,18,0" />
-                        </Grid>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding GoogleLoginCommand}" />
+                            </Border.GestureRecognizers>
+
+                            <Grid
+                                Padding="18,0"
+                                ColumnDefinitions="24,*,24"
+                                ColumnSpacing="10">
+
+                                <Image
+                                    Grid.Column="0"
+                                    Source="google.png"
+                                    WidthRequest="22"
+                                    HeightRequest="22"
+                                    Aspect="AspectFit"
+                                    VerticalOptions="Center" />
+
+                                <Label
+                                    Grid.Column="1"
+                                    Text="Entra con Google"
+                                    TextColor="{DynamicResource AppTextColor}"
+                                    FontAttributes="Bold"
+                                    FontFamily="{DynamicResource AppButtonFontFamily}"
+                                    FontSize="{DynamicResource AppBodyFontSize}"
+                                    HorizontalTextAlignment="Center"
+                                    VerticalTextAlignment="Center" />
+
+                                <ActivityIndicator
+                                    Grid.Column="2"
+                                    IsRunning="{Binding IsGoogleLoading}"
+                                    IsVisible="{Binding IsGoogleLoading}"
+                                    Color="{DynamicResource AppPrimaryColor}"
+                                    WidthRequest="24"
+                                    HeightRequest="24"
+                                    HorizontalOptions="End"
+                                    VerticalOptions="Center" />
+                            </Grid>
+                        </Border>
 
                         <Button
-                            Text="Biometric Login"
+                            Text="Login con huella"
                             Command="{Binding BiometricLoginCommand}"
                             Style="{StaticResource SecondaryButtonStyle}"
                             IsVisible="{Binding IsBiometricButtonVisible}" />
@@ -140,12 +163,12 @@
                             Margin="0,2,0,0">
 
                             <Label
-                                Text="Don't have an account?"
+                                Text="¿No tienes una cuenta?"
                                 TextColor="{DynamicResource AppMutedTextColor}"
                                 VerticalOptions="Center" />
 
                             <Button
-                                Text="Register"
+                                Text="Registrate"
                                 Command="{Binding GoToRegisterCommand}"
                                 Style="{StaticResource SecondaryButtonStyle}"
                                 Padding="6,0"

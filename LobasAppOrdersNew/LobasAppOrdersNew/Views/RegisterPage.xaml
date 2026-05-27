@@ -39,7 +39,7 @@
                         Margin="0,2,0,0" />
 
                     <Label
-                        Text="Set up your profile and start managing customers, products, and orders."
+                        Text="Crea tu perfil y empieza a administrar clientes, productos y pedidos."
                         Style="{StaticResource PageSubtitleStyle}"
                         HorizontalTextAlignment="Center"
                         LineBreakMode="WordWrap"
@@ -47,12 +47,12 @@
 
                     <VerticalStackLayout Spacing="6">
                         <Label
-                            Text="Full name"
+                            Text="Nombre completo"
                             TextColor="{DynamicResource AppTextColor}"
                             FontAttributes="Bold" />
 
                         <Entry
-                            Placeholder="Enter your full name"
+                            Placeholder="Ingresa tu nombre completo"
                             Text="{Binding Name}"
                             Style="{StaticResource InputEntryStyle}"
                             ClearButtonVisibility="WhileEditing" />
@@ -65,7 +65,7 @@
                             FontAttributes="Bold" />
 
                         <Entry
-                            Placeholder="Enter your email"
+                            Placeholder="Ingresa tu email"
                             Keyboard="Email"
                             Text="{Binding Email}"
                             Style="{StaticResource InputEntryStyle}"
@@ -74,12 +74,12 @@
 
                     <VerticalStackLayout Spacing="6">
                         <Label
-                            Text="Password"
+                            Text="Contrseña"
                             TextColor="{DynamicResource AppTextColor}"
                             FontAttributes="Bold" />
 
                         <Entry
-                            Placeholder="Create a password"
+                            Placeholder="Crea una contraseña"
                             IsPassword="True"
                             Text="{Binding Password}"
                             Style="{StaticResource InputEntryStyle}" />
@@ -87,12 +87,12 @@
 
                     <VerticalStackLayout Spacing="6">
                         <Label
-                            Text="Confirm password"
+                            Text="Confirma tu contraseña"
                             TextColor="{DynamicResource AppTextColor}"
                             FontAttributes="Bold" />
 
                         <Entry
-                            Placeholder="Repeat your password"
+                            Placeholder="Repite tu contraseña"
                             IsPassword="True"
                             Text="{Binding ConfirmPassword}"
                             Style="{StaticResource InputEntryStyle}" />
@@ -100,7 +100,7 @@
 
                     <Grid HeightRequest="52">
                         <Button
-                            Text="Create account"
+                            Text="Crea una cuenta"
                             Command="{Binding RegisterCommand}"
                             Style="{StaticResource PrimaryButtonStyle}"
                             HeightRequest="52" />
@@ -122,7 +122,7 @@
                         Margin="0,2,0,0">
 
                         <Label
-                            Text="Already have an account?"
+                            Text="Ya tienes una cuenta?"
                             TextColor="{DynamicResource AppMutedTextColor}"
                             VerticalOptions="Center" />
 

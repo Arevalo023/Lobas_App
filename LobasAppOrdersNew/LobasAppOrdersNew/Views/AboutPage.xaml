@@ -53,6 +53,12 @@
                         FontSize="{DynamicResource AppBodyFontSize}"
                         TextColor="{DynamicResource AppMutedTextColor}"
                         LineBreakMode="WordWrap" />
+                    <Label
+     Text="by Itzel Salinas, Frida Lucio and Diana arévalo"
+     FontSize="{DynamicResource AppBodyFontSize}"
+     TextColor="{DynamicResource AppMutedTextColor}"
+     LineBreakMode="WordWrap" />
+
 
                     <Label
                         Text="Características principales"
