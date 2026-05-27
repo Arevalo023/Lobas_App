@@ -66,8 +66,25 @@ namespace LobasAppOrdersNew.Services
             {
                 HttpResponseMessage response = await _httpClient.PostAsJsonAsync("Auth/social-login", request);
 
+                string body = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new ApiResponse<UserModel>
+                    {
+                        Message = $"Error HTTP {(int)response.StatusCode}: {body}",
+                        User = null
+                    };
+                }
+
                 ApiResponse<UserModel>? result =
-                    await response.Content.ReadFromJsonAsync<ApiResponse<UserModel>>();
+                    System.Text.Json.JsonSerializer.Deserialize<ApiResponse<UserModel>>(
+                        body,
+                        new System.Text.Json.JsonSerializerOptions
+                        {
+                            PropertyNameCaseInsensitive = true
+                        }
+                    );
 
                 return result;
             }
